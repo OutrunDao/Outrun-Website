@@ -260,54 +260,57 @@ export const CompactSwapInterface = React.memo(({ project }: CompactSwapInterfac
         {/* 调整内容容器，使用flex-col和justify-between确保内容分布合理 */}
         <div className="relative p-3 h-full flex flex-col">
           {/* Header */}
-          <div className="flex items-center justify-between mb-2">
-            {/* 保持原有的头部内容不变... */}
-            <div className="flex items-center h-7">
-              <InfoTooltip
-                content={
-                  <div>
-                    Enable AntiMEV when the input is greater than 0.5% of reserves.
-                    <br />
-                    Anti-MEV cannot be enabled during the initial liquidity protection period.
-                    <br />
-                    <a
-                      href="https://outrun.gitbook.io/doc/outswap/mev-guard/working-principle"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block mt-1"
-                    >
-                      Learn more
-                    </a>
-                  </div>
-                }
-                position="top"
-                className="mr-1"
-                iconClassName="text-purple-400 hover:text-purple-300 transition-colors scale-90"
-              />
-              <span className="text-xs font-medium mr-1 bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-pink-300 drop-shadow-[0_0_5px_rgba(168,85,247,0.5)]">
-                AntiMEV
-              </span>
-              <button
-                className={`w-7 h-4 rounded-md p-0.5 transition-colors duration-300 ${antiMEV ? "bg-gradient-to-r from-purple-600/70 to-pink-600/70" : "bg-white/10"}`}
-                onClick={() => setAntiMEV(!antiMEV)}
-              >
-                <div
-                  className={`w-3 h-3 rounded-md bg-white transition-transform duration-300 ${antiMEV ? "translate-x-3" : "translate-x-0"} my-auto`}
-                />
-              </button>
-            </div>
-
-            <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-blue-500 drop-shadow-[0_0_8px_rgba(168,85,247,0.5)] uppercase">
+          <div className="relative mb-2">
+            {/* SWAP标题 - 绝对定位在容器中央 */}
+            <h2 className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-blue-500 drop-shadow-[0_0_8px_rgba(168,85,247,0.5)] uppercase z-10">
               SWAP
             </h2>
 
-            <button
-              className="p-1.5 text-purple-300 relative"
-              onClick={() => setShowSettings(!showSettings)}
-              title="Settings"
-            >
-              <Settings size={16} />
-            </button>
+            {/* 左右两侧的控件 */}
+            <div className="flex items-center justify-between h-10">
+              <div className="flex items-center h-7">
+                <InfoTooltip
+                  content={
+                    <div>
+                      Enable AntiMEV when the input is greater than 0.5% of reserves.
+                      <br />
+                      Anti-MEV cannot be enabled during the initial liquidity protection period.
+                      <br />
+                      <a
+                        href="https://outrun.gitbook.io/doc/outswap/mev-guard/working-principle"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block mt-1"
+                      >
+                        Learn more
+                      </a>
+                    </div>
+                  }
+                  position="top"
+                  className="mr-1"
+                  iconClassName="text-purple-400 hover:text-purple-300 transition-colors scale-90"
+                />
+                <span className="text-xs font-medium mr-1 bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-pink-300 drop-shadow-[0_0_5px_rgba(168,85,247,0.5)]">
+                  AntiMEV
+                </span>
+                <button
+                  className={`w-7 h-4 rounded-md p-0.5 transition-colors duration-300 ${antiMEV ? "bg-gradient-to-r from-purple-600/70 to-pink-600/70" : "bg-white/10"}`}
+                  onClick={() => setAntiMEV(!antiMEV)}
+                >
+                  <div
+                    className={`w-3 h-3 rounded-md bg-white transition-transform duration-300 ${antiMEV ? "translate-x-3" : "translate-x-0"} my-auto`}
+                  />
+                </button>
+              </div>
+
+              <button
+                className="p-1.5 text-purple-300 relative"
+                onClick={() => setShowSettings(!showSettings)}
+                title="Settings"
+              >
+                <Settings size={16} />
+              </button>
+            </div>
           </div>
 
           {/* Settings Panel Dropdown - 调整为与enhanced-swap-interface.tsx相同的样式 */}
