@@ -370,3 +370,17 @@ input,
 textarea {
   caret-color: #ec4899;
 }
+
+/* 项目卡片样式 */
+.card-container {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-float-wrapper {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-container:hover .card-float-wrapper {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px var(--hover-shadow-color, rgba(168, 85, 247, 0.4));
+}
