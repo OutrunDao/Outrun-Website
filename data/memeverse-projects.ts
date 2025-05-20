@@ -480,7 +480,7 @@ export const MOCK_PROJECTS = [
     id: 24,
     name: "Pixel Frogs",
     symbol: "PFROG",
-    description: "Retro-styled amphibian token with pixel art NFTs and community governance",
+    description: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     stage: "Locked",
     raisedAmount: 52000.25,
     raisedToken: "UETH",

@@ -16,9 +16,13 @@ const nextConfig = {
     // 禁用任何可能自动生成Service Worker的功能
     disableOptimizedLoading: true,
     optimizeCss: false,
-    // 移除无效的fontLoaders配置
+    // 添加字体加载器配置
+    fontLoaders: [
+      { loader: 'next/font/google', options: { subsets: ['latin'] } },
+    ],
   },
-  // 移除无效的optimizeFonts配置
+  // 添加字体优化配置
+  optimizeFonts: false, // 禁用Next.js的自动字体优化
 };
 
 export default nextConfig;

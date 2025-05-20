@@ -1,6 +1,7 @@
 "use client"
 
 import React from "react"
+
 import { useState, useEffect, useMemo, useCallback } from "react"
 import { motion } from "framer-motion"
 import { TrendingUp, TrendingDown } from "lucide-react"

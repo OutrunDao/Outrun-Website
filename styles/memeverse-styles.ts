@@ -87,7 +87,7 @@ export const buttonStyles = {
 // 下拉菜单样式
 export const dropdownStyles = {
   container:
-    "absolute z-50 mt-2 rounded-md overflow-hidden bg-gradient-to-br from-purple-950/95 via-[#150538]/98 to-indigo-950/95 backdrop-blur-md border border-purple-500/40 shadow-[0_4px_20px_rgba(138,75,175,0.3)] animate-in fade-in-50 zoom-in-95 duration-200",
+    "absolute z-50 mt-2 rounded-md overflow-hidden bg-gradient-to-br from-purple-950/90 via-[#150538]/95 to-indigo-950/90 backdrop-blur-md border border-purple-500/40 shadow-[0_4px_20px_rgba(138,75,175,0.3)] animate-in fade-in-50 zoom-in-95 duration-200",
 }
 
 // 导出所有样式

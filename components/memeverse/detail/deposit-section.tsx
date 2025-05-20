@@ -1,6 +1,7 @@
 "use client"
 
 import React from "react"
+
 import { useState, useEffect, useRef } from "react"
 import { ChevronDown } from "lucide-react"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
@@ -221,6 +222,46 @@ export function DepositSection({ availableTokens, providers, myGenesisFunds, onD
       document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [showTokenList, showProviderList])
+
+  useEffect(() => {
+    if (showProviderList) {
+      // 确保所有父容器都不会限制下拉菜单的显示
+      const parentElements = []
+      let parent = providerButtonRef.current?.parentElement
+      while (parent && parent !== document.body) {
+        parentElements.push(parent)
+        parent = parent.parentElement
+      }
+
+      // 保存原始样式
+      const originalStyles = parentElements.map((el) => ({
+        element: el,
+        overflow: el.style.overflow,
+        zIndex: el.style.zIndex,
+        position: el.style.position,
+      }))
+
+      // 应用新样式
+      parentElements.forEach((el) => {
+        el.style.overflow = "visible"
+        if (!el.style.position || el.style.position === "static") {
+          el.style.position = "relative"
+        }
+        if (!el.style.zIndex) {
+          el.style.zIndex = "auto"
+        }
+      })
+
+      // 清理函数
+      return () => {
+        originalStyles.forEach((item) => {
+          item.element.style.overflow = item.overflow
+          item.element.style.zIndex = item.zIndex
+          item.element.style.position = item.position
+        })
+      }
+    }
+  }, [showProviderList])
 
   // 更精细的响应式布局控制
   const [deviceType, setDeviceType] = useState<"mobile" | "tablet" | "desktop">("desktop")

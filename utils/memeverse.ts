@@ -45,6 +45,54 @@ export function formatUSD(value: number): string {
   }).format(value)
 }
 
+// 获取阶段对应的边框渐变色
+export function getBorderGradient(stage: string): string {
+  switch (stage) {
+    case "Genesis":
+      return "from-purple-500/70 via-pink-500/70 to-purple-500/70"
+    case "Locked":
+      return "from-pink-500/70 via-purple-500/70 to-pink-500/70"
+    case "Unlocked":
+      return "from-cyan-400/80 via-blue-500/80 to-indigo-400/80"
+    case "Refund":
+      return "from-red-400/80 via-orange-500/80 to-yellow-500/80"
+    default:
+      return "from-white/10 to-white/5"
+  }
+}
+
+// 获取阶段对应的背景渐变色
+export function getBackgroundGradient(stage: string): string {
+  switch (stage) {
+    case "Genesis":
+      return "from-purple-950/90 via-[#0f0326]/95 to-purple-950/90"
+    case "Locked":
+      return "from-pink-950/90 via-[#0f0326]/95 to-pink-950/90"
+    case "Unlocked":
+      return "from-cyan-950/90 via-[#0f0326]/95 to-cyan-950/90"
+    case "Refund":
+      return "from-red-950/90 via-[#0f0326]/95 to-red-950/90"
+    default:
+      return "from-[#0f0326]/95 to-[#0f0326]/95"
+  }
+}
+
+// 获取阶段对应的悬停阴影颜色
+export function getHoverShadowColor(stage: string): string {
+  switch (stage) {
+    case "Genesis":
+      return "rgba(168,85,247,0.4)"
+    case "Locked":
+      return "rgba(236,72,153,0.4)"
+    case "Unlocked":
+      return "rgba(6,182,212,0.5)"
+    case "Refund":
+      return "rgba(239,68,68,0.5)"
+    default:
+      return "rgba(168,85,247,0.4)"
+  }
+}
+
 // 格式化百分比
 export function formatPercentage(value: number): string {
   return `${value >= 0 ? "+" : ""}${value.toFixed(2)}%`
@@ -81,45 +129,4 @@ export function formatTimeRemaining(endTime: string): string {
   } else {
     return `${minutes}m`
   }
-}
-
-// 导入样式系统，使用其中的样式定义
-import { cardStyles } from "@/styles/memeverse-styles"
-
-// 获取阶段对应的样式
-export function getStageStyle(stage: string, styleType: "border" | "background" | "shadow"): string {
-  const stageKey = stage.toLowerCase() as keyof typeof cardStyles.borderGradients
-
-  switch (styleType) {
-    case "border":
-      return cardStyles.borderGradients[stageKey] || cardStyles.borderGradients.default
-    case "background":
-      return cardStyles.backgroundGradients[stageKey] || cardStyles.backgroundGradients.default
-    case "shadow":
-      return cardStyles.hoverShadowColors[stageKey] || cardStyles.hoverShadowColors.default
-    default:
-      return ""
-  }
-}
-
-// 这些函数现在是对样式系统的包装器
-export function getBorderGradient(stage: string): string {
-  return (
-    cardStyles.borderGradients[stage.toLowerCase() as keyof typeof cardStyles.borderGradients] ||
-    cardStyles.borderGradients.default
-  )
-}
-
-export function getBackgroundGradient(stage: string): string {
-  return (
-    cardStyles.backgroundGradients[stage.toLowerCase() as keyof typeof cardStyles.backgroundGradients] ||
-    cardStyles.backgroundGradients.default
-  )
-}
-
-export function getHoverShadowColor(stage: string): string {
-  return (
-    cardStyles.hoverShadowColors[stage.toLowerCase() as keyof typeof cardStyles.hoverShadowColors] ||
-    cardStyles.hoverShadowColors.default
-  )
 }

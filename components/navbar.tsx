@@ -12,8 +12,6 @@ import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { useMobile } from "@/hooks/use-mobile"
 import { WalletButton } from "@/components/wallet-button"
-import { NetworkIcon } from "@/components/network-icon"
-import { useNetwork } from "@/contexts/network-context"
 
 // 导入 useThrottleFn
 import { useThrottleFn } from "@/hooks/use-throttle"
@@ -69,7 +67,6 @@ export function Navbar() {
   const [currentActiveItem, setCurrentActiveItem] = useState<string | null>(null)
   // 添加一个新的状态来跟踪移动端展开的子菜单
   const [expandedMobileSubmenu, setExpandedMobileSubmenu] = useState<string | null>(null)
-  const { network, networks, switchNetwork } = useNetwork()
 
   // 在 Navbar 组件内部，将 handleScroll 函数替换为节流版本
   const handleScroll = useThrottleFn(() => {
@@ -175,24 +172,6 @@ export function Navbar() {
   const isNavItemActive = (item: NavItem) => {
     return pathname === item.href || (item.children && item.children.some((child) => pathname === child.href))
   }
-
-  // 在现有的 useEffect 之后添加一个新的 useEffect
-  useEffect(() => {
-    // 当菜单打开时，禁止背景滚动
-    if (isMenuOpen) {
-      document.body.style.overflow = "hidden"
-      document.body.style.touchAction = "none"
-    } else {
-      document.body.style.overflow = ""
-      document.body.style.touchAction = ""
-    }
-
-    // 组件卸载时恢复滚动
-    return () => {
-      document.body.style.overflow = ""
-      document.body.style.touchAction = ""
-    }
-  }, [isMenuOpen])
 
   return (
     <header
@@ -315,34 +294,21 @@ export function Navbar() {
 
           {!isMobile ? (
             <div className="pr-4">
-              <WalletButton />
+              <WalletButton isHomePage={isHomePage} />
             </div>
           ) : (
-            <div className="flex items-center gap-3 mr-1">
-              {/* 移动端导航栏右侧的网络选择和钱包按钮 */}
-              <div className="flex items-center gap-2 mr-2">
-                <NetworkIcon
-                  selectedNetwork={network}
-                  networks={networks}
-                  onNetworkChange={switchNetwork}
-                  iconOnly={true}
-                  className="h-[34px] w-[34px] px-0"
-                />
-                <WalletButton />
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                aria-label="Toggle menu"
-                className="text-white hover:bg-white/10 rounded-full relative overflow-hidden group"
-              >
-                <span className="relative z-10">
-                  {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-                </span>
-                <div className="mobile-menu-btn-bg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-0"></div>
-              </Button>
-            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle menu"
+              className="text-white hover:bg-white/10 rounded-full relative overflow-hidden group"
+            >
+              <span className="relative z-10">
+                {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </span>
+              <div className="mobile-menu-btn-bg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-0"></div>
+            </Button>
           )}
         </div>
       </div>
@@ -355,8 +321,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-x-0 top-16 bottom-0 z-40 bg-gradient-to-b from-[#0f0326] to-[#1a0445] overflow-auto"
-            style={{ height: "calc(100vh - 64px)" }}
+            className="fixed inset-0 top-20 z-40 bg-gradient-to-b from-[#0f0326]/95 to-[#1a0445]/95 backdrop-blur-md overflow-auto"
           >
             <div className="absolute inset-0 bg-[url('/grid.svg')] bg-repeat opacity-10"></div>
             <div className="container mx-auto px-4 py-6 relative z-10">
@@ -430,6 +395,10 @@ export function Navbar() {
                   )
                 })}
               </nav>
+
+              <div className="mt-8 flex justify-center">
+                <WalletButton isHomePage={isHomePage} />
+              </div>
             </div>
           </motion.div>
         )}

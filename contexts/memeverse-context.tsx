@@ -125,6 +125,11 @@ export function MemeVerseProvider({ children }: { children: ReactNode }) {
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
 
+  // 删除初始化项目数据的useEffect
+  // useEffect(() => {
+  //   setProjects(MOCK_PROJECTS)
+  // }, [])
+
   // 过滤项目
   useEffect(() => {
     if (isLoading) return // 如果数据正在加载，不执行过滤

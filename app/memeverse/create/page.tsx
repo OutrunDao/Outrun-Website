@@ -73,7 +73,7 @@ export default function CreateMemecoinPage() {
       omniChains: [] as string[],
       description: "",
       website: "",
-      twitter: "",
+      x: "",
       discord: "",
       telegram: "",
     },
@@ -385,13 +385,13 @@ export default function CreateMemecoinPage() {
   return (
     <div className="relative flex flex-col min-h-screen">
       {/* Page content */}
-      <div className="container px-4 md:px-6 mx-auto pt-16 md:pt-20 lg:pt-24 pb-8 md:pb-12 lg:pb-16">
-        <div className="max-w-3xl mx-auto mb-6 md:mb-10 flex flex-col md:flex-row md:items-center md:justify-between">
+      <div className="container px-4 md:px-6 mx-auto pt-20 md:pt-24 pb-12 md:pb-16">
+        <div className="max-w-3xl mx-auto mb-10 flex items-center justify-between">
           {/* Back button */}
           <Button
             onClick={handleBackClick}
             variant="outline"
-            className="relative overflow-hidden group mb-4 md:mb-0 self-start"
+            className="relative overflow-hidden group"
             style={{
               background: "rgba(15, 3, 38, 0.8)",
               border: "1px solid rgba(236, 72, 153, 0.4)",
@@ -421,78 +421,60 @@ export default function CreateMemecoinPage() {
           </Button>
 
           {/* Page title */}
-          <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-pink-400 to-purple-500 bg-clip-text text-transparent text-center md:text-center mx-auto md:mx-0">
+          <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-pink-400 to-purple-500 bg-clip-text text-transparent">
             Consensus Launch
           </h1>
 
-          {/* 添加一个空的div来平衡布局，只在md及以上的屏幕显示 */}
-          <div className="hidden md:block md:w-[120px]"></div>
+          {/* 添加一个空的div来平衡布局 */}
+          <div className="w-[120px]"></div>
         </div>
 
         {/* Form container */}
         <div className="max-w-3xl mx-auto">
-          <div
-            className="relative rounded-xl overflow-hidden"
-            style={{
-              boxShadow: "0 0 2px #ec4899, 0 0 15px rgba(236,72,153,0.4), 0 0 30px rgba(168,85,247,0.2)",
-              border: "1px solid rgba(236,72,153,0.3)",
-            }}
-          >
-            {/* 背景渐变 */}
-            <div className="absolute inset-0 bg-gradient-to-br from-[#0f0326] via-[#1a0445] to-[#0f0326] backdrop-blur-xl"></div>
-
-            {/* 网格背景 */}
-            <div
-              className="absolute inset-0 opacity-10"
-              style={{
-                backgroundImage:
-                  "linear-gradient(rgba(168, 85, 247, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(168, 85, 247, 0.1) 1px, transparent 1px)",
-                backgroundSize: "20px 20px",
-                backgroundPosition: "center center",
-              }}
-            ></div>
-
-            {/* 底部发光效果 */}
-            <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-purple-600/5 to-transparent"></div>
+          <div className="relative rounded-xl overflow-hidden">
+            {/* Gradient border */}
+            <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-purple-500/70 via-pink-500/70 to-purple-500/70 opacity-90"></div>
 
             {/* Card content */}
-            <div className="relative z-10 p-6 md:p-8">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Flash Genesis Toggle */}
-                <ToggleSwitch
-                  isEnabled={isFlashGenesis}
-                  onChange={toggleFlashGenesis}
-                  label="Flash Genesis"
-                  tooltipContent="Enable Flash Genesis for accelerated token launch"
-                />
+            <div className="bg-gradient-to-br from-purple-950/90 via-[#0f0326]/95 to-purple-950/90 rounded-xl overflow-hidden relative z-10 m-[1px]">
+              <div className="p-6 md:p-8 relative z-10">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  {/* Flash Genesis Toggle */}
+                  <ToggleSwitch
+                    isEnabled={isFlashGenesis}
+                    onChange={toggleFlashGenesis}
+                    label="Flash Genesis"
+                    tooltipContent="Enable Flash Genesis for accelerated token launch"
+                  />
 
-                {/* Form Fields */}
-                <FormSection
-                  formData={formData}
-                  logoPreview={logoPreview}
-                  isGenesisDurationValid={isGenesisDurationValid}
-                  isLiquidityLockDurationValid={isLiquidityLockDurationValid}
-                  minGenesisDuration={minGenesisDuration}
-                  maxGenesisDuration={maxGenesisDuration}
-                  minLockupDays={minLockupDays}
-                  maxLockupDays={maxLockupDays}
-                  handleChange={handleChange}
-                  handleLogoUpload={handleLogoUpload}
-                  openModal={openModal}
-                />
+                  {/* Form Fields */}
+                  <FormSection
+                    formData={formData}
+                    logoPreview={logoPreview}
+                    isGenesisDurationValid={isGenesisDurationValid}
+                    isLiquidityLockDurationValid={isLiquidityLockDurationValid}
+                    minGenesisDuration={minGenesisDuration}
+                    maxGenesisDuration={maxGenesisDuration}
+                    minLockupDays={minLockupDays}
+                    maxLockupDays={maxLockupDays}
+                    handleChange={handleChange}
+                    handleLogoUpload={handleLogoUpload}
+                    openModal={openModal}
+                  />
 
-                {/* Community Links Component */}
-                <CommunityLinks
-                  website={formData.website}
-                  twitter={formData.twitter}
-                  discord={formData.discord}
-                  telegram={formData.telegram}
-                  onChange={handleCommunityLinkChange}
-                />
+                  {/* Community Links Component */}
+                  <CommunityLinks
+                    website={formData.website}
+                    x={formData.x}
+                    discord={formData.discord}
+                    telegram={formData.telegram}
+                    onChange={handleCommunityLinkChange}
+                  />
 
-                {/* Submit button */}
-                <SubmitButton isSubmitting={isSubmitting} />
-              </form>
+                  {/* Submit button */}
+                  <SubmitButton isSubmitting={isSubmitting} />
+                </form>
+              </div>
             </div>
           </div>
         </div>

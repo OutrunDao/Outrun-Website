@@ -260,7 +260,7 @@ export const CompactSwapInterface = React.memo(({ project }: CompactSwapInterfac
         {/* 调整内容容器，使用flex-col和justify-between确保内容分布合理 */}
         <div className="relative p-3 h-full flex flex-col">
           {/* Header */}
-          <div className="flex items-center justify-between mb-2 relative">
+          <div className="flex items-center justify-between mb-2">
             {/* 保持原有的头部内容不变... */}
             <div className="flex items-center h-7">
               <InfoTooltip
@@ -297,8 +297,7 @@ export const CompactSwapInterface = React.memo(({ project }: CompactSwapInterfac
               </button>
             </div>
 
-            {/* 将标题设置为绝对定位，并在整个组件中水平居中 */}
-            <h2 className="absolute left-1/2 transform -translate-x-1/2 text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-blue-500 drop-shadow-[0_0_8px_rgba(168,85,247,0.5)] uppercase">
+            <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-blue-500 drop-shadow-[0_0_8px_rgba(168,85,247,0.5)] uppercase">
               SWAP
             </h2>
 

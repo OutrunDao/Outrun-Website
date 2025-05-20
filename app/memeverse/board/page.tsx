@@ -180,25 +180,23 @@ const MemeverseBoardContent = React.memo(function MemeverseBoardContent() {
           className="mb-12 lg:mb-12 mb-8"
         />
 
-        {/* 居中的 Consensus Launch 按钮 */}
-        <div className="flex justify-center mb-8">
-          <Button
-            className="bg-gradient-to-r from-purple-600/80 via-pink-500/80 to-purple-600/80 border-[1.5px] border-cyan-400/70 hover:border-cyan-300 text-white font-bold py-2.5 px-6 rounded-lg shadow-[0_0_15px_rgba(236,72,153,0.6)] transition-all duration-300 hover:shadow-[0_0_20px_rgba(236,72,153,0.8)] relative overflow-hidden group whitespace-nowrap"
-            onClick={() => router.push("/memeverse/create")}
-          >
-            <div className="flex items-center gap-2 relative z-10">
-              <span className="text-base font-semibold bg-gradient-to-r from-cyan-300 via-white to-cyan-300 bg-clip-text text-transparent">
-                Consensus Launch
-              </span>
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-600/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          </Button>
-        </div>
-
         {/* 搜索和过滤器 */}
         <div className="mb-8">
           {/* 移动端布局 - 在小于1120px的屏幕上显示 */}
           <div className="flex flex-col gap-6 max-[1120px]:flex min-[1120px]:hidden">
+            {/* Consensus Launch按钮 - 移动端位置 */}
+            <Button
+              className="bg-gradient-to-r from-purple-600/80 via-pink-500/80 to-purple-600/80 border-[1.5px] border-cyan-400/70 hover:border-cyan-300 text-white font-bold py-2.5 px-6 rounded-lg shadow-[0_0_15px_rgba(236,72,153,0.6)] transition-all duration-300 hover:shadow-[0_0_20px_rgba(236,72,153,0.8)] relative overflow-hidden group w-auto mx-auto -mt-2 lg:mt-0"
+              onClick={() => router.push("/memeverse/create")}
+            >
+              <div className="flex items-center justify-center gap-2 relative z-10">
+                <span className="text-base font-semibold bg-gradient-to-r from-cyan-300 via-white to-cyan-300 bg-clip-text text-transparent">
+                  Consensus Launch
+                </span>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-600/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </Button>
+
             {/* 搜索框 - 移动端位置 */}
             <div className="relative w-full">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -365,6 +363,21 @@ const MemeverseBoardContent = React.memo(function MemeverseBoardContent() {
               </div>
             </div>
 
+            {/* 中间：创建按钮 */}
+            <div className="mx-4">
+              <Button
+                className="bg-gradient-to-r from-purple-600/80 via-pink-500/80 to-purple-600/80 border-[1.5px] border-cyan-400/70 hover:border-cyan-300 text-white font-bold py-2.5 px-6 rounded-lg shadow-[0_0_15px_rgba(236,72,153,0.6)] transition-all duration-300 hover:shadow-[0_0_20px_rgba(236,72,153,0.8)] relative overflow-hidden group whitespace-nowrap"
+                onClick={() => router.push("/memeverse/create")}
+              >
+                <div className="flex items-center gap-2 relative z-10">
+                  <span className="text-base font-semibold bg-gradient-to-r from-cyan-300 via-white to-cyan-300 bg-clip-text text-transparent">
+                    Consensus Launch
+                  </span>
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-600/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </Button>
+            </div>
+
             {/* 右侧：筛选器 */}
             <div className="flex flex-wrap gap-2 items-center">
               {/* Chain filter dropdown menu */}
@@ -527,7 +540,7 @@ const MemeverseBoardContent = React.memo(function MemeverseBoardContent() {
           </div>
         )}
 
-        {/* Project list - 修改为在中等屏幕上也使用较小的卡片样式 */}
+        {/* Project list */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {currentProjects.map((project) => (
             <ProjectCard key={project.id} project={project} />
