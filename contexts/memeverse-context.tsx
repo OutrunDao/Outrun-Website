@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
 import type { MemeProject, ProjectMode, SortDirection, ChainFilter, StageFilter, SortOption } from "@/types/memeverse"
-import { useMemeProjects } from "@/hooks/use-meme-projects"
+import { MOCK_PROJECTS } from "@/data/memeverse-projects"
 
 // 定义常量
 const CHAIN_FILTERS: ChainFilter[] = [
@@ -61,7 +61,6 @@ interface MemeVerseContextType {
   projects: MemeProject[]
   filteredProjects: MemeProject[]
   currentProjects: MemeProject[]
-  isLoading: boolean
 
   // 过滤和排序状态
   activeChainFilter: string
@@ -107,10 +106,8 @@ const MemeVerseContext = createContext<MemeVerseContextType | undefined>(undefin
 
 // Provider组件
 export function MemeVerseProvider({ children }: { children: ReactNode }) {
-  // 使用SWR获取项目数据
-  const { projects, isLoading } = useMemeProjects()
-
-  // 其他状态
+  // 状态
+  const [projects, setProjects] = useState<MemeProject[]>([])
   const [activeChainFilter, setActiveChainFilter] = useState("all")
   const [activeStageFilter, setActiveStageFilter] = useState("genesis")
   const [searchQuery, setSearchQuery] = useState("")
@@ -125,15 +122,13 @@ export function MemeVerseProvider({ children }: { children: ReactNode }) {
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
 
-  // 删除初始化项目数据的useEffect
-  // useEffect(() => {
-  //   setProjects(MOCK_PROJECTS)
-  // }, [])
+  // 初始化项目数据
+  useEffect(() => {
+    setProjects(MOCK_PROJECTS)
+  }, [])
 
   // 过滤项目
   useEffect(() => {
-    if (isLoading) return // 如果数据正在加载，不执行过滤
-
     let result = [...projects]
 
     // 应用阶段过滤
@@ -206,7 +201,6 @@ export function MemeVerseProvider({ children }: { children: ReactNode }) {
     sortOption,
     sortDirection,
     projects,
-    isLoading, // 添加isLoading作为依赖项
   ])
 
   // 计算总页数
@@ -315,7 +309,6 @@ export function MemeVerseProvider({ children }: { children: ReactNode }) {
     projects,
     filteredProjects,
     currentProjects,
-    isLoading, // 添加加载状态
 
     // 过滤和排序状态
     activeChainFilter,

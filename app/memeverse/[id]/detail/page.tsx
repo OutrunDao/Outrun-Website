@@ -11,8 +11,6 @@ import { DepositSection } from "@/components/memeverse/detail/deposit-section"
 import { RefundSection } from "@/components/memeverse/detail/refund-section"
 import { OverviewTab } from "@/components/memeverse/detail/overview-tab"
 import { MOCK_PROJECTS } from "@/data/memeverse-projects"
-// 导入新的错误处理组件
-import { MemeVerseError } from "@/components/memeverse/common/memeverse-error"
 
 // 修改Stage颜色映射，使用更加统一的渐变和阴影效果
 const STAGE_COLORS: Record<string, { bg: string; text: string; glow: string; gradient: string }> = {
@@ -154,57 +152,39 @@ export default function VerseDetailPage() {
     )
   }
 
-  // 替换现有的错误处理逻辑
-  // 将这段代码:
   if (error) {
     return (
-      <MemeVerseError
-        message={error}
-        errorType="notFound"
-        onRetry={() => {
-          setLoading(true)
-          setError(null)
-          // 重新获取数据
-          const verseId = params.id
-          if (verseId) {
-            // 模拟API请求重试
-            setTimeout(() => {
-              const foundVerse = MOCK_PROJECTS.find((p) => p.id.toString() === verseId.toString())
-              if (foundVerse) {
-                const currentDate = new Date()
-                const threeMonthsLater = new Date(currentDate)
-                threeMonthsLater.setMonth(currentDate.getMonth() + 3)
-
-                const verseWithAllFields = {
-                  ...foundVerse,
-                  website: foundVerse.website || DEFAULT_SOCIAL_LINKS.website,
-                  x: foundVerse.x || DEFAULT_SOCIAL_LINKS.x,
-                  telegram: foundVerse.telegram || DEFAULT_SOCIAL_LINKS.telegram,
-                  discord: foundVerse.discord || DEFAULT_SOCIAL_LINKS.discord,
-                  createdAt: foundVerse.createdAt || currentDate.toISOString(),
-                  genesisEndTime: foundVerse.genesisEndTime || currentDate.toISOString(),
-                  unlockTime: foundVerse.unlockTime || threeMonthsLater.toISOString(),
-                }
-                setVerse(verseWithAllFields)
-                setLoading(false)
-              } else {
-                setError(`Cannot find memeverse with verseId ${verseId}`)
-                setLoading(false)
-              }
-            }, 500)
-          }
-        }}
-      />
+      <div className="min-h-screen flex flex-col items-center justify-center p-4">
+        <div className="text-center max-w-md">
+          <h1 className="text-3xl font-bold text-pink-500 mb-4">Memeverse Not Found</h1>
+          <p className="text-pink-300 mb-8">{error}</p>
+          <Button
+            onClick={handleBackClick}
+            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            Back to board
+          </Button>
+        </div>
+      </div>
     )
   }
 
-  // 同样替换这段代码:
   if (!verse) {
     return (
-      <MemeVerseError
-        message="Unable to load verse details. Please return to the board and try again."
-        errorType="notFound"
-      />
+      <div className="min-h-screen flex flex-col items-center justify-center p-4">
+        <div className="text-center max-w-md">
+          <h1 className="text-3xl font-bold text-pink-500 mb-4">Memeverse Not Found</h1>
+          <p className="text-pink-300 mb-8">Unable to load verse details. Please return to the board and try again.</p>
+          <Button
+            onClick={handleBackClick}
+            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+          >
+            <ChevronLeft className="mr-0.5 h-4 w-4" />
+            Back to Board
+          </Button>
+        </div>
+      </div>
     )
   }
 

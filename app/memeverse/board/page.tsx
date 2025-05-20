@@ -3,19 +3,10 @@ import { Search, ChevronDown, ChevronLeft, ChevronRight, SortDesc, SortAsc } fro
 import { Button } from "@/components/ui/button"
 import { SectionHeading } from "@/components/ui/section-heading"
 import { useRouter } from "next/navigation"
-import dynamic from "next/dynamic"
+import { ProjectCard } from "@/components/memeverse/board/project-card"
 import { MemeVerseProvider, useMemeVerse } from "@/contexts/memeverse-context"
 import { useMemo } from "react"
 import React from "react"
-import { buttonStyles, dropdownStyles } from "@/styles/memeverse-styles"
-
-// 使用动态导入ProjectCard组件
-const ProjectCard = dynamic(
-  () => import("@/components/memeverse/board/project-card").then((mod) => ({ default: mod.ProjectCard })),
-  {
-    loading: () => <div className="rounded-lg bg-black/30 border border-purple-500/20 h-[180px] animate-pulse"></div>,
-  },
-)
 
 // 主页面组件
 export default function MemeverseBoardPage() {
@@ -141,7 +132,9 @@ const MemeverseBoardContent = React.memo(function MemeverseBoardContent() {
             variant="outline"
             size="sm"
             className={`rounded-full w-8 h-8 flex items-center justify-center p-0 ${
-              currentPage === number ? buttonStyles.pagination.active : buttonStyles.pagination.inactive
+              currentPage === number
+                ? "bg-gradient-to-r from-purple-600 via-pink-500 to-purple-600 text-white border-transparent shadow-[0_0_10px_rgba(168,85,247,0.5)]"
+                : "bg-black/30 border border-purple-500/30 text-pink-300 hover:border-pink-400/50"
             }`}
             onClick={() => handlePageChange(number)}
           >
@@ -239,12 +232,14 @@ const MemeverseBoardContent = React.memo(function MemeverseBoardContent() {
                   </div>
                 </Button>
                 {isChainDropdownOpen && (
-                  <div className={dropdownStyles.container + " w-48"}>
+                  <div className="absolute z-50 mt-2 w-48 rounded-md overflow-hidden bg-gradient-to-br from-purple-950/90 via-[#150538]/95 to-indigo-950/90 backdrop-blur-md border border-purple-500/40 shadow-[0_4px_20px_rgba(138,75,175,0.3)] animate-in fade-in-50 zoom-in-95 duration-200">
                     {CHAIN_FILTERS.map((chain) => (
                       <button
                         key={chain.id}
                         className={`flex items-center w-full px-4 py-2 text-sm ${
-                          activeChainFilter === chain.id ? buttonStyles.filter.active : buttonStyles.filter.inactive
+                          activeChainFilter === chain.id
+                            ? "bg-gradient-to-r from-purple-600/40 to-pink-500/40 text-pink-200 shadow-[0_0_10px_rgba(168,85,247,0.2)_inset]"
+                            : "text-pink-300 hover:bg-gradient-to-r hover:from-purple-600/30 hover:to-pink-500/30 hover:text-pink-200"
                         } transition-all duration-300`}
                         onClick={() => {
                           setActiveChainFilter(chain.id)
@@ -275,12 +270,14 @@ const MemeverseBoardContent = React.memo(function MemeverseBoardContent() {
                   </div>
                 </Button>
                 {isStageDropdownOpen && (
-                  <div className={dropdownStyles.container + " w-48"}>
+                  <div className="absolute z-50 mt-2 w-48 rounded-md overflow-hidden bg-gradient-to-br from-purple-950/90 via-[#150538]/95 to-indigo-950/90 backdrop-blur-md border border-purple-500/40 shadow-[0_4px_20px_rgba(138,75,175,0.3)] animate-in fade-in-50 zoom-in-95 duration-200">
                     {STAGE_FILTERS.map((stage) => (
                       <button
                         key={stage.id}
                         className={`w-full text-left px-4 py-2 text-sm ${
-                          activeStageFilter === stage.id ? buttonStyles.filter.active : buttonStyles.filter.inactive
+                          activeStageFilter === stage.id
+                            ? "bg-gradient-to-r from-purple-600/40 to-pink-500/40 text-pink-200 shadow-[0_0_10px_rgba(168,85,247,0.2)_inset]"
+                            : "text-pink-300 hover:bg-gradient-to-r hover:from-purple-600/30 hover:to-pink-500/30 hover:text-pink-200"
                         } transition-all duration-300`}
                         onClick={() => {
                           setActiveStageFilter(stage.id)
@@ -309,12 +306,14 @@ const MemeverseBoardContent = React.memo(function MemeverseBoardContent() {
                   </div>
                 </Button>
                 {isSortDropdownOpen && (
-                  <div className={dropdownStyles.container + " w-48"}>
+                  <div className="absolute z-50 mt-2 w-48 rounded-md overflow-hidden bg-gradient-to-br from-purple-950/90 via-[#150538]/95 to-indigo-950/90 backdrop-blur-md border border-purple-500/40 shadow-[0_4px_20px_rgba(138,75,175,0.3)] animate-in fade-in-50 zoom-in-95 duration-200">
                     {getSortOptions().map((option) => (
                       <button
                         key={option.id}
                         className={`flex items-center w-full px-4 py-2 text-sm ${
-                          sortOption === option.id ? buttonStyles.filter.active : buttonStyles.filter.inactive
+                          sortOption === option.id
+                            ? "bg-gradient-to-r from-purple-600/40 to-pink-500/40 text-pink-200 shadow-[0_0_10px_rgba(168,85,247,0.2)_inset]"
+                            : "text-pink-300 hover:bg-gradient-to-r hover:from-purple-600/30 hover:to-pink-500/30 hover:text-pink-200"
                         } transition-all duration-300`}
                         onClick={() => {
                           setSortOption(option.id)
@@ -405,12 +404,14 @@ const MemeverseBoardContent = React.memo(function MemeverseBoardContent() {
                   </div>
                 </Button>
                 {isChainDropdownOpen && (
-                  <div className={dropdownStyles.container + " w-48"}>
+                  <div className="absolute z-50 mt-2 w-48 rounded-md overflow-hidden bg-gradient-to-br from-purple-950/90 via-[#150538]/95 to-indigo-950/90 backdrop-blur-md border border-purple-500/40 shadow-[0_4px_20px_rgba(138,75,175,0.3)] animate-in fade-in-50 zoom-in-95 duration-200">
                     {CHAIN_FILTERS.map((chain) => (
                       <button
                         key={chain.id}
                         className={`flex items-center w-full px-4 py-2 text-sm ${
-                          activeChainFilter === chain.id ? buttonStyles.filter.active : buttonStyles.filter.inactive
+                          activeChainFilter === chain.id
+                            ? "bg-gradient-to-r from-purple-600/40 to-pink-500/40 text-pink-200 shadow-[0_0_10px_rgba(168,85,247,0.2)_inset]"
+                            : "text-pink-300 hover:bg-gradient-to-r hover:from-purple-600/30 hover:to-pink-500/30 hover:text-pink-200"
                         } transition-all duration-300`}
                         onClick={() => {
                           setActiveChainFilter(chain.id)
@@ -441,12 +442,14 @@ const MemeverseBoardContent = React.memo(function MemeverseBoardContent() {
                   </div>
                 </Button>
                 {isStageDropdownOpen && (
-                  <div className={dropdownStyles.container + " w-48"}>
+                  <div className="absolute z-50 mt-2 w-48 rounded-md overflow-hidden bg-gradient-to-br from-purple-950/90 via-[#150538]/95 to-indigo-950/90 backdrop-blur-md border border-purple-500/40 shadow-[0_4px_20px_rgba(138,75,175,0.3)] animate-in fade-in-50 zoom-in-95 duration-200">
                     {STAGE_FILTERS.map((stage) => (
                       <button
                         key={stage.id}
                         className={`w-full text-left px-4 py-2 text-sm ${
-                          activeStageFilter === stage.id ? buttonStyles.filter.active : buttonStyles.filter.inactive
+                          activeStageFilter === stage.id
+                            ? "bg-gradient-to-r from-purple-600/40 to-pink-500/40 text-pink-200 shadow-[0_0_10px_rgba(168,85,247,0.2)_inset]"
+                            : "text-pink-300 hover:bg-gradient-to-r hover:from-purple-600/30 hover:to-pink-500/30 hover:text-pink-200"
                         } transition-all duration-300`}
                         onClick={() => {
                           setActiveStageFilter(stage.id)
@@ -475,12 +478,14 @@ const MemeverseBoardContent = React.memo(function MemeverseBoardContent() {
                   </div>
                 </Button>
                 {isSortDropdownOpen && (
-                  <div className={dropdownStyles.container + " w-48"}>
+                  <div className="absolute z-50 mt-2 w-48 rounded-md overflow-hidden bg-gradient-to-br from-purple-950/90 via-[#150538]/95 to-indigo-950/90 backdrop-blur-md border border-purple-500/40 shadow-[0_4px_20px_rgba(138,75,175,0.3)] animate-in fade-in-50 zoom-in-95 duration-200">
                     {getSortOptions().map((option) => (
                       <button
                         key={option.id}
                         className={`flex items-center w-full px-4 py-2 text-sm ${
-                          sortOption === option.id ? buttonStyles.filter.active : buttonStyles.filter.inactive
+                          sortOption === option.id
+                            ? "bg-gradient-to-r from-purple-600/40 to-pink-500/40 text-pink-200 shadow-[0_0_10px_rgba(168,85,247,0.2)_inset]"
+                            : "text-pink-300 hover:bg-gradient-to-r hover:from-purple-600/30 hover:to-pink-500/30 hover:text-pink-200"
                         } transition-all duration-300`}
                         onClick={() => {
                           setSortOption(option.id)

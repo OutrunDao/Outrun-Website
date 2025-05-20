@@ -5,40 +5,39 @@ import { useRouter } from "next/navigation"
 import { Star } from "lucide-react"
 // 更新导入路径
 import { ChainTooltip } from "@/components/memeverse/common/chain-tooltip"
-import type { MemeProject } from "@/types/memeverse"
+import type { MemeProject, StageColorMap } from "@/types/memeverse"
 import { formatDateTime, formatMarketCap, formatUSD } from "@/utils/memeverse"
-import { cardStyles, stageColors } from "@/styles/memeverse-styles"
 
 // 最小总筹资金额
 const MIN_TOTAL_FUND = 10
 
 // Stage label color mapping
-// const STAGE_COLORS: StageColorMap = {
-//   Genesis: {
-//     bg: "bg-purple-600",
-//     text: "text-white",
-//     glow: "shadow-[0_0_8px_rgba(168,85,247,0.6)]",
-//     gradient: "from-purple-600 to-pink-500",
-//   },
-//   Refund: {
-//     bg: "bg-red-600",
-//     text: "text-white",
-//     glow: "shadow-[0_0_8px_rgba(239,68,68,0.6)]",
-//     gradient: "from-red-600 to-orange-500",
-//   },
-//   Locked: {
-//     bg: "bg-pink-600",
-//     text: "text-white",
-//     glow: "shadow-[0_0_8px_rgba(236,72,153,0.6)]",
-//     gradient: "from-pink-600 to-purple-500",
-//   },
-//   Unlocked: {
-//     bg: "bg-cyan-600",
-//     text: "text-white",
-//     glow: "shadow-[0_0_8px_rgba(6,182,212,0.6)]",
-//     gradient: "from-cyan-500 to-blue-500",
-//   },
-// }
+const STAGE_COLORS: StageColorMap = {
+  Genesis: {
+    bg: "bg-purple-600",
+    text: "text-white",
+    glow: "shadow-[0_0_8px_rgba(168,85,247,0.6)]",
+    gradient: "from-purple-600 to-pink-500",
+  },
+  Refund: {
+    bg: "bg-red-600",
+    text: "text-white",
+    glow: "shadow-[0_0_8px_rgba(239,68,68,0.6)]",
+    gradient: "from-red-600 to-orange-500",
+  },
+  Locked: {
+    bg: "bg-pink-600",
+    text: "text-white",
+    glow: "shadow-[0_0_8px_rgba(236,72,153,0.6)]",
+    gradient: "from-pink-600 to-purple-500",
+  },
+  Unlocked: {
+    bg: "bg-cyan-600",
+    text: "text-white",
+    glow: "shadow-[0_0_8px_rgba(6,182,212,0.6)]",
+    gradient: "from-cyan-500 to-blue-500",
+  },
+}
 
 interface ProjectCardProps {
   project: MemeProject
@@ -47,7 +46,7 @@ interface ProjectCardProps {
 export function ProjectCard({ project }: ProjectCardProps) {
   const router = useRouter()
 
-  const stageStyle = stageColors[project.stage] || {
+  const stageStyle = STAGE_COLORS[project.stage] || {
     bg: "bg-gray-600",
     text: "text-white",
     glow: "",
@@ -56,20 +55,50 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
   // Determine card border gradient color
   const getBorderGradient = () => {
-    const stage = project.stage.toLowerCase() as keyof typeof cardStyles.borderGradients
-    return cardStyles.borderGradients[stage] || cardStyles.borderGradients.default
+    switch (project.stage) {
+      case "Genesis":
+        return "from-purple-500/70 via-pink-500/70 to-purple-500/70"
+      case "Locked":
+        return "from-pink-500/70 via-purple-500/70 to-pink-500/70"
+      case "Unlocked":
+        return "from-cyan-400/80 via-blue-500/80 to-indigo-400/80" // 增强亮度和对比度
+      case "Refund":
+        return "from-red-400/80 via-orange-500/80 to-yellow-500/80" // 增强亮度和对比度
+      default:
+        return "from-white/10 to-white/5"
+    }
   }
 
   // Determine card background gradient color
   const getBackgroundGradient = () => {
-    const stage = project.stage.toLowerCase() as keyof typeof cardStyles.backgroundGradients
-    return cardStyles.backgroundGradients[stage] || cardStyles.backgroundGradients.default
+    switch (project.stage) {
+      case "Genesis":
+        return "from-purple-950/90 via-[#0f0326]/95 to-purple-950/90"
+      case "Locked":
+        return "from-pink-950/90 via-[#0f0326]/95 to-pink-950/90"
+      case "Unlocked":
+        return "from-cyan-950/90 via-[#0f0326]/95 to-cyan-950/90"
+      case "Refund":
+        return "from-red-950/90 via-[#0f0326]/95 to-red-950/90"
+      default:
+        return "from-[#0f0326]/95 to-[#0f0326]/95"
+    }
   }
 
   // Get shadow color when hovering over the card
   const getHoverShadowColor = () => {
-    const stage = project.stage.toLowerCase() as keyof typeof cardStyles.hoverShadowColors
-    return cardStyles.hoverShadowColors[stage] || cardStyles.hoverShadowColors.default
+    switch (project.stage) {
+      case "Genesis":
+        return "rgba(168,85,247,0.4)"
+      case "Locked":
+        return "rgba(236,72,153,0.4)"
+      case "Unlocked":
+        return "rgba(6,182,212,0.5)" // 增强亮度
+      case "Refund":
+        return "rgba(239,68,68,0.5)" // 增强亮度
+      default:
+        return "rgba(168,85,247,0.4)"
+    }
   }
 
   // Calculate progress percentage for Genesis stage
@@ -86,7 +115,11 @@ export function ProjectCard({ project }: ProjectCardProps) {
   // Get progress bar gradient color
   const getProgressGradient = () => {
     const progress = calculateProgress()
-    return progress >= 100 ? cardStyles.progressGradients.complete : cardStyles.progressGradients.inProgress
+    if (progress >= 100) {
+      // Use brighter gradient colors when exceeding 100%
+      return "from-cyan-400 via-purple-400 to-pink-400"
+    }
+    return "from-purple-500 via-pink-500 to-purple-500"
   }
 
   // High APY indicator

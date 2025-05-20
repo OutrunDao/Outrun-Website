@@ -14,9 +14,6 @@ import { YieldVaultTab } from "@/components/memeverse/detail/yield-vault-tab"
 import { DAOTab } from "@/components/memeverse/detail/dao-tab"
 import { MOCK_PROJECTS } from "@/data/memeverse-projects"
 
-// 导入新的错误处理组件
-import { MemeVerseError } from "@/components/memeverse/common/memeverse-error"
-
 // 修改Stage颜色映射，使用更加统一的渐变和阴影效果
 const STAGE_COLORS: Record<string, { bg: string; text: string; glow: string; gradient: string }> = {
   Genesis: {
@@ -113,15 +110,38 @@ export default function LockedDetailPage() {
   }
 
   if (error) {
-    return <MemeVerseError message={error} errorType="notFound" />
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center p-4">
+        <div className="text-center max-w-md">
+          <h1 className="text-3xl font-bold text-pink-500 mb-4">Memeverse Not Found</h1>
+          <p className="text-pink-300 mb-8">{error}</p>
+          <Button
+            onClick={handleBackClick}
+            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            Back to board
+          </Button>
+        </div>
+      </div>
+    )
   }
 
   if (!verse) {
     return (
-      <MemeVerseError
-        message="Unable to load verse details. Please return to the board and try again."
-        errorType="notFound"
-      />
+      <div className="min-h-screen flex flex-col items-center justify-center p-4">
+        <div className="text-center max-w-md">
+          <h1 className="text-3xl font-bold text-pink-500 mb-4">Memeverse Not Found</h1>
+          <p className="text-pink-300 mb-8">Unable to load verse details. Please return to the board and try again.</p>
+          <Button
+            onClick={handleBackClick}
+            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+          >
+            <ChevronLeft className="mr-0.5 h-4 w-4" />
+            Back to Board
+          </Button>
+        </div>
+      </div>
     )
   }
 

@@ -5,8 +5,6 @@ import { useParams, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft } from "lucide-react"
 import Image from "next/image"
-// 导入新的错误处理组件
-import { MemeVerseError } from "@/components/memeverse/common/memeverse-error"
 
 // Mock data - QPEPE project in Refund stage
 const MOCK_VERSE = [
@@ -193,19 +191,39 @@ export default function VerseRefundPage() {
     )
   }
 
-  // 替换现有的错误处理逻辑
-  // 将这段代码:
   if (error) {
-    return <MemeVerseError message={error} errorType="notFound" />
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center p-4">
+        <div className="text-center max-w-md">
+          <h1 className="text-3xl font-bold text-pink-500 mb-4">Memeverse Not Found</h1>
+          <p className="text-pink-300 mb-8">{error}</p>
+          <Button
+            onClick={handleBackClick}
+            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            Back to board
+          </Button>
+        </div>
+      </div>
+    )
   }
 
-  // 同样替换这段代码:
   if (!verse) {
     return (
-      <MemeVerseError
-        message="Unable to load verse details. Please return to the board and try again."
-        errorType="notFound"
-      />
+      <div className="min-h-screen flex flex-col items-center justify-center p-4">
+        <div className="text-center max-w-md">
+          <h1 className="text-3xl font-bold text-pink-500 mb-4">Memeverse Not Found</h1>
+          <p className="text-pink-300 mb-8">Unable to load verse details. Please return to the board and try again.</p>
+          <Button
+            onClick={handleBackClick}
+            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+          >
+            <ChevronLeft className="mr-0.5 h-4 w-4" />
+            Back to Board
+          </Button>
+        </div>
+      </div>
     )
   }
 
