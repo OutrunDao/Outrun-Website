@@ -1,0 +1,372 @@
+/* 在@tailwind指令之前添加 */
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 100 900; /* 覆盖所有字重 */
+  font-display: swap; /* 使用swap策略加快显示 */
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* 自定义滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(168, 85, 247, 0.7);
+}
+
+:root {
+  font-family: var(--font-montserrat), system-ui, sans-serif;
+}
+
+/* 优化滚动条样式 */
+.token-list::-webkit-scrollbar {
+  width: 6px;
+  height: 8px;
+}
+
+.token-list::-webkit-scrollbar-track {
+  background: rgba(26, 4, 69, 0.4);
+  border-radius: 10px;
+}
+
+.token-list::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.5);
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+.token-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(236, 72, 153, 0.6);
+}
+
+.token-list {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(168, 85, 247, 0.5) rgba(26, 4, 69, 0.4);
+  margin-bottom: 4px;
+  padding-bottom: 4px;
+}
+
+/* 全局滚动条 */
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  scrollbar-width: none;
+}
+
+/* 平滑滚动 - 仅对用户手动滚动生效，不影响程序滚动 */
+html {
+  /* 移除全局平滑滚动设置 */
+  /* scroll-behavior: smooth; */
+}
+
+/* 仅对用户交互的元素应用平滑滚动 */
+.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+/* 霓虹文字效果 */
+.neon-text {
+  text-shadow: 0 0 5px rgba(168, 85, 247, 0.5), 0 0 10px rgba(168, 85, 247, 0.3), 0 0 15px rgba(236, 72, 153, 0.3), 0 0
+    20px rgba(59, 130, 246, 0.3);
+}
+
+/* 导航项悬停效果 */
+.nav-item-hover {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-item-hover::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(to right, #a855f7, #ec4899);
+  transition: width 0.3s ease, left 0.3s ease;
+}
+
+.nav-item-hover:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+/* 当前活动导航项样式 */
+.nav-item.active {
+  color: rgba(255, 255, 255, 1);
+  text-shadow: 0 0 4px rgba(168, 85, 247, 0.4), 0 0 8px rgba(236, 72, 153, 0.3);
+}
+
+.nav-item.active .nav-item-bg {
+  opacity: 0.2;
+  background: linear-gradient(45deg, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2));
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.2);
+}
+
+.dropdown-item.active {
+  background: linear-gradient(45deg, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2));
+  color: white;
+  font-weight: 500;
+  text-shadow: 0 0 4px rgba(168, 85, 247, 0.3), 0 0 8px rgba(236, 72, 153, 0.2);
+}
+
+/* Outrun 航样式 */
+
+/* 排版样式 */
+.nav-text {
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.02em;
+  font-weight: 500;
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.2);
+  transition: all 0.2s ease;
+}
+
+.nav-text:hover {
+  color: rgba(255, 255, 255, 1);
+  text-shadow: 0 0 4px rgba(168, 85, 247, 0.3), 0 0 8px rgba(236, 72, 153, 0.2);
+}
+
+.dropdown-text {
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.01em;
+  font-weight: 400;
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+}
+
+.dropdown-text:hover {
+  color: rgba(255, 255, 255, 1);
+  font-weight: 500;
+  text-shadow: 0 0 4px rgba(168, 85, 247, 0.25), 0 0 8px rgba(236, 72, 153, 0.15);
+}
+
+.mobile-nav-text {
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: 0.02em;
+  font-weight: 600;
+  text-shadow: 0 0 3px rgba(168, 85, 247, 0.2);
+}
+
+.mobile-dropdown-text {
+  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: 0.01em;
+  font-weight: 400;
+  transition: all 0.2s ease;
+}
+
+.mobile-dropdown-text:hover {
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 0 2px rgba(168, 85, 247, 0.2);
+}
+
+/* 导航项背景 */
+.nav-item-bg {
+  background: linear-gradient(45deg, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.1));
+  box-shadow: 0 0 5px rgba(168, 85, 247, 0.15);
+  border-radius: 8px;
+}
+
+/* 下拉菜单样式 */
+.dropdown-menu {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2), 0 0 10px rgba(168, 85, 247, 0.2), 0 0 20px rgba(236, 72, 153, 0.1);
+}
+
+.dropdown-bg {
+  background: linear-gradient(135deg, rgba(15, 3, 38, 0.95), rgba(26, 4, 69, 0.95));
+  backdrop-filter: blur(12px);
+}
+
+.dropdown-grid {
+  background-image: linear-gradient(rgba(168, 85, 247, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168, 85, 247, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.3;
+}
+
+.dropdown-item-bg {
+  background: linear-gradient(45deg, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.1));
+  box-shadow: 0 0 5px rgba(168, 85, 247, 0.15);
+  border-radius: 8px;
+}
+
+/* 启动应用按钮样式 */
+.launch-app-btn {
+  transition: all 0.3s ease;
+}
+
+.launch-app-btn:hover {
+  transform: translateY(-2px);
+}
+
+.launch-btn-bg {
+  background: linear-gradient(45deg, #a855f7, #ec4899, #3b82f6);
+  background-size: 200% 200%;
+  animation: gradient-shift 5s ease infinite;
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+}
+
+/* 移动菜单样式 */
+.mobile-menu-bg {
+  background: linear-gradient(135deg, rgba(15, 3, 38, 0.95), rgba(26, 4, 69, 0.95));
+  backdrop-filter: blur(12px);
+}
+
+.mobile-menu-grid {
+  background-image: linear-gradient(rgba(168, 85, 247, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168, 85, 247, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.3;
+}
+
+.mobile-nav-item {
+  position: relative;
+  display: inline-block;
+}
+
+.mobile-nav-item::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, #a855f7, transparent);
+}
+
+.mobile-dropdown-item:hover {
+  background: linear-gradient(90deg, rgba(168, 85, 247, 0.05), transparent);
+  border-radius: 4px;
+}
+
+.mobile-menu-btn-bg {
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+}
+
+.mobile-launch-btn-bg {
+  background: linear-gradient(45deg, #a855f7, #ec4899, #3b82f6);
+  background-size: 200% 200%;
+  animation: gradient-shift 5s ease infinite;
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+}
+
+/* 移动端子菜单样式 - 新增 */
+
+/* 美化输入框选中文本的样式 */
+::selection {
+  background-color: rgba(236, 72, 153, 0.3);
+  color: white;
+}
+
+/* 美化输入框自动填充背景 */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-text-fill-color: white;
+  -webkit-box-shadow: 0 0 0px 1000px rgba(139, 92, 246, 0.1) inset;
+  transition: background-color 5000s ease-in-out 0s;
+  caret-color: #ec4899;
+}
+
+/* 美化输入框光标颜色 */
+input,
+textarea {
+  caret-color: #ec4899;
+}

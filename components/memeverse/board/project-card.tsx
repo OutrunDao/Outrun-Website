@@ -1,0 +1,271 @@
+"use client"
+
+import type React from "react"
+import { useRouter } from "next/navigation"
+import { Star } from "lucide-react"
+import { ChainTooltip } from "@/components/memeverse/common/chain-tooltip"
+import type { MemeProject } from "@/types/memeverse"
+import { formatDateTime, formatMarketCap, formatUSD } from "@/utils/memeverse"
+import { cardStyles, stageColors } from "@/styles/memeverse-styles"
+
+// 最小总筹资金额
+const MIN_TOTAL_FUND = 10
+
+interface ProjectCardProps {
+  project: MemeProject
+}
+
+export function ProjectCard({ project }: ProjectCardProps) {
+  const router = useRouter()
+
+  const stageStyle = stageColors[project.stage] || {
+    bg: "bg-gray-600",
+    text: "text-white",
+    glow: "",
+    gradient: "from-gray-600 to-gray-500",
+  }
+
+  // Determine card border gradient color
+  const getBorderGradient = () => {
+    const stage = project.stage.toLowerCase() as keyof typeof cardStyles.borderGradients
+    return cardStyles.borderGradients[stage] || cardStyles.borderGradients.default
+  }
+
+  // Determine card background gradient color
+  const getBackgroundGradient = () => {
+    const stage = project.stage.toLowerCase() as keyof typeof cardStyles.backgroundGradients
+    return cardStyles.backgroundGradients[stage] || cardStyles.backgroundGradients.default
+  }
+
+  // Get shadow color when hovering over the card
+  const getHoverShadowColor = () => {
+    const stage = project.stage.toLowerCase() as keyof typeof cardStyles.hoverShadowColors
+    return cardStyles.hoverShadowColors[stage] || cardStyles.hoverShadowColors.default
+  }
+
+  // Calculate progress percentage for Genesis stage
+  const calculateProgress = () => {
+    if (project.stage === "Genesis") {
+      // Calculate progress by dividing raisedAmount by MIN_TOTAL_FUND (10 UETH)
+      const progressPercent = (project.raisedAmount / MIN_TOTAL_FUND) * 100
+      // Don't limit maximum progress, allow exceeding 100%
+      return progressPercent
+    }
+    return project.progress || 0
+  }
+
+  // Get progress bar gradient color
+  const getProgressGradient = () => {
+    const progress = calculateProgress()
+    return progress >= 100 ? cardStyles.progressGradients.complete : cardStyles.progressGradients.inProgress
+  }
+
+  // High APY indicator
+  const isHighApy = project.stakingApy && project.stakingApy > 1000
+
+  // Handle card click event
+  const handleCardClick = () => {
+    // 根据项目阶段和符号决定导航路径
+    if (project.symbol === "DDIN" || project.symbol === "MDRG" || project.symbol === "QPEPE") {
+      router.push(`/memeverse/${project.id}/detail/`)
+    } else if (project.symbol === "PFROG") {
+      // PFROG卡片跳转到Locked阶段详情页面
+      router.push(`/memeverse/${project.id}/locked/`)
+    } else {
+      // 对于其他项目，显示提示信息
+      alert("详情页面正在建设中...")
+    }
+  }
+
+  // 修改isClickable变量的定义，添加PFROG
+  const isClickable =
+    project.symbol === "DDIN" || project.symbol === "MDRG" || project.symbol === "QPEPE" || project.symbol === "PFROG"
+
+  return (
+    <div
+      className={`card-container relative ${isClickable ? "cursor-pointer" : "cursor-default"} group`}
+      onClick={handleCardClick}
+      data-stage={project.stage}
+    >
+      {/* Use an outer container to handle hover effects */}
+      <div
+        className="card-float-wrapper"
+        style={
+          {
+            "--hover-shadow-color": getHoverShadowColor(),
+          } as React.CSSProperties
+        }
+      >
+        {/* Card body - contains border and content */}
+        <div className="relative rounded-lg overflow-hidden md:h-auto">
+          {/* Gradient border */}
+          <div className={`absolute inset-0 rounded-lg bg-gradient-to-br ${getBorderGradient()} opacity-90`}></div>
+
+          {/* Card content */}
+          <div
+            className={`bg-gradient-to-br ${getBackgroundGradient()} rounded-lg overflow-hidden relative z-10 m-[1px]`}
+          >
+            <div className="p-2 xl:p-2.5 relative z-10">
+              <div className="flex justify-between items-center mb-1 xl:mb-1.5">
+                <div className="flex items-center max-w-[150px] xl:max-w-[180px] overflow-hidden">
+                  <span
+                    className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400 text-sm xl:text-base whitespace-nowrap overflow-hidden text-ellipsis max-w-[80px] xl:max-w-[100px]"
+                    title={project.symbol}
+                  >
+                    {project.symbol}
+                  </span>{" "}
+                  <span
+                    className="text-[10px] xl:text-sm text-pink-200/90 ml-1 whitespace-nowrap overflow-hidden text-ellipsis max-w-[60px] xl:max-w-[70px]"
+                    title={project.name}
+                  >
+                    {project.name}
+                  </span>
+                </div>
+
+                {/* Market Cap */}
+                <div className="text-cyan-300/80 text-[10px] xl:text-xs mx-auto">
+                  Market Cap: <span className="text-cyan-200 font-medium">{formatMarketCap(project.marketCap)}</span>
+                </div>
+
+                {/* Stage label */}
+                <div
+                  className={`text-[10px] xl:text-xs px-2 xl:px-3 py-0.5 xl:py-1 rounded-md bg-gradient-to-r ${stageStyle.gradient} ${stageStyle.text} ${stageStyle.glow} transition-all duration-300`}
+                >
+                  {project.stage}
+                </div>
+              </div>
+
+              <div className="flex">
+                {/* Left project image - 移动端和中等屏幕尺寸使用较小的图片 */}
+                <div className="w-[100px] h-[100px] xl:w-[120px] xl:h-[120px] flex-shrink-0 relative flex items-center justify-center rounded-md overflow-hidden transition-all duration-300">
+                  <img
+                    src={project.image || "/placeholder.svg"}
+                    alt={project.name}
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                  />
+
+                  {/* High APY indicator */}
+                  {isHighApy && (
+                    <div className="absolute top-2 left-2 bg-gradient-to-r from-yellow-500 to-amber-600 text-white text-xs font-bold px-2 py-0.5 rounded-md flex items-center shadow-[0_0_8px_rgba(234,179,8,0.5)]">
+                      <Star className="w-3 h-3 mr-1 fill-white" />
+                      High APY
+                    </div>
+                  )}
+                </div>
+
+                {/* Right project information */}
+                <div className="flex-1 pl-2 xl:pl-3 flex flex-col min-w-0 h-[100px] xl:h-[120px] relative">
+                  {/* Project description - fixed at the top */}
+                  <p
+                    className="text-cyan-300/70 text-[10px] xl:text-xs mb-1.5 whitespace-nowrap overflow-hidden text-ellipsis transition-colors duration-200 hover:text-cyan-200/90"
+                    title={project.description}
+                  >
+                    {project.description}
+                  </p>
+
+                  {/* Other information - bottom aligned */}
+                  <div className="mt-auto space-y-0.5 xl:space-y-1 overflow-hidden">
+                    {/* Omnichain support */}
+                    <div className="text-pink-300/70 text-[10px] xl:text-xs flex items-center relative">
+                      <span className="text-pink-300/90 mr-1">Omnichain:</span>
+                      <div className="flex">
+                        {project.omnichain?.map((chain, index) => (
+                          <ChainTooltip key={index} chainName={chain.name} chainIcon={chain.icon} />
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Show Total Raised in Genesis and Refund stages */}
+                    {(project.stage === "Genesis" || project.stage === "Refund") && (
+                      <div className="text-pink-300/70 text-[10px] xl:text-xs">
+                        Total Raised:{" "}
+                        <span className="text-pink-200 font-medium">
+                          {project.raisedAmount.toFixed(2)} {project.raisedToken}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Show Genesis Endtime in Genesis stage */}
+                    {project.stage === "Genesis" && project.genesisEndTime && (
+                      <div className="text-pink-300/70 text-[10px] xl:text-xs">
+                        Genesis Endtime:{" "}
+                        <span className="text-pink-200 font-medium">{formatDateTime(project.genesisEndTime)}</span>
+                      </div>
+                    )}
+
+                    {/* Show Unlock Time in Locked stage */}
+                    {project.stage === "Locked" && project.unlockTime && (
+                      <div className="text-pink-300/70 text-[10px] xl:text-xs">
+                        Unlock Time:{" "}
+                        <span className="text-pink-200 font-medium">{formatDateTime(project.unlockTime)}</span>
+                      </div>
+                    )}
+
+                    {/* Show Staking APY in Locked and Unlocked stages */}
+                    {(project.stage === "Locked" || project.stage === "Unlocked") && project.stakingApy && (
+                      <div className="text-pink-300/70 text-[10px] xl:text-xs">
+                        Staking APY:{" "}
+                        <span className={`${isHighApy ? "text-yellow-400" : "text-green-400"} font-medium`}>
+                          {project.stakingApy.toFixed(2)}%
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Show Treasury Fund in Locked and Unlocked stages */}
+                    {(project.stage === "Locked" || project.stage === "Unlocked") && project.treasuryFund && (
+                      <div className="text-pink-300/70 text-[10px] xl:text-xs">
+                        Treasury Fund:{" "}
+                        <span className="text-pink-200 font-medium">{formatUSD(project.treasuryFund)}</span>
+                      </div>
+                    )}
+
+                    {/* Show Unlock Time in Genesis stage, Population in other stages */}
+                    {project.stage === "Genesis" ? (
+                      <div className="text-pink-300/70 text-[10px] xl:text-xs">
+                        Unlock Time:{" "}
+                        <span className="text-pink-200 font-medium">
+                          {project.unlockTime ? formatDateTime(project.unlockTime) : "TBA"}
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="text-pink-300/70 text-[10px] xl:text-xs">
+                        Population:{" "}
+                        <span className="text-pink-200 font-medium">{project.population.toLocaleString()}</span>
+                      </div>
+                    )}
+
+                    {/* Progress bar and percentage - displayed in Genesis stage */}
+                    {project.stage === "Genesis" && (
+                      <div className="flex items-center mt-0.5 xl:mt-1">
+                        <div className="flex-grow">
+                          <div className="w-full bg-black/50 rounded-full h-1.5 xl:h-2 overflow-hidden">
+                            <div
+                              className={`bg-gradient-to-r ${getProgressGradient()} h-full transition-all duration-500`}
+                              style={{
+                                width: `${Math.min(calculateProgress(), 100)}%`,
+                                boxShadow: calculateProgress() >= 100 ? "0 0 8px rgba(236,72,153,0.6)" : "none",
+                              }}
+                            ></div>
+                          </div>
+                        </div>
+                        <div className="text-right text-[10px] xl:text-xs ml-1 xl:ml-2">
+                          <span
+                            className={
+                              calculateProgress() >= 100 ? "text-cyan-300 font-medium" : "text-pink-400 font-medium"
+                            }
+                          >
+                            {calculateProgress().toFixed(1)}%
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
