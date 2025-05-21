@@ -431,12 +431,32 @@ export default function CreateMemecoinPage() {
 
         {/* Form container */}
         <div className="max-w-3xl mx-auto">
-          <div className="relative rounded-xl overflow-hidden">
-            {/* Gradient border */}
-            <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-purple-500/70 via-pink-500/70 to-purple-500/70 opacity-90"></div>
+          <div
+            className="rounded-xl overflow-hidden relative"
+            style={{
+              boxShadow: "0 0 2px #ec4899, 0 0 15px rgba(236,72,153,0.4), 0 0 30px rgba(168,85,247,0.2)",
+              border: "1px solid rgba(236,72,153,0.3)",
+            }}
+          >
+            {/* 背景渐变 */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[#0f0326] via-[#1a0445] to-[#0f0326] backdrop-blur-xl"></div>
+
+            {/* 网格背景 */}
+            <div
+              className="absolute inset-0 opacity-10"
+              style={{
+                backgroundImage:
+                  "linear-gradient(rgba(168, 85, 247, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(168, 85, 247, 0.1) 1px, transparent 1px)",
+                backgroundSize: "20px 20px",
+                backgroundPosition: "center center",
+              }}
+            ></div>
+
+            {/* 底部发光效果 */}
+            <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-purple-600/5 to-transparent"></div>
 
             {/* Card content */}
-            <div className="bg-gradient-to-br from-purple-950/90 via-[#0f0326]/95 to-purple-950/90 rounded-xl overflow-hidden relative z-10 m-[1px]">
+            <div className="relative z-10">
               <div className="p-6 md:p-8 relative z-10">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Flash Genesis Toggle */}

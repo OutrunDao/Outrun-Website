@@ -171,13 +171,13 @@ export function ProjectCard({ project }: ProjectCardProps) {
               <div className="flex justify-between items-center mb-1.5">
                 <div className="flex items-center max-w-[180px] overflow-hidden">
                   <span
-                    className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400 text-base whitespace-nowrap overflow-hidden text-ellipsis max-w-[100px]"
+                    className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400 text-base whitespace-nowrap overflow-hidden text-ellipsis max-w-[100px] sm:max-w-[100px]"
                     title={project.symbol}
                   >
                     {project.symbol}
                   </span>{" "}
                   <span
-                    className="text-sm text-pink-200/90 ml-1 whitespace-nowrap overflow-hidden text-ellipsis max-w-[70px]"
+                    className="text-sm text-pink-200/90 ml-1 whitespace-nowrap overflow-hidden text-ellipsis max-w-[70px] sm:max-w-[70px]"
                     title={project.name}
                   >
                     {project.name}
@@ -198,8 +198,8 @@ export function ProjectCard({ project }: ProjectCardProps) {
               </div>
 
               <div className="flex">
-                {/* Left project image */}
-                <div className="w-[120px] h-[120px] flex-shrink-0 relative flex items-center justify-center rounded-md overflow-hidden transition-all duration-300">
+                {/* Left project image - 调整缩小断点为450px */}
+                <div className="w-[120px] h-[120px] max-[450px]:w-[110px] max-[450px]:h-[110px] flex-shrink-0 relative flex items-center justify-center rounded-md overflow-hidden transition-all duration-300">
                   <img
                     src={project.image || "/placeholder.svg"}
                     alt={project.name}
@@ -215,20 +215,20 @@ export function ProjectCard({ project }: ProjectCardProps) {
                   )}
                 </div>
 
-                {/* Right project information */}
-                <div className="flex-1 pl-3 flex flex-col min-w-0 h-[120px] lg:h-auto lg:min-h-[120px] relative">
-                  {/* Project description - fixed at the top */}
+                {/* Right project information - 调整缩小断点为450px */}
+                <div className="flex-1 pl-3 max-[450px]:pl-2 flex flex-col min-w-0 h-[120px] max-[450px]:h-[110px] lg:h-auto lg:min-h-[120px] relative">
+                  {/* Project description - 调整缩小断点为450px */}
                   <p
-                    className="text-cyan-300/70 text-xs mb-1.5 whitespace-nowrap overflow-hidden text-ellipsis transition-colors duration-200 hover:text-cyan-200/90"
+                    className="text-cyan-300/70 text-xs max-[450px]:text-[11px] mb-1.5 max-[450px]:mb-1 whitespace-nowrap overflow-hidden text-ellipsis transition-colors duration-200 hover:text-cyan-200/90"
                     title={project.description}
                   >
                     {project.description}
                   </p>
 
-                  {/* Other information - bottom aligned */}
-                  <div className="mt-auto space-y-1 overflow-hidden">
+                  {/* Other information - 调整缩小断点为450px */}
+                  <div className="mt-auto space-y-1 max-[450px]:space-y-0.5 overflow-hidden">
                     {/* Omnichain support */}
-                    <div className="text-pink-300/70 text-xs flex items-center relative">
+                    <div className="text-pink-300/70 text-xs max-[450px]:text-[11px] flex items-center relative">
                       <span className="text-pink-300/90 mr-1">Omnichain:</span>
                       <div className="flex">
                         {project.omnichain?.map((chain, index) => (
@@ -239,7 +239,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
                     {/* Show Total Raised in Genesis and Refund stages */}
                     {(project.stage === "Genesis" || project.stage === "Refund") && (
-                      <div className="text-pink-300/70 text-xs">
+                      <div className="text-pink-300/70 text-xs max-[450px]:text-[11px]">
                         Total Raised:{" "}
                         <span className="text-pink-200 font-medium">
                           {project.raisedAmount.toFixed(2)} {project.raisedToken}
@@ -249,7 +249,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
                     {/* Show Genesis Endtime in Genesis stage */}
                     {project.stage === "Genesis" && project.genesisEndTime && (
-                      <div className="text-pink-300/70 text-xs">
+                      <div className="text-pink-300/70 text-xs max-[450px]:text-[11px]">
                         Genesis Endtime:{" "}
                         <span className="text-pink-200 font-medium">{formatDateTime(project.genesisEndTime)}</span>
                       </div>
@@ -257,7 +257,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
                     {/* Show Unlock Time in Locked stage */}
                     {project.stage === "Locked" && project.unlockTime && (
-                      <div className="text-pink-300/70 text-xs">
+                      <div className="text-pink-300/70 text-xs max-[450px]:text-[11px]">
                         Unlock Time:{" "}
                         <span className="text-pink-200 font-medium">{formatDateTime(project.unlockTime)}</span>
                       </div>
@@ -265,7 +265,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
                     {/* Show Staking APY in Locked and Unlocked stages */}
                     {(project.stage === "Locked" || project.stage === "Unlocked") && project.stakingApy && (
-                      <div className="text-pink-300/70 text-xs">
+                      <div className="text-pink-300/70 text-xs max-[450px]:text-[11px]">
                         Staking APY:{" "}
                         <span className={`${isHighApy ? "text-yellow-400" : "text-green-400"} font-medium`}>
                           {project.stakingApy.toFixed(2)}%
@@ -275,7 +275,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
                     {/* Show Treasury Fund in Locked and Unlocked stages */}
                     {(project.stage === "Locked" || project.stage === "Unlocked") && project.treasuryFund && (
-                      <div className="text-pink-300/70 text-xs">
+                      <div className="text-pink-300/70 text-xs max-[450px]:text-[11px]">
                         Treasury Fund:{" "}
                         <span className="text-pink-200 font-medium">{formatUSD(project.treasuryFund)}</span>
                       </div>
@@ -283,22 +283,22 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
                     {/* Show Unlock Time in Genesis stage, Population in other stages */}
                     {project.stage === "Genesis" ? (
-                      <div className="text-pink-300/70 text-xs">
+                      <div className="text-pink-300/70 text-xs max-[450px]:text-[11px]">
                         Unlock Time:{" "}
                         <span className="text-pink-200 font-medium">
                           {project.unlockTime ? formatDateTime(project.unlockTime) : "TBA"}
                         </span>
                       </div>
                     ) : (
-                      <div className="text-pink-300/70 text-xs">
+                      <div className="text-pink-300/70 text-xs max-[450px]:text-[11px]">
                         Population:{" "}
                         <span className="text-pink-200 font-medium">{project.population.toLocaleString()}</span>
                       </div>
                     )}
 
-                    {/* Progress bar and percentage - displayed in Genesis stage */}
+                    {/* Progress bar and percentage - 调整缩小断点为450px */}
                     {project.stage === "Genesis" && (
-                      <div className="flex items-center">
+                      <div className="flex items-center mt-1 max-[450px]:mt-0.5">
                         <div className="flex-grow">
                           <div className="w-full bg-black/50 rounded-full h-2 overflow-hidden">
                             <div
@@ -310,7 +310,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                             ></div>
                           </div>
                         </div>
-                        <div className="text-right text-xs ml-2">
+                        <div className="text-right text-xs max-[450px]:text-[11px] ml-2 max-[450px]:ml-1">
                           <span
                             className={
                               calculateProgress() >= 100 ? "text-cyan-300 font-medium" : "text-pink-400 font-medium"
