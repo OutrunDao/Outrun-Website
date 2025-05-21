@@ -433,47 +433,44 @@ export default function CreateMemecoinPage() {
       {/* Page content */}
       <div className="container px-4 md:px-6 mx-auto pt-16 md:pt-24 pb-8 md:pb-16">
         <div className="max-w-3xl mx-auto mb-6 md:mb-10 flex flex-col md:flex-row items-center justify-between gap-6 md:gap-0">
-          {/* Back button */}
+          {/* Back button - 使用条件渲染为PC和移动端提供不同的按钮 */}
+          {/* PC端按钮 - 只在md及以上屏幕显示 */}
           <Button
             onClick={handleBackClick}
             variant="outline"
-            className="relative overflow-hidden group w-auto mr-auto md:mr-0 md:absolute md:left-0 md:w-auto md:relative md:overflow-hidden"
-            style={{
-              ...(window.innerWidth >= 768
-                ? {
-                    background: "rgba(15, 3, 38, 0.8)",
-                    border: "1px solid rgba(236, 72, 153, 0.4)",
-                    borderRadius: "9999px",
-                    boxShadow: "0 0 10px rgba(236, 72, 153, 0.3), 0 0 20px rgba(168, 85, 247, 0.2)",
-                    padding: "8px 16px",
-                  }
-                : {
-                    background: "transparent",
-                    border: "none",
-                    padding: "4px 0",
-                  }),
-            }}
+            className="hidden md:flex relative overflow-hidden group w-auto mr-auto md:mr-0 md:absolute md:left-0 md:w-auto md:relative md:overflow-hidden desktop-back-button"
           >
             {/* 背景渐变效果 */}
-            <span className="hidden md:absolute md:inset-0 md:block bg-gradient-to-r from-purple-600/10 via-pink-500/10 to-purple-600/10 group-hover:opacity-100 opacity-0 transition-opacity duration-500"></span>
+            <span className="absolute inset-0 block opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out"></span>
 
             {/* 发光边框效果 */}
             <span
-              className="hidden md:absolute md:inset-0 md:block rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              className="absolute inset-0 block rounded-full opacity-80 group-hover:opacity-100 transition-all duration-500 ease-in-out"
               style={{
-                boxShadow: "inset 0 0 8px rgba(236, 72, 153, 0.6), 0 0 12px rgba(168, 85, 247, 0.4)",
+                boxShadow:
+                  "0 0 5px rgba(236, 72, 153, 0.6), 0 0 15px rgba(236, 72, 153, 0.4), 0 0 25px rgba(168, 85, 247, 0.2)",
+                border: "1px solid rgba(236, 72, 153, 0.7)",
               }}
             ></span>
 
             {/* 按钮内容 */}
             <div className="flex items-center relative z-10">
-              <ChevronLeft className="mr-1 h-4 w-4 text-pink-300 group-hover:text-pink-200 transition-colors duration-300" />
-              <span className="text-pink-300 group-hover:text-pink-200 transition-colors duration-300 font-medium">
-                <span className="hidden md:inline">Back to Board</span>
-                <span className="md:hidden">Back</span>
+              <ChevronLeft className="mr-1 h-4 w-4 text-pink-300 group-hover:text-pink-200 transition-colors duration-500" />
+              <span className="text-pink-300 group-hover:text-pink-200 transition-colors duration-500 font-medium">
+                Back to Board
               </span>
             </div>
           </Button>
+
+          {/* 移动端按钮 - 只在小于md的屏幕显示 */}
+          <button
+            onClick={handleBackClick}
+            type="button"
+            className="md:hidden flex items-center text-pink-300 mr-auto bg-transparent border-0 p-0 shadow-none outline-none"
+          >
+            <ChevronLeft className="mr-1 h-4 w-4 text-pink-300" />
+            <span className="font-medium">Back</span>
+          </button>
 
           {/* Page title */}
           <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-pink-400 to-purple-500 bg-clip-text text-transparent text-center">
@@ -627,6 +624,23 @@ export default function CreateMemecoinPage() {
         textarea:focus {
           outline: none;
         }
+
+        .desktop-back-button {
+          background: rgba(15, 3, 38, 0.8);
+          border: 1px solid rgba(236, 72, 153, 0.4);
+          border-radius: 9999px;
+          box-shadow: 0 0 10px rgba(236, 72, 153, 0.3), 0 0 20px rgba(168, 85, 247, 0.2);
+          padding: 8px 16px;
+          transition: all 0.5s ease-in-out;
+        }
+
+        .desktop-back-button:hover {
+          background: rgba(25, 10, 45, 0.9);
+          color: #f9a8d4; /* 粉色 */
+          text-shadow: 0 0 5px rgba(249, 168, 212, 0.4);
+        }
+
+        /* 移除所有mobile-back-button相关样式 */
       `}</style>
     </div>
   )
