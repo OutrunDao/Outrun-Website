@@ -219,7 +219,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                 <div className="flex-1 pl-3 max-[450px]:pl-2 flex flex-col justify-between min-w-0 h-[120px] max-[450px]:h-[100px]">
                   {/* 项目描述 */}
                   <div
-                    className="text-cyan-300/70 text-xs max-[450px]:text-[11px] whitespace-nowrap overflow-hidden text-ellipsis"
+                    className="text-cyan-300/70 text-xs max-[450px]:text-[10px] whitespace-nowrap overflow-hidden text-ellipsis"
                     title={project.description}
                   >
                     {project.description}
@@ -228,7 +228,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                   {/* 信息列表 - 将进度条也纳入grid布局 */}
                   <div className="grid grid-cols-1 gap-[2px] max-[450px]:gap-[1px]">
                     {/* Omnichain */}
-                    <div className="text-pink-300/70 text-xs max-[450px]:text-[11px] flex items-center">
+                    <div className="text-pink-300/70 text-xs max-[450px]:text-[10px] flex items-center">
                       <span className="text-pink-300/90 mr-1">Omnichain:</span>
                       <div className="flex">
                         {project.omnichain?.map((chain, index) => (
@@ -239,7 +239,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
                     {/* Total Raised */}
                     {(project.stage === "Genesis" || project.stage === "Refund") && (
-                      <div className="text-pink-300/70 text-xs max-[450px]:text-[11px]">
+                      <div className="text-pink-300/70 text-xs max-[450px]:text-[10px]">
                         Total Raised:{" "}
                         <span className="text-pink-200 font-medium">
                           {project.raisedAmount.toFixed(2)} {project.raisedToken}
@@ -249,7 +249,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
                     {/* Genesis Endtime */}
                     {project.stage === "Genesis" && project.genesisEndTime && (
-                      <div className="text-pink-300/70 text-xs max-[450px]:text-[11px]">
+                      <div className="text-pink-300/70 text-xs max-[450px]:text-[10px]">
                         Genesis Endtime:{" "}
                         <span className="text-pink-200 font-medium">{formatDateTime(project.genesisEndTime)}</span>
                       </div>
@@ -257,7 +257,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
                     {/* Unlock Time for Locked stage */}
                     {project.stage === "Locked" && project.unlockTime && (
-                      <div className="text-pink-300/70 text-xs max-[450px]:text-[11px]">
+                      <div className="text-pink-300/70 text-xs max-[450px]:text-[10px]">
                         Unlock Time:{" "}
                         <span className="text-pink-200 font-medium">{formatDateTime(project.unlockTime)}</span>
                       </div>
@@ -265,7 +265,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
                     {/* Staking APY */}
                     {(project.stage === "Locked" || project.stage === "Unlocked") && project.stakingApy && (
-                      <div className="text-pink-300/70 text-xs max-[450px]:text-[11px]">
+                      <div className="text-pink-300/70 text-xs max-[450px]:text-[10px]">
                         Staking APY:{" "}
                         <span className={`${isHighApy ? "text-yellow-400" : "text-green-400"} font-medium`}>
                           {project.stakingApy.toFixed(2)}%
@@ -275,7 +275,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
                     {/* Treasury Fund */}
                     {(project.stage === "Locked" || project.stage === "Unlocked") && project.treasuryFund && (
-                      <div className="text-pink-300/70 text-xs max-[450px]:text-[11px]">
+                      <div className="text-pink-300/70 text-xs max-[450px]:text-[10px]">
                         Treasury Fund:{" "}
                         <span className="text-pink-200 font-medium">{formatUSD(project.treasuryFund)}</span>
                       </div>
@@ -283,14 +283,14 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
                     {/* Unlock Time or Population */}
                     {project.stage === "Genesis" ? (
-                      <div className="text-pink-300/70 text-xs max-[450px]:text-[11px]">
+                      <div className="text-pink-300/70 text-xs max-[450px]:text-[10px]">
                         Unlock Time:{" "}
                         <span className="text-pink-200 font-medium">
                           {project.unlockTime ? formatDateTime(project.unlockTime) : "TBA"}
                         </span>
                       </div>
                     ) : (
-                      <div className="text-pink-300/70 text-xs max-[450px]:text-[11px]">
+                      <div className="text-pink-300/70 text-xs max-[450px]:text-[10px]">
                         Population:{" "}
                         <span className="text-pink-200 font-medium">{project.population.toLocaleString()}</span>
                       </div>
@@ -300,7 +300,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                     {project.stage === "Genesis" && (
                       <div className="flex items-center">
                         <div className="flex-grow">
-                          <div className="w-full bg-black/50 rounded-full h-2 max-[450px]:h-1.5 overflow-hidden">
+                          <div className="w-full bg-black/50 rounded-full h-2 max-[450px]:h-2 overflow-hidden">
                             <div
                               className={`bg-gradient-to-r ${getProgressGradient()} h-full transition-all duration-500`}
                               style={{
@@ -310,7 +310,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                             ></div>
                           </div>
                         </div>
-                        <div className="text-right text-xs max-[450px]:text-[11px] ml-2 max-[450px]:ml-1">
+                        <div className="text-right text-xs max-[450px]:text-[10px] ml-2 max-[450px]:ml-1">
                           <span
                             className={
                               calculateProgress() >= 100 ? "text-cyan-300 font-medium" : "text-pink-400 font-medium"
