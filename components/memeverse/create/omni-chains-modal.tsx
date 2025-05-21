@@ -22,7 +22,7 @@ export const OmniChainsModal = React.memo(
         className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
       >
-        <div className="relative w-full max-w-md" onClick={(e) => e.stopPropagation()}>
+        <div className="relative w-full max-w-[90%] md:max-w-md" onClick={(e) => e.stopPropagation()}>
           <div
             className="rounded-xl overflow-hidden relative"
             style={{
@@ -60,7 +60,7 @@ export const OmniChainsModal = React.memo(
                     <X className="h-5 w-5" />
                   </Button>
                 </div>
-                <div className="space-y-2 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+                <div className="space-y-2 max-h-[50vh] md:max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
                   {chains.map((chain) => (
                     <div
                       key={chain}

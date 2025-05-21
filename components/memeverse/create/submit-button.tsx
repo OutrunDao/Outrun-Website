@@ -8,7 +8,7 @@ interface SubmitButtonProps {
 
 export const SubmitButton = React.memo(({ isSubmitting }: SubmitButtonProps) => {
   return (
-    <div className="flex justify-center items-center pt-2">
+    <div className="flex justify-center items-center pt-0 md:pt-2">
       <Button
         type="submit"
         disabled={isSubmitting}
@@ -43,7 +43,7 @@ export const SubmitButton = React.memo(({ isSubmitting }: SubmitButtonProps) => 
           </div>
         ) : (
           <span className="bg-gradient-to-r from-pink-200 via-pink-100 to-pink-200 bg-clip-text text-transparent drop-shadow-[0_0_1px_rgba(236,72,153,0.4)] font-semibold">
-            Create
+            CREATE
           </span>
         )}
       </Button>

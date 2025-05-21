@@ -39,40 +39,42 @@ export const FormSection = React.memo(
     openModal,
   }: FormSectionProps) => {
     return (
-      <div className="space-y-4">
+      <div className="space-y-4 md:space-y-4">
         {/* 第一行：图片上传框、Name、Symbol */}
-        <div className="flex">
+        <div className="flex flex-col md:flex-row space-y-6 md:space-y-0">
           {/* 图片上传框 */}
-          <div className="flex-none">
-            <Label className="text-pink-300 mb-2 block">Token Logo</Label>
-            <div
-              className="w-48 h-48 rounded-lg bg-black/50 border border-solid border-purple-500/50 flex flex-col items-center justify-center overflow-hidden cursor-pointer hover:border-pink-400/70 hover:bg-purple-900/20 transition-all duration-300"
-              onClick={() => document.getElementById("logo-upload")?.click()}
-              title="Click to upload image"
-            >
-              {logoPreview ? (
-                <img
-                  src={logoPreview || "/placeholder.svg"}
-                  alt="Logo preview"
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <>
-                  <Upload className="h-12 w-12 text-pink-300/50 mb-2" />
-                  <span className="text-xs text-pink-300/70">Click to upload</span>
-                </>
-              )}
-              <input id="logo-upload" type="file" accept="image/*" className="hidden" onChange={handleLogoUpload} />
+          <div className="flex-none w-full md:w-auto flex justify-center md:justify-start">
+            <div>
+              <Label className="text-pink-300 mb-2 block">Token Logo</Label>
+              <div
+                className="w-48 h-48 rounded-lg bg-black/50 border border-solid border-purple-500/50 flex flex-col items-center justify-center overflow-hidden cursor-pointer hover:border-pink-400/70 hover:bg-purple-900/20 transition-all duration-300"
+                onClick={() => document.getElementById("logo-upload")?.click()}
+                title="Click to upload image"
+              >
+                {logoPreview ? (
+                  <img
+                    src={logoPreview || "/placeholder.svg"}
+                    alt="Logo preview"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <>
+                    <Upload className="h-12 w-12 text-pink-300/50 mb-2" />
+                    <span className="text-xs text-pink-300/70">Click to upload</span>
+                  </>
+                )}
+                <input id="logo-upload" type="file" accept="image/*" className="hidden" onChange={handleLogoUpload} />
+              </div>
             </div>
           </div>
 
           {/* 间距 */}
-          <div className="w-6"></div>
+          <div className="hidden md:block w-6"></div>
 
           {/* 右侧输入区域 */}
-          <div className="flex-1 flex flex-col">
+          <div className="flex-1 flex flex-col w-full">
             {/* Name和Symbol */}
-            <div className="flex mb-6">
+            <div className="flex flex-col md:flex-row mb-6 space-y-6 md:space-y-0">
               {/* Name */}
               <div className="flex-1">
                 <Label htmlFor="name" className="text-pink-300 mb-2 block">
@@ -89,7 +91,7 @@ export const FormSection = React.memo(
               </div>
 
               {/* 间距 */}
-              <div className="w-6"></div>
+              <div className="hidden md:block w-6"></div>
 
               {/* Symbol */}
               <div className="flex-1">
@@ -109,7 +111,7 @@ export const FormSection = React.memo(
             </div>
 
             {/* Genesis Duration和Liquidity Lock Duration */}
-            <div className="flex mb-6 pt-6">
+            <div className="flex flex-col md:flex-row mb-6 pt-6 space-y-6 md:space-y-0">
               {/* Genesis Duration */}
               <div className="flex-1">
                 <div className="flex items-center mb-2">
@@ -163,7 +165,7 @@ export const FormSection = React.memo(
               </div>
 
               {/* 间距 */}
-              <div className="w-6"></div>
+              <div className="hidden md:block w-6"></div>
 
               {/* Liquidity Lock Duration */}
               <div className="flex-1">
@@ -221,9 +223,9 @@ export const FormSection = React.memo(
         </div>
 
         {/* 第二行：Genesis Fund Type、Governance Chain、OmniChains */}
-        <div className="flex">
+        <div className="flex flex-col md:flex-row space-y-6 md:space-y-0">
           {/* Genesis Fund Type */}
-          <div className="flex-none w-48">
+          <div className="flex-none md:w-48">
             <div className="flex items-center mb-2">
               <Label className="text-pink-300">Genesis Fund Type</Label>
               <div className="inline-flex items-center">
@@ -246,7 +248,7 @@ export const FormSection = React.memo(
           </div>
 
           {/* 间距 */}
-          <div className="w-6"></div>
+          <div className="hidden md:block w-6"></div>
 
           {/* Governance Chain */}
           <div className="flex-1">
@@ -284,7 +286,7 @@ export const FormSection = React.memo(
           </div>
 
           {/* 间距 */}
-          <div className="w-6"></div>
+          <div className="hidden md:block w-6"></div>
 
           {/* OmniChains */}
           <div className="flex-1">

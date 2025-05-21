@@ -33,7 +33,7 @@ export function CommunityLinks({ website, twitter, discord, telegram, onChange }
       <button
         type="button"
         onClick={toggleExpanded}
-        className={`w-full flex items-center justify-between p-4 transition-colors duration-300 ${
+        className={`w-full flex items-center justify-between py-2.5 px-4 transition-colors duration-300 ${
           isExpanded ? "bg-transparent" : "bg-black/30 hover:bg-purple-900/20"
         }`}
       >
@@ -61,7 +61,7 @@ export function CommunityLinks({ website, twitter, discord, telegram, onChange }
         }`}
       >
         <div className="p-4 space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Website */}
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">

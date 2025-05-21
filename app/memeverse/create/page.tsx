@@ -9,12 +9,19 @@ import { ChevronLeft } from "lucide-react"
 import { CommunityLinks } from "@/components/community-links"
 import dynamic from "next/dynamic"
 
-// 更新导入路径
 // 动态导入组件，减少初始加载体积
 const FormSection = dynamic(() => import("@/components/memeverse/create/form-section").then((mod) => mod.FormSection), {
   ssr: false,
   loading: () => <div className="animate-pulse bg-purple-900/20 rounded-xl h-[400px]"></div>,
 })
+
+const MobileFormSection = dynamic(
+  () => import("@/components/memeverse/create/mobile-form-section").then((mod) => mod.MobileFormSection),
+  {
+    ssr: false,
+    loading: () => <div className="animate-pulse bg-purple-900/20 rounded-xl h-[400px]"></div>,
+  },
+)
 
 const ToggleSwitch = dynamic(
   () => import("@/components/memeverse/create/toggle-switch").then((mod) => mod.ToggleSwitch),
@@ -59,6 +66,23 @@ const maxLockupDays = 365
 
 export default function CreateMemecoinPage() {
   const router = useRouter()
+  const [isMobile, setIsMobile] = useState(false)
+
+  // 检测是否为移动设备
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    // 初始检查
+    checkIfMobile()
+
+    // 监听窗口大小变化
+    window.addEventListener("resize", checkIfMobile)
+
+    // 清理监听器
+    return () => window.removeEventListener("resize", checkIfMobile)
+  }, [])
 
   // 使用useReducer的思想合并相关状态
   const [formState, setFormState] = useState({
@@ -297,6 +321,28 @@ export default function CreateMemecoinPage() {
     async (e: React.FormEvent) => {
       e.preventDefault()
 
+      // 检查Logo是否上传
+      if (!ui.logoFile) {
+        // 根据设备类型选择正确的Logo上传元素ID
+        const logoUploadId = isMobile ? "logo-upload-mobile" : "logo-upload"
+        const logoUploadElement = document.getElementById(logoUploadId)
+
+        if (logoUploadElement) {
+          // 获取父元素（上传框容器）
+          const logoContainer = logoUploadElement.closest("div.rounded-lg")
+          if (logoContainer) {
+            // 滚动到Logo上传框
+            logoContainer.scrollIntoView({ behavior: "smooth", block: "center" })
+            // 闪烁提示用户上传Logo
+            logoContainer.classList.add("ring-2", "ring-red-500", "ring-opacity-70")
+            setTimeout(() => {
+              logoContainer.classList.remove("ring-2", "ring-red-500", "ring-opacity-70")
+            }, 2000)
+            return // 停止提交
+          }
+        }
+      }
+
       // 检查必填字段
       const requiredFields = [
         { id: "name", label: "Name" },
@@ -311,7 +357,7 @@ export default function CreateMemecoinPage() {
         const value = formData[field.id as keyof typeof formData]
         if (!value) {
           // 找到空字段，聚焦并滚动到该元素
-          const element = document.getElementById(field.id)
+          const element = document.getElementById(isMobile ? `${field.id}-mobile` : field.id)
           if (element) {
             element.focus()
             // 使用scrollIntoView确保元素完全可见
@@ -333,7 +379,7 @@ export default function CreateMemecoinPage() {
             isGenesisDurationValid: false,
           },
         }))
-        const element = document.getElementById("genesisDuration")
+        const element = document.getElementById(isMobile ? "genesisDuration-mobile" : "genesisDuration")
         if (element) {
           element.focus()
           element.scrollIntoView({ behavior: "smooth", block: "center" })
@@ -349,7 +395,7 @@ export default function CreateMemecoinPage() {
             isLiquidityLockDurationValid: false,
           },
         }))
-        const element = document.getElementById("liquidityLockDuration")
+        const element = document.getElementById(isMobile ? "liquidityLockDuration-mobile" : "liquidityLockDuration")
         if (element) {
           element.focus()
           element.scrollIntoView({ behavior: "smooth", block: "center" })
@@ -379,33 +425,41 @@ export default function CreateMemecoinPage() {
         // 在实际实现中，你会将表单数据提交到API
       }, 2000)
     },
-    [formData, router],
+    [formData, router, isMobile, ui.logoFile],
   )
 
   return (
     <div className="relative flex flex-col min-h-screen">
       {/* Page content */}
-      <div className="container px-4 md:px-6 mx-auto pt-20 md:pt-24 pb-12 md:pb-16">
-        <div className="max-w-3xl mx-auto mb-10 flex items-center justify-between">
+      <div className="container px-4 md:px-6 mx-auto pt-16 md:pt-24 pb-8 md:pb-16">
+        <div className="max-w-3xl mx-auto mb-6 md:mb-10 flex flex-col md:flex-row items-center justify-between gap-6 md:gap-0">
           {/* Back button */}
           <Button
             onClick={handleBackClick}
             variant="outline"
-            className="relative overflow-hidden group"
+            className="relative overflow-hidden group w-auto mr-auto md:mr-0 md:absolute md:left-0 md:w-auto md:relative md:overflow-hidden"
             style={{
-              background: "rgba(15, 3, 38, 0.8)",
-              border: "1px solid rgba(236, 72, 153, 0.4)",
-              borderRadius: "9999px",
-              boxShadow: "0 0 10px rgba(236, 72, 153, 0.3), 0 0 20px rgba(168, 85, 247, 0.2)",
-              padding: "8px 16px",
+              ...(window.innerWidth >= 768
+                ? {
+                    background: "rgba(15, 3, 38, 0.8)",
+                    border: "1px solid rgba(236, 72, 153, 0.4)",
+                    borderRadius: "9999px",
+                    boxShadow: "0 0 10px rgba(236, 72, 153, 0.3), 0 0 20px rgba(168, 85, 247, 0.2)",
+                    padding: "8px 16px",
+                  }
+                : {
+                    background: "transparent",
+                    border: "none",
+                    padding: "4px 0",
+                  }),
             }}
           >
             {/* 背景渐变效果 */}
-            <span className="absolute inset-0 bg-gradient-to-r from-purple-600/10 via-pink-500/10 to-purple-600/10 group-hover:opacity-100 opacity-0 transition-opacity duration-500"></span>
+            <span className="hidden md:absolute md:inset-0 md:block bg-gradient-to-r from-purple-600/10 via-pink-500/10 to-purple-600/10 group-hover:opacity-100 opacity-0 transition-opacity duration-500"></span>
 
             {/* 发光边框效果 */}
             <span
-              className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              className="hidden md:absolute md:inset-0 md:block rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
               style={{
                 boxShadow: "inset 0 0 8px rgba(236, 72, 153, 0.6), 0 0 12px rgba(168, 85, 247, 0.4)",
               }}
@@ -415,22 +469,23 @@ export default function CreateMemecoinPage() {
             <div className="flex items-center relative z-10">
               <ChevronLeft className="mr-1 h-4 w-4 text-pink-300 group-hover:text-pink-200 transition-colors duration-300" />
               <span className="text-pink-300 group-hover:text-pink-200 transition-colors duration-300 font-medium">
-                Back to Board
+                <span className="hidden md:inline">Back to Board</span>
+                <span className="md:hidden">Back</span>
               </span>
             </div>
           </Button>
 
           {/* Page title */}
-          <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-pink-400 to-purple-500 bg-clip-text text-transparent">
+          <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-pink-400 to-purple-500 bg-clip-text text-transparent text-center">
             Consensus Launch
           </h1>
 
           {/* 添加一个空的div来平衡布局 */}
-          <div className="w-[120px]"></div>
+          <div className="hidden md:block md:invisible w-[120px]"></div>
         </div>
 
         {/* Form container */}
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-3xl mx-auto px-2 md:px-0">
           <div
             className="rounded-xl overflow-hidden relative"
             style={{
@@ -457,7 +512,7 @@ export default function CreateMemecoinPage() {
 
             {/* Card content */}
             <div className="relative z-10">
-              <div className="p-6 md:p-8 relative z-10">
+              <div className="p-4 md:p-8 relative z-10">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Flash Genesis Toggle */}
                   <ToggleSwitch
@@ -467,20 +522,36 @@ export default function CreateMemecoinPage() {
                     tooltipContent="Enable Flash Genesis for accelerated token launch"
                   />
 
-                  {/* Form Fields */}
-                  <FormSection
-                    formData={formData}
-                    logoPreview={logoPreview}
-                    isGenesisDurationValid={isGenesisDurationValid}
-                    isLiquidityLockDurationValid={isLiquidityLockDurationValid}
-                    minGenesisDuration={minGenesisDuration}
-                    maxGenesisDuration={maxGenesisDuration}
-                    minLockupDays={minLockupDays}
-                    maxLockupDays={maxLockupDays}
-                    handleChange={handleChange}
-                    handleLogoUpload={handleLogoUpload}
-                    openModal={openModal}
-                  />
+                  {/* 根据屏幕尺寸条件渲染不同的表单组件 */}
+                  {isMobile ? (
+                    <MobileFormSection
+                      formData={formData}
+                      logoPreview={logoPreview}
+                      isGenesisDurationValid={isGenesisDurationValid}
+                      isLiquidityLockDurationValid={isLiquidityLockDurationValid}
+                      minGenesisDuration={minGenesisDuration}
+                      maxGenesisDuration={maxGenesisDuration}
+                      minLockupDays={minLockupDays}
+                      maxLockupDays={maxLockupDays}
+                      handleChange={handleChange}
+                      handleLogoUpload={handleLogoUpload}
+                      openModal={openModal}
+                    />
+                  ) : (
+                    <FormSection
+                      formData={formData}
+                      logoPreview={logoPreview}
+                      isGenesisDurationValid={isGenesisDurationValid}
+                      isLiquidityLockDurationValid={isLiquidityLockDurationValid}
+                      minGenesisDuration={minGenesisDuration}
+                      maxGenesisDuration={maxGenesisDuration}
+                      minLockupDays={minLockupDays}
+                      maxLockupDays={maxLockupDays}
+                      handleChange={handleChange}
+                      handleLogoUpload={handleLogoUpload}
+                      openModal={openModal}
+                    />
+                  )}
 
                   {/* Community Links Component */}
                   <CommunityLinks
