@@ -9,21 +9,28 @@ interface NetworkIconProps {
   networks: Network[]
   onNetworkChange: (network: Network) => void
   className?: string
+  isMobile?: boolean
 }
 
-export function NetworkIcon({ selectedNetwork, networks, onNetworkChange, className = "" }: NetworkIconProps) {
+export function NetworkIcon({
+  selectedNetwork,
+  networks,
+  onNetworkChange,
+  className = "",
+  isMobile = false,
+}: NetworkIconProps) {
   const [showNetworkModal, setShowNetworkModal] = useState(false)
 
   return (
     <>
       <button
         onClick={() => setShowNetworkModal(true)}
-        className={`launch-app-btn flex items-center gap-1 px-3 h-[34px] rounded-md relative overflow-hidden group ${className}`}
+        className={`launch-app-btn flex items-center gap-1 ${isMobile ? "px-2" : "px-3"} ${isMobile ? "h-[30px]" : "h-[34px]"} rounded-md relative overflow-hidden group ${className}`}
         style={{ marginLeft: "-6px" }}
       >
-        <div className="launch-btn-bg absolute inset-0 -z-0 opacity-80"></div>
+        <div className={`launch-btn-bg absolute inset-0 -z-0 ${isMobile ? "opacity-70" : "opacity-80"}`}></div>
         <div
-          className="w-5 h-5 flex items-center justify-center overflow-hidden relative z-10"
+          className={`${isMobile ? "w-4 h-4" : "w-5 h-5"} flex items-center justify-center overflow-hidden relative z-10`}
           style={{
             backgroundColor: "transparent",
           }}
@@ -31,7 +38,7 @@ export function NetworkIcon({ selectedNetwork, networks, onNetworkChange, classN
           <img
             src={selectedNetwork.icon || "/placeholder.svg"}
             alt={selectedNetwork.name}
-            className="w-4 h-4 object-contain"
+            className={`${isMobile ? "w-3.5 h-3.5" : "w-4 h-4"} object-contain`}
             onError={(e) => {
               // If icon fails to load, display the first letter of the network name
               e.currentTarget.style.display = "none"
@@ -39,10 +46,14 @@ export function NetworkIcon({ selectedNetwork, networks, onNetworkChange, classN
             }}
           />
         </div>
-        <span className="relative z-10 text-xs font-medium tracking-wide text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]">
-          {selectedNetwork.name}
-        </span>
-        <ChevronDown size={12} className="text-white relative z-10" />
+        {!isMobile && (
+          <>
+            <span className="relative z-10 text-xs font-medium tracking-wide text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.9)]">
+              {selectedNetwork.name}
+            </span>
+            <ChevronDown size={12} className="text-white relative z-10" />
+          </>
+        )}
       </button>
 
       <NetworkSelectorModal

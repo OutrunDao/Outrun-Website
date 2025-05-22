@@ -8,13 +8,14 @@ import { cn } from "@/lib/utils"
 interface OmniChainsModalProps {
   isOpen: boolean
   onClose: () => void
+  title: string
   chains: string[]
   selectedChains: string[]
   onToggle: (chain: string) => void
 }
 
 export const OmniChainsModal = React.memo(
-  ({ isOpen, onClose, chains, selectedChains, onToggle }: OmniChainsModalProps) => {
+  ({ isOpen, onClose, title, chains, selectedChains, onToggle }: OmniChainsModalProps) => {
     if (!isOpen) return null
 
     return (
@@ -22,7 +23,7 @@ export const OmniChainsModal = React.memo(
         className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
       >
-        <div className="relative w-full max-w-[90%] md:max-w-md" onClick={(e) => e.stopPropagation()}>
+        <div className="relative w-full max-w-[300px] md:max-w-xs" onClick={(e) => e.stopPropagation()}>
           <div
             className="rounded-xl overflow-hidden relative"
             style={{
@@ -50,7 +51,11 @@ export const OmniChainsModal = React.memo(
             <div className="relative z-10">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-xl font-bold text-white">Select OmniChains</h3>
+                  <h3 className="text-lg font-bold">
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
+                      {title}
+                    </span>
+                  </h3>
                   <Button
                     variant="ghost"
                     size="icon"

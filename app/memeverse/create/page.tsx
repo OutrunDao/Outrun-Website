@@ -30,8 +30,8 @@ const ToggleSwitch = dynamic(
   },
 )
 
-const NetworkModal = dynamic(
-  () => import("@/components/memeverse/create/network-modal").then((mod) => mod.NetworkModal),
+const GovernanceChainModal = dynamic(
+  () => import("@/components/memeverse/create/governance-chain-modal").then((mod) => mod.NetworkModal),
   {
     ssr: false,
   },
@@ -431,7 +431,7 @@ export default function CreateMemecoinPage() {
   return (
     <div className="relative flex flex-col min-h-screen">
       {/* Page content */}
-      <div className="container px-4 md:px-6 mx-auto pt-16 md:pt-24 pb-8 md:pb-16">
+      <div className="container px-4 md:px-6 mx-auto pt-24 md:pt-24 pb-8 md:pb-16">
         <div className="max-w-3xl mx-auto mb-6 md:mb-10 flex flex-col md:flex-row items-center justify-between gap-6 md:gap-0">
           {/* Back button - 使用条件渲染为PC和移动端提供不同的按钮 */}
           {/* PC端按钮 - 只在md及以上屏幕显示 */}
@@ -569,10 +569,10 @@ export default function CreateMemecoinPage() {
       </div>
 
       {/* Modals */}
-      <NetworkModal
+      <GovernanceChainModal
         isOpen={currentModal === "network"}
         onClose={closeModal}
-        title="Select Governance Chain"
+        title="Governance Chain"
         networks={availableChains}
         selectedNetwork={formData.governanceChain}
         onSelect={handleNetworkSelect}
@@ -581,6 +581,7 @@ export default function CreateMemecoinPage() {
       <FundTypeModal
         isOpen={currentModal === "fundType"}
         onClose={closeModal}
+        title="Fund Type"
         fundTypes={fundTypes}
         selectedType={formData.genesieFundType}
         onSelect={handleFundTypeSelect}
@@ -589,6 +590,7 @@ export default function CreateMemecoinPage() {
       <OmniChainsModal
         isOpen={currentModal === "omniChains"}
         onClose={closeModal}
+        title="OmniChains"
         chains={availableChains}
         selectedChains={formData.omniChains}
         onToggle={handleOmniChainToggle}

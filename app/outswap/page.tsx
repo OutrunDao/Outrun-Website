@@ -21,7 +21,6 @@ export default function OutSwapPage() {
 
   return (
     <div ref={containerRef} className="relative flex flex-col min-h-screen">
-
       {/* Hero Section */}
       <section className="relative min-h-[80vh] flex items-center overflow-hidden pt-20">
         {/* Hero overlay */}
@@ -205,10 +204,10 @@ export default function OutSwapPage() {
                   </p>
 
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Link href="/outswap/swap">
+                    <Link href="/outswap/swap" className="w-full sm:w-auto">
                       <Button
                         size="lg"
-                        className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 rounded-full px-8 h-12 text-base shadow-[0_0_15px_rgba(168,85,247,0.5)]"
+                        className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 rounded-full px-8 h-12 text-base w-full sm:w-auto shadow-[0_0_15px_rgba(168,85,247,0.5)]"
                       >
                         Launch App
                       </Button>

@@ -53,9 +53,28 @@ const navItems: NavItem[] = [
   },
 ]
 
+// 在 import 部分之后，Navbar 组件之前添加
+// 自定义的媒体查询 hook，专门用于导航栏
+function useNavbarResponsive() {
+  const [isNavMobile, setIsNavMobile] = useState(false)
+
+  useEffect(() => {
+    const checkWidth = () => {
+      setIsNavMobile(window.innerWidth < 860)
+    }
+
+    checkWidth()
+    window.addEventListener("resize", checkWidth)
+    return () => window.removeEventListener("resize", checkWidth)
+  }, [])
+
+  return isNavMobile
+}
+
 export function Navbar() {
-  const router = useRouter() // 使用Next.js的路由器
-  const isMobile = useMobile()
+  const router = useRouter()
+  const isMobile = useMobile() // 保留这个，用于其他可能的用途
+  const isNavMobile = useNavbarResponsive() // 新增这个，专门用于导航栏
   const pathname = usePathname() // Get the current path
   const isHomePage = pathname === "/" // Check if we're on the home page
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -79,6 +98,27 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [handleScroll])
 
+  // 添加一个新的 useEffect 来控制菜单打开时的滚动行为
+  useEffect(() => {
+    if (isNavMobile) {
+      if (isMenuOpen) {
+        // 禁止滚动
+        document.body.style.overflow = "hidden"
+        document.body.style.height = "100%"
+      } else {
+        // 恢复滚动
+        document.body.style.overflow = ""
+        document.body.style.height = ""
+      }
+    }
+
+    // 组件卸载时恢复滚动
+    return () => {
+      document.body.style.overflow = ""
+      document.body.style.height = ""
+    }
+  }, [isMenuOpen, isNavMobile])
+
   // 在 useEffect 中添加一个新的 effect 来根据当前路径设置活动项
   useEffect(() => {
     // 找到匹配当前路径的导航项
@@ -95,13 +135,13 @@ export function Navbar() {
     }
 
     // 如果当前路径匹配某个子菜单项，自动展开该子菜单（仅限移动端）
-    if (isMobile && matchingItem?.children) {
+    if (isNavMobile && matchingItem?.children) {
       const hasActiveChild = matchingItem.children.some((child) => pathname === child.href)
       if (hasActiveChild) {
         setExpandedMobileSubmenu(matchingItem.title)
       }
     }
-  }, [pathname, activeDropdown, isMobile])
+  }, [pathname, activeDropdown, isNavMobile])
 
   // 添加一个函数来更新当前路径的高亮
   const updateHighlightForCurrentPath = () => {
@@ -196,7 +236,7 @@ export function Navbar() {
               </span>
             </Link>
 
-            {!isMobile && (
+            {!isNavMobile && (
               <div className="relative ml-8">
                 <nav className="flex items-center gap-1 md:gap-2" ref={navRef}>
                   {navItems.map((item) => {
@@ -292,36 +332,40 @@ export function Navbar() {
             )}
           </div>
 
-          {!isMobile ? (
-            <div className="pr-4">
-              <WalletButton isHomePage={isHomePage} />
-            </div>
+          {!isNavMobile ? (
+            <WalletButton />
           ) : (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label="Toggle menu"
-              className="text-white hover:bg-white/10 rounded-full relative overflow-hidden group"
-            >
-              <span className="relative z-10">
-                {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-              </span>
-              <div className="mobile-menu-btn-bg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-0"></div>
-            </Button>
+            <div className="flex items-center gap-2">
+              <div className="mobile-wallet-buttons">
+                <WalletButton isMobile={true} />
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                aria-label="Toggle menu"
+                className="text-white hover:bg-white/10 rounded-full relative overflow-hidden group"
+              >
+                <span className="relative z-10">
+                  {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                </span>
+                <div className="mobile-menu-btn-bg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-0"></div>
+              </Button>
+            </div>
           )}
         </div>
       </div>
 
       {/* 重新设计的移动端菜单 */}
       <AnimatePresence>
-        {isMobile && isMenuOpen && (
+        {isNavMobile && isMenuOpen && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 top-20 z-40 bg-gradient-to-b from-[#0f0326]/95 to-[#1a0445]/95 backdrop-blur-md overflow-auto"
+            className="fixed top-16 bottom-0 inset-x-0 z-40 bg-gradient-to-b from-[#0f0326]/95 to-[#1a0445]/95 backdrop-blur-md overflow-auto"
+            style={{ height: "calc(100vh - 64px)" }}
           >
             <div className="absolute inset-0 bg-[url('/grid.svg')] bg-repeat opacity-10"></div>
             <div className="container mx-auto px-4 py-6 relative z-10">
@@ -395,10 +439,6 @@ export function Navbar() {
                   )
                 })}
               </nav>
-
-              <div className="mt-8 flex justify-center">
-                <WalletButton isHomePage={isHomePage} />
-              </div>
             </div>
           </motion.div>
         )}
