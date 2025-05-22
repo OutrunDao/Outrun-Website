@@ -60,7 +60,7 @@ function useNavbarResponsive() {
 
   useEffect(() => {
     const checkWidth = () => {
-      setIsNavMobile(window.innerWidth < 860)
+      setIsNavMobile(window.innerWidth < 1024)
     }
 
     checkWidth()
@@ -364,7 +364,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
-            className="fixed top-16 bottom-0 inset-x-0 z-40 bg-gradient-to-b from-[#0f0326]/95 to-[#1a0445]/95 backdrop-blur-md overflow-auto"
+            className="fixed top-16 bottom-0 inset-x-0 z-40 bg-gradient-to-b from-[#0f0326] to-[#1a0445] overflow-auto"
             style={{ height: "calc(100vh - 64px)" }}
           >
             <div className="absolute inset-0 bg-[url('/grid.svg')] bg-repeat opacity-10"></div>

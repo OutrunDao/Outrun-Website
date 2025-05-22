@@ -125,7 +125,7 @@ export default function CreateMemecoinPage() {
     [],
   )
 
-  const fundTypes = useMemo(() => ["UETH", "USDT", "USDC", "DAI", "WBTC"], [])
+  const fundTypes = useMemo(() => ["UUSD", "UETH", "UBNB", "UAVAE", "UPOL", "US"], [])
 
   // 使用useCallback优化事件处理函数
   const toggleFlashGenesis = useCallback(() => {
