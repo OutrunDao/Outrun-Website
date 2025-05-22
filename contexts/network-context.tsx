@@ -3,9 +3,12 @@
 import { createContext, useContext, type ReactNode } from "react"
 import { useLocalStorage } from "@/hooks/use-local-storage"
 
+// 定义网络ID联合类型，增强类型安全性
+export type NetworkId = "ethereum" | "arbitrum" | "base" | "bnb" | "polygon"
+
 // 定义网络类型
 export type Network = {
-  id: string
+  id: NetworkId // 使用联合类型替代字符串
   name: string
   icon: string
   chainId: number
@@ -57,12 +60,15 @@ type NetworkContextType = {
   switchNetwork: (network: Network) => Promise<void>
 }
 
+// 更新本地存储状态类型，使用NetworkId
+type NetworkState = {
+  networkId: NetworkId
+}
+
 const NetworkContext = createContext<NetworkContextType | undefined>(undefined)
 
 export function NetworkProvider({ children }: { children: ReactNode }) {
-  const [networkState, setNetworkState] = useLocalStorage<{
-    networkId: string
-  }>("networkState", { networkId: "ethereum" })
+  const [networkState, setNetworkState] = useLocalStorage<NetworkState>("networkState", { networkId: "ethereum" })
 
   // 获取当前网络
   const network = NETWORKS.find((n) => n.id === networkState.networkId) || NETWORKS[0]

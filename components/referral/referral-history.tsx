@@ -3,6 +3,7 @@ import { motion } from "framer-motion"
 import { useMobile } from "@/hooks/use-mobile"
 import { TokenIcon } from "@/components/ui/token-icon"
 import { useNetwork } from "@/contexts/network-context"
+import { GradientBackgroundCard } from "@/components/ui/gradient-background-card"
 
 interface ReferralHistoryProps {
   view: "history" | "friends"
@@ -65,32 +66,15 @@ export function ReferralHistory({ view = "history" }: ReferralHistoryProps) {
   const isMobile = useMobile()
 
   return (
-    <div
-      className="rounded-lg overflow-hidden relative"
-      style={{
-        boxShadow: "0 0 2px #ec4899, 0 0 15px rgba(236,72,153,0.4), 0 0 30px rgba(168,85,247,0.2)",
-        border: "1px solid rgba(236,72,153,0.3)",
-      }}
+    <GradientBackgroundCard
+      shadow
+      border
+      borderColor="rgba(236,72,153,0.3)"
+      shadowColor="rgba(236,72,153,0.4)"
+      contentClassName="relative overflow-x-auto"
     >
-      {/* 背景渐变 */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0f0326] via-[#1a0445] to-[#0f0326] backdrop-blur-xl"></div>
-
-      {/* 网格背景 */}
-      <div
-        className="absolute inset-0 opacity-10"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(168, 85, 247, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(168, 85, 247, 0.1) 1px, transparent 1px)",
-          backgroundSize: "20px 20px",
-          backgroundPosition: "center center",
-        }}
-      ></div>
-
-      {/* 底部发光效果 */}
-      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-purple-600/5 to-transparent"></div>
-
-      <div className="relative overflow-x-auto">{view === "history" ? <HistoryTable /> : <FriendsTable />}</div>
-    </div>
+      {view === "history" ? <HistoryTable /> : <FriendsTable />}
+    </GradientBackgroundCard>
   )
 }
 
@@ -362,7 +346,7 @@ function FriendsTable() {
     // 未来实现: 显示好友详情或跳转到相关页面
   }
 
-  // 模拟被推荐人�����据
+  // 模拟被推荐人据
   const friendsData: ReferredFriend[] = [
     { id: 1, joinDate: "2023-04-15", address: "0x1a2b...3c4d", volume: "$1,245.00", earned: "$12.45" },
     { id: 2, joinDate: "2023-04-20", address: "0x5e6f...7g8h", volume: "$832.00", earned: "$8.32" },

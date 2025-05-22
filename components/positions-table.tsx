@@ -8,6 +8,7 @@ import { TokenIcon } from "@/components/ui/token-icon"
 import { Button } from "@/components/ui/button"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 import { useMobile } from "@/hooks/use-mobile"
+import { GradientBackgroundCard } from "@/components/ui/gradient-background-card"
 
 // Mock user position data
 const positionsData = [
@@ -216,30 +217,14 @@ export function PositionsTable() {
     }
 
     return (
-      <div
-        className="relative rounded-lg overflow-hidden mb-3 transition-all duration-300"
-        style={{
-          boxShadow: "0 0 2px #bf4ddb, 0 0 15px rgba(191,77,219,0.2), 0 0 30px rgba(168,85,247,0.1)",
-          border: "1px solid rgba(191,77,219,0.2)",
-        }}
+      <GradientBackgroundCard
+        className="mb-3"
+        shadow
+        border
+        borderColor="rgba(191,77,219,0.2)"
+        shadowColor="rgba(191,77,219,0.4)"
+        contentClassName="p-3"
       >
-        {/* 背景渐变 */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0f0326] via-[#1a0445] to-[#0f0326] backdrop-blur-xl"></div>
-
-        {/* 网格背景 */}
-        <div
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(168, 85, 247, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(168, 85, 247, 0.1) 1px, transparent 1px)",
-            backgroundSize: "20px 20px",
-            backgroundPosition: "center center",
-          }}
-        ></div>
-
-        {/* 底部发光效果 */}
-        <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-purple-600/10 to-transparent"></div>
-
         {/* 头寸状态指示器 */}
         <div
           className={`absolute top-0 left-0 right-0 h-1 ${
@@ -250,149 +235,147 @@ export function PositionsTable() {
         ></div>
 
         {/* 头寸内容 */}
-        <div className="relative p-3">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2">
-              <div className="flex -space-x-2">
-                <TokenIcon symbol={position.pair.split("/")[0]} size={20} />
-                <TokenIcon symbol={position.pair.split("/")[1]} size={20} />
-              </div>
-              <div className="flex items-center gap-1">
-                <span className="font-bold text-sm">{position.pair}</span>
-                <span className="text-xs px-1.5 py-0.5 rounded-md bg-white/10">{position.fee}</span>
-              </div>
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <div className="flex -space-x-2">
+              <TokenIcon symbol={position.pair.split("/")[0]} size={20} />
+              <TokenIcon symbol={position.pair.split("/")[1]} size={20} />
             </div>
-            <div
-              className={`text-xs px-2 py-0.5 rounded-full ${
-                position.inRange
-                  ? "bg-green-500/20 text-green-300 border border-green-500/30"
-                  : "bg-yellow-500/20 text-yellow-300 border border-yellow-500/30"
-              }`}
-            >
-              {position.inRange ? "In Range" : "Out of Range"}
+            <div className="flex items-center gap-1">
+              <span className="font-bold text-sm">{position.pair}</span>
+              <span className="text-xs px-1.5 py-0.5 rounded-md bg-white/10">{position.fee}</span>
             </div>
           </div>
-
-          <div className="grid grid-cols-2 gap-2 mb-2">
-            <div>
-              <div className="text-xs text-zinc-400">Value</div>
-              <div className="text-sm font-medium">{position.value}</div>
-            </div>
-            <div>
-              <div className="text-xs text-zinc-400">APR</div>
-              <div className="text-sm font-medium bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
-                {position.apr}
-              </div>
-            </div>
+          <div
+            className={`text-xs px-2 py-0.5 rounded-full ${
+              position.inRange
+                ? "bg-green-500/20 text-green-300 border border-green-500/30"
+                : "bg-yellow-500/20 text-yellow-300 border border-yellow-500/30"
+            }`}
+          >
+            {position.inRange ? "In Range" : "Out of Range"}
           </div>
-
-          {/* Modify here to put Unclaimed fees and Show Details button on the same line, aligned with Value and APR above */}
-          <div className="grid grid-cols-2 gap-2 mb-2">
-            <div>
-              <div className="text-xs text-zinc-400">Unclaimed fees</div>
-              <div className="text-sm font-medium">{position.unclaimed}</div>
-            </div>
-            <div>
-              <button
-                className="flex items-center text-xs text-zinc-300 hover:text-white mt-0.5"
-                onClick={() => toggleMobileExpanded(position.id)}
-              >
-                {isExpanded ? "Hide Details" : "Show Details"}
-                <ChevronDown
-                  size={14}
-                  className={`ml-1 transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}
-                />
-              </button>
-            </div>
-          </div>
-
-          {/* Expanded details */}
-          {isExpanded && (
-            <div className="mt-3 pt-3 border-t border-purple-500/20">
-              {/* Price range section - add COLLECT button */}
-              <div className="mb-4 flex justify-between items-start">
-                <div>
-                  <div className="flex items-center mb-1">
-                    <div className="text-xs text-zinc-400 mr-1">{getPriceRangeTitle(position)}</div>
-                    {/* 反转按钮 - 使用独立的处理函数 */}
-                    <button onClick={handleFlipClick} className="text-white hover:text-purple-300 transition-colors">
-                      <RefreshCw size={12} />
-                    </button>
-                  </div>
-                  <div className="text-sm font-medium">{getDisplayedPriceRange(position)}</div>
-                </div>
-                {/* COLLECT按钮 */}
-                <Button
-                  size="sm"
-                  className="bg-[#0f0326]/60 text-white rounded-md text-sm font-medium uppercase transition-all duration-200 h-7 px-3 relative hover:bg-[#0f0326]/80 hover:text-green-300 min-w-[120px]"
-                  style={{
-                    boxShadow: "0 0 10px 2px rgba(74, 222, 128, 0.2)",
-                    border: "1px solid rgba(74, 222, 128, 0.4)",
-                  }}
-                >
-                  COLLECT
-                </Button>
-              </div>
-
-              {/* Token section - display liquidity and fees side by side */}
-              <div className="grid grid-cols-2 gap-4 mb-3">
-                {/* Left side shows liquidity tokens */}
-                <div>
-                  <div className="text-xs text-zinc-400 mb-1">Liquidity Tokens</div>
-                  <div className="flex flex-col space-y-1">
-                    <div className="flex items-center">
-                      <TokenIcon symbol={position.liquidity.token0.symbol} size={14} />
-                      <span className="text-sm ml-1">{position.liquidity.token0.amount}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <TokenIcon symbol={position.liquidity.token1.symbol} size={14} />
-                      <span className="text-sm ml-1">{position.liquidity.token1.amount}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right side shows fee tokens */}
-                <div>
-                  <div className="text-xs text-zinc-400 mb-1">Fee Tokens</div>
-                  <div className="flex flex-col space-y-1">
-                    <div className="flex items-center">
-                      <TokenIcon symbol={position.fees.token0.symbol} size={14} />
-                      <span className="text-sm ml-1">{position.fees.token0.amount}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <TokenIcon symbol={position.fees.token1.symbol} size={14} />
-                      <span className="text-sm ml-1">{position.fees.token1.amount}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex gap-2 mt-3">
-                <Button
-                  size="sm"
-                  className="bg-[#1a0445]/60 text-white rounded-md text-sm font-medium uppercase transition-all duration-200 h-7 px-2 relative hover:bg-[#1a0445]/80 hover:text-purple-300 flex-1"
-                  style={{
-                    boxShadow: "0 0 10px 2px rgba(93, 63, 211, 0.3)",
-                    border: "1px solid rgba(93, 63, 211, 0.5)",
-                  }}
-                >
-                  ADD
-                </Button>
-                <Button
-                  size="sm"
-                  className="bg-[#2d0a2e]/60 text-white rounded-md text-sm font-medium uppercase transition-all duration-200 h-7 px-2 relative hover:bg-[#2d0a2e]/80 hover:text-pink-300 flex-1"
-                  style={{
-                    boxShadow: "0 0 10px 2px rgba(236, 72, 153, 0.3)",
-                    border: "1px solid rgba(236, 72, 153, 0.5)",
-                  }}
-                >
-                  REMOVE
-                </Button>
-              </div>
-            </div>
-          )}
         </div>
-      </div>
+
+        <div className="grid grid-cols-2 gap-2 mb-2">
+          <div>
+            <div className="text-xs text-zinc-400">Value</div>
+            <div className="text-sm font-medium">{position.value}</div>
+          </div>
+          <div>
+            <div className="text-xs text-zinc-400">APR</div>
+            <div className="text-sm font-medium bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
+              {position.apr}
+            </div>
+          </div>
+        </div>
+
+        {/* Modify here to put Unclaimed fees and Show Details button on the same line, aligned with Value and APR above */}
+        <div className="grid grid-cols-2 gap-2 mb-2">
+          <div>
+            <div className="text-xs text-zinc-400">Unclaimed fees</div>
+            <div className="text-sm font-medium">{position.unclaimed}</div>
+          </div>
+          <div>
+            <button
+              className="flex items-center text-xs text-zinc-300 hover:text-white mt-0.5"
+              onClick={() => toggleMobileExpanded(position.id)}
+            >
+              {isExpanded ? "Hide Details" : "Show Details"}
+              <ChevronDown
+                size={14}
+                className={`ml-1 transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}
+              />
+            </button>
+          </div>
+        </div>
+
+        {/* Expanded details */}
+        {isExpanded && (
+          <div className="mt-3 pt-3 border-t border-purple-500/20">
+            {/* Price range section - add COLLECT button */}
+            <div className="mb-4 flex justify-between items-start">
+              <div>
+                <div className="flex items-center mb-1">
+                  <div className="text-xs text-zinc-400 mr-1">{getPriceRangeTitle(position)}</div>
+                  {/* 反转按钮 - 使用独立的处理函数 */}
+                  <button onClick={handleFlipClick} className="text-white hover:text-purple-300 transition-colors">
+                    <RefreshCw size={12} />
+                  </button>
+                </div>
+                <div className="text-sm font-medium">{getDisplayedPriceRange(position)}</div>
+              </div>
+              {/* COLLECT按钮 */}
+              <Button
+                size="sm"
+                className="bg-[#0f0326]/60 text-white rounded-md text-sm font-medium uppercase transition-all duration-200 h-7 px-3 relative hover:bg-[#0f0326]/80 hover:text-green-300 min-w-[120px]"
+                style={{
+                  boxShadow: "0 0 10px 2px rgba(74, 222, 128, 0.2)",
+                  border: "1px solid rgba(74, 222, 128, 0.4)",
+                }}
+              >
+                COLLECT
+              </Button>
+            </div>
+
+            {/* Token section - display liquidity and fees side by side */}
+            <div className="grid grid-cols-2 gap-4 mb-3">
+              {/* Left side shows liquidity tokens */}
+              <div>
+                <div className="text-xs text-zinc-400 mb-1">Liquidity Tokens</div>
+                <div className="flex flex-col space-y-1">
+                  <div className="flex items-center">
+                    <TokenIcon symbol={position.liquidity.token0.symbol} size={14} />
+                    <span className="text-sm ml-1">{position.liquidity.token0.amount}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <TokenIcon symbol={position.liquidity.token1.symbol} size={14} />
+                    <span className="text-sm ml-1">{position.liquidity.token1.amount}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right side shows fee tokens */}
+              <div>
+                <div className="text-xs text-zinc-400 mb-1">Fee Tokens</div>
+                <div className="flex flex-col space-y-1">
+                  <div className="flex items-center">
+                    <TokenIcon symbol={position.fees.token0.symbol} size={14} />
+                    <span className="text-sm ml-1">{position.fees.token0.amount}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <TokenIcon symbol={position.fees.token1.symbol} size={14} />
+                    <span className="text-sm ml-1">{position.fees.token1.amount}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex gap-2 mt-3">
+              <Button
+                size="sm"
+                className="bg-[#1a0445]/60 text-white rounded-md text-sm font-medium uppercase transition-all duration-200 h-7 px-2 relative hover:bg-[#1a0445]/80 hover:text-purple-300 flex-1"
+                style={{
+                  boxShadow: "0 0 10px 2px rgba(93, 63, 211, 0.3)",
+                  border: "1px solid rgba(93, 63, 211, 0.5)",
+                }}
+              >
+                ADD
+              </Button>
+              <Button
+                size="sm"
+                className="bg-[#2d0a2e]/60 text-white rounded-md text-sm font-medium uppercase transition-all duration-200 h-7 px-2 relative hover:bg-[#2d0a2e]/80 hover:text-pink-300 flex-1"
+                style={{
+                  boxShadow: "0 0 10px 2px rgba(236, 72, 153, 0.3)",
+                  border: "1px solid rgba(236, 72, 153, 0.5)",
+                }}
+              >
+                REMOVE
+              </Button>
+            </div>
+          </div>
+        )}
+      </GradientBackgroundCard>
     )
   }
 
@@ -506,30 +489,13 @@ export function PositionsTable() {
 
   // Desktop view
   return (
-    <div
-      className="rounded-lg overflow-hidden relative"
-      style={{
-        boxShadow: "0 0 2px #ec4899, 0 0 15px rgba(236,72,153,0.4), 0 0 30px rgba(168,85,247,0.2)",
-        border: "1px solid rgba(236,72,153,0.3)",
-      }}
+    <GradientBackgroundCard
+      shadow
+      border
+      borderColor="rgba(236,72,153,0.3)"
+      shadowColor="rgba(236,72,153,0.4)"
+      contentClassName="relative"
     >
-      {/* 背景渐变 */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0f0326] via-[#1a0445] to-[#0f0326] backdrop-blur-xl"></div>
-
-      {/* 网格背景 */}
-      <div
-        className="absolute inset-0 opacity-10"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(168, 85, 247, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(168, 85, 247, 0.1) 1px, transparent 1px)",
-          backgroundSize: "20px 20px",
-          backgroundPosition: "center center",
-        }}
-      ></div>
-
-      {/* 底部发光效果 */}
-      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-purple-600/5 to-transparent"></div>
-
       {/* 筛选器 */}
       <div className="relative px-4 py-3 border-b border-purple-500/20 flex items-center">
         <div className="flex items-center">
@@ -812,7 +778,7 @@ export function PositionsTable() {
               const totalPages = Math.ceil(positionsData.length / 5)
               const pages = []
 
-              // 确定显示的页码范���
+              // 确定显示的页码范围
               let startPage = Math.max(1, currentPage - 1)
               const endPage = Math.min(startPage + 2, totalPages)
 
@@ -856,6 +822,6 @@ export function PositionsTable() {
           </Button>
         </nav>
       </div>
-    </div>
+    </GradientBackgroundCard>
   )
 }

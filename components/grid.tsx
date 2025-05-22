@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react"
 
 export function Grid() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const animationFrameIdRef = useRef<number>()
 
   useEffect(() => {
     if (!canvasRef.current) return
@@ -30,7 +31,6 @@ export function Grid() {
     const gridDepth = canvas.height * 2
 
     // Animation
-    let animationFrameId: number
     let time = 0
 
     const render = () => {
@@ -61,14 +61,17 @@ export function Grid() {
         ctx.stroke()
       }
 
-      animationFrameId = requestAnimationFrame(render)
+      // 使用useRef存储animationFrameId
+      animationFrameIdRef.current = requestAnimationFrame(render)
     }
 
     render()
 
     return () => {
       window.removeEventListener("resize", setCanvasDimensions)
-      cancelAnimationFrame(animationFrameId)
+      if (animationFrameIdRef.current) {
+        cancelAnimationFrame(animationFrameIdRef.current)
+      }
     }
   }, [])
 

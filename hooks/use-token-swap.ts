@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback, useMemo } from "react"
+import { useState, useCallback, useMemo } from "react"
 import { COMMON_TOKENS } from "@/constants/tokens"
 import type { Token } from "@/types"
 
@@ -38,12 +38,11 @@ export function useTokenSwap(
   const [toToken, setToToken] = useState<Token>(initialToToken)
   const [fromAmount, setFromAmount] = useState("")
   const [toAmount, setToAmount] = useState("")
-  const [exchangeRate, setExchangeRate] = useState(0)
   const [priceImpact, setPriceImpact] = useState("0.2")
   const [isRateReversed, setIsRateReversed] = useState(false)
 
   // Use useMemo to calculate exchange rate to avoid unnecessary recalculations
-  const calculatedExchangeRate = useMemo(() => {
+  const exchangeRate = useMemo(() => {
     if (fromToken.price && toToken.price) {
       return fromToken.price / toToken.price
     }
@@ -51,9 +50,9 @@ export function useTokenSwap(
   }, [fromToken.price, toToken.price])
 
   // Update state when calculated exchange rate changes
-  useEffect(() => {
-    setExchangeRate(calculatedExchangeRate)
-  }, [calculatedExchangeRate])
+  // useEffect(() => {
+  //   setExchangeRate(calculatedExchangeRate)
+  // }, [calculatedExchangeRate])
 
   // Use useCallback to optimize functions
   const handleSwapTokens = useCallback(() => {
@@ -61,7 +60,7 @@ export function useTokenSwap(
     setToToken(fromToken)
     setFromAmount(toAmount)
     setToAmount(fromAmount)
-  }, [fromToken, toToken, fromAmount, toAmount])
+  }, [fromToken, toToken, fromAmount, toAmount, setFromToken, setToToken, setFromAmount, setToAmount])
 
   const handleFromAmountChange = useCallback(
     (value: string) => {
@@ -75,7 +74,7 @@ export function useTokenSwap(
         setToAmount("")
       }
     },
-    [exchangeRate],
+    [exchangeRate, setFromAmount, setToAmount],
   )
 
   const handleToAmountChange = useCallback(
@@ -90,7 +89,7 @@ export function useTokenSwap(
         setFromAmount("")
       }
     },
-    [exchangeRate],
+    [exchangeRate, setFromAmount, setToAmount],
   )
 
   const handleMaxClick = useCallback(() => {
@@ -100,7 +99,7 @@ export function useTokenSwap(
       const calculatedAmount = (Number(balance) * exchangeRate).toFixed(6)
       setToAmount(calculatedAmount)
     }
-  }, [fromToken.balance, exchangeRate])
+  }, [fromToken.balance, exchangeRate, setFromAmount, setToAmount])
 
   const getMinReceived = useCallback(
     (slippage: string): string => {

@@ -1,11 +1,12 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useMemo } from "react"
 import { ChevronLeft, ChevronRight, ArrowUpDown, ChevronUp, ChevronDown, X } from "lucide-react"
 import { TokenIcon } from "@/components/ui/token-icon"
 import { Button } from "@/components/ui/button"
 import { InfoTooltip } from "@/components/ui/info-tooltip"
 import { useMobile } from "@/hooks/use-mobile"
+import { GradientBackgroundCard } from "@/components/ui/gradient-background-card"
 
 // Mock data for the pools
 const poolsData = [
@@ -120,7 +121,6 @@ export function LiquidityPoolsTable({
   const [activeFilter, setActiveFilter] = useState<string | null>(null)
   const [showFilterMenu, setShowFilterMenu] = useState(false)
   const [selectedPool, setSelectedPool] = useState<number | null>(null)
-  const [visiblePools, setVisiblePools] = useState(poolsData)
   const filterMenuRef = useRef<HTMLDivElement>(null)
   const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm)
 
@@ -134,8 +134,7 @@ export function LiquidityPoolsTable({
     }
   }
 
-  // 根据排序和筛选更新可见池子
-  useEffect(() => {
+  const visiblePools = useMemo(() => {
     let filtered = [...poolsData]
 
     // 应用搜索筛选
@@ -190,8 +189,8 @@ export function LiquidityPoolsTable({
       })
     }
 
-    setVisiblePools(filtered)
-  }, [poolType, sortOption, localSearchTerm])
+    return filtered
+  }, [poolType, sortOption, localSearchTerm, poolsData])
 
   // 点击外部关闭筛选菜单
   useEffect(() => {
@@ -224,31 +223,15 @@ export function LiquidityPoolsTable({
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setSelectedPool(null)}></div>
-        <div
-          className="w-full max-w-xs rounded-xl overflow-hidden z-10 relative"
-          style={{
-            boxShadow: "0 0 2px #ec4899, 0 0 15px rgba(236,72,153,0.4), 0 0 30px rgba(168,85,247,0.2)",
-            border: "1px solid rgba(236,72,153,0.3)",
-          }}
+        <GradientBackgroundCard
+          className="w-full max-w-xs z-10"
+          shadow
+          border
+          borderColor="rgba(236,72,153,0.3)"
+          shadowColor="rgba(236,72,153,0.4)"
+          contentClassName="p-3 space-y-3"
         >
-          {/* 背景渐变 */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#0f0326] via-[#1a0445] to-[#0f0326] backdrop-blur-xl"></div>
-
-          {/* 网格背景 */}
-          <div
-            className="absolute inset-0 opacity-10"
-            style={{
-              backgroundImage:
-                "linear-gradient(rgba(168, 85, 247, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(168, 85, 247, 0.1) 1px, transparent 1px)",
-              backgroundSize: "20px 20px",
-              backgroundPosition: "center center",
-            }}
-          ></div>
-
-          {/* 底部发光效果 */}
-          <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-purple-600/5 to-transparent"></div>
-
-          <div className="relative p-3 border-b border-pink-500/20">
+          <div className="border-b border-pink-500/20 pb-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="flex -space-x-2">
@@ -269,50 +252,48 @@ export function LiquidityPoolsTable({
             </div>
           </div>
 
-          <div className="relative p-3 space-y-3">
-            <div className="grid grid-cols-2 gap-3">
-              <div className="bg-black/20 p-3 rounded-lg">
-                <div className="text-xs text-zinc-400 mb-1">Volume (24h)</div>
-                <div className="text-xl font-medium">{pool.volume}</div>
-              </div>
-              <div className="bg-black/20 p-3 rounded-lg">
-                <div className="text-xs text-zinc-400 mb-1">TVL</div>
-                <div className="text-xl font-medium">{pool.tvl}</div>
-              </div>
-              <div className="bg-black/20 p-3 rounded-lg">
-                <div className="text-xs text-zinc-400 mb-1">APR</div>
-                <div className="text-xl font-medium bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
-                  {pool.apr}
-                </div>
-              </div>
-              <div className="bg-black/20 p-3 rounded-lg">
-                <div className="text-xs text-zinc-400 mb-1">Fees (24h)</div>
-                <div className="text-xl font-medium">{pool.fees}</div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-black/20 p-3 rounded-lg">
+              <div className="text-xs text-zinc-400 mb-1">Volume (24h)</div>
+              <div className="text-xl font-medium">{pool.volume}</div>
+            </div>
+            <div className="bg-black/20 p-3 rounded-lg">
+              <div className="text-xs text-zinc-400 mb-1">TVL</div>
+              <div className="text-xl font-medium">{pool.tvl}</div>
+            </div>
+            <div className="bg-black/20 p-3 rounded-lg">
+              <div className="text-xs text-zinc-400 mb-1">APR</div>
+              <div className="text-xl font-medium bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">
+                {pool.apr}
               </div>
             </div>
-
-            <div className="grid grid-cols-2 gap-3 pt-2">
-              <Button
-                className="bg-[#1a0445]/60 text-white rounded-md text-sm font-medium transition-all duration-200 h-10 px-0 relative hover:bg-[#1a0445]/80 hover:text-purple-300 hover:scale-105"
-                style={{
-                  boxShadow: "0 0 10px 2px rgba(93, 63, 211, 0.3)",
-                  border: "1px solid rgba(93, 63, 211, 0.5)",
-                }}
-              >
-                Swap
-              </Button>
-              <Button
-                className="bg-[#2d0a2e]/60 text-white rounded-md text-sm font-medium transition-all duration-200 h-10 px-0 relative hover:bg-[#2d0a2e]/80 hover:text-pink-300 hover:scale-105"
-                style={{
-                  boxShadow: "0 0 10px 2px rgba(236, 72, 153, 0.3)",
-                  border: "1px solid rgba(236, 72, 153, 0.5)",
-                }}
-              >
-                Add
-              </Button>
+            <div className="bg-black/20 p-3 rounded-lg">
+              <div className="text-xs text-zinc-400 mb-1">Fees (24h)</div>
+              <div className="text-xl font-medium">{pool.fees}</div>
             </div>
           </div>
-        </div>
+
+          <div className="grid grid-cols-2 gap-3 pt-2">
+            <Button
+              className="bg-[#1a0445]/60 text-white rounded-md text-sm font-medium transition-all duration-200 h-10 px-0 relative hover:bg-[#1a0445]/80 hover:text-purple-300 hover:scale-105"
+              style={{
+                boxShadow: "0 0 10px 2px rgba(93, 63, 211, 0.3)",
+                border: "1px solid rgba(93, 63, 211, 0.5)",
+              }}
+            >
+              Swap
+            </Button>
+            <Button
+              className="bg-[#2d0a2e]/60 text-white rounded-md text-sm font-medium transition-all duration-200 h-10 px-0 relative hover:bg-[#2d0a2e]/80 hover:text-pink-300 hover:scale-105"
+              style={{
+                boxShadow: "0 0 10px 2px rgba(236, 72, 153, 0.3)",
+                border: "1px solid rgba(236, 72, 153, 0.5)",
+              }}
+            >
+              Add
+            </Button>
+          </div>
+        </GradientBackgroundCard>
       </div>
     )
   }
@@ -320,27 +301,11 @@ export function LiquidityPoolsTable({
   // 移动端池子卡片组件
   const MobilePoolCard = ({ pool }: { pool: (typeof poolsData)[0] }) => {
     return (
-      <div
-        className="relative rounded-lg p-3 mb-1 transition-colors w-full shadow-sm shadow-purple-500/10 overflow-hidden"
+      <GradientBackgroundCard
+        className="mb-1 w-full shadow-sm shadow-purple-500/10"
+        contentClassName="p-3"
         onClick={() => setSelectedPool(pool.id)}
       >
-        {/* 背景渐变 */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0f0326] via-[#1a0445] to-[#0f0326] backdrop-blur-xl"></div>
-
-        {/* 网格背景 */}
-        <div
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(168, 85, 247, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(168, 85, 247, 0.1) 1px, transparent 1px)",
-            backgroundSize: "20px 20px",
-            backgroundPosition: "center center",
-          }}
-        ></div>
-
-        {/* 底部发光效果 */}
-        <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-purple-600/10 to-transparent"></div>
-
         <div className="relative flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <div className="flex -space-x-2">
@@ -372,7 +337,7 @@ export function LiquidityPoolsTable({
             <span className="font-medium">{pool.tvl}</span>
           </div>
         </div>
-      </div>
+      </GradientBackgroundCard>
     )
   }
 
@@ -381,32 +346,16 @@ export function LiquidityPoolsTable({
     return (
       <div className="fixed inset-0 z-50 flex items-end justify-center">
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowFilterMenu(false)}></div>
-        <div
+        <GradientBackgroundCard
+          className="w-full max-w-md rounded-t-xl rounded-b-none z-10"
+          contentClassName="p-4 pb-8"
+          border
+          borderColor="rgba(191,77,219,0.2)"
+          borderBottom={false}
+          shadow
+          shadowColor="rgba(191,77,219,0.2)"
           ref={filterMenuRef}
-          className="w-full max-w-md rounded-t-xl overflow-hidden z-10 p-4 pb-8 relative"
-          style={{
-            boxShadow: "0 -2px 15px rgba(191,77,219,0.2)",
-            border: "1px solid rgba(191,77,219,0.2)",
-            borderBottom: "none",
-          }}
         >
-          {/* 背景渐变 */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#0f0326] via-[#1a0445] to-[#0f0326] backdrop-blur-xl"></div>
-
-          {/* 网格背景 */}
-          <div
-            className="absolute inset-0 opacity-10"
-            style={{
-              backgroundImage:
-                "linear-gradient(rgba(168, 85, 247, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(168, 85, 247, 0.1) 1px, transparent 1px)",
-              backgroundSize: "20px 20px",
-              backgroundPosition: "center center",
-            }}
-          ></div>
-
-          {/* 底部发光效果 */}
-          <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-purple-600/10 to-transparent"></div>
-
           <div className="relative flex justify-between items-center mb-4">
             <h3 className="text-lg font-bold">Filter Pools</h3>
             <button
@@ -492,7 +441,7 @@ export function LiquidityPoolsTable({
               </Button>
             </div>
           </div>
-        </div>
+        </GradientBackgroundCard>
       </div>
     )
   }
@@ -607,161 +556,142 @@ export function LiquidityPoolsTable({
 
   // 渲染PC端视图 - 保持原有的表格布局
   return (
-    <div
-      className="rounded-lg overflow-hidden relative"
-      style={{
-        boxShadow: "0 0 2px #ec4899, 0 0 15px rgba(236,72,153,0.4), 0 0 30px rgba(168,85,247,0.2)",
-        border: "1px solid rgba(236,72,153,0.3)",
-      }}
+    <GradientBackgroundCard
+      shadow
+      border
+      borderColor="rgba(236,72,153,0.3)"
+      shadowColor="rgba(236,72,153,0.4)"
+      contentClassName="relative overflow-x-auto"
     >
-      {/* 背景渐变 */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0f0326] via-[#1a0445] to-[#0f0326] backdrop-blur-xl"></div>
-
-      {/* 网格背景 */}
-      <div
-        className="absolute inset-0 opacity-10"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(168, 85, 247, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(168, 85, 247, 0.1) 1px, transparent 1px)",
-          backgroundSize: "20px 20px",
-          backgroundPosition: "center center",
-        }}
-      ></div>
-
-      {/* 底部发光效果 */}
-      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-purple-600/5 to-transparent"></div>
-
-      <div className="relative overflow-x-auto">
-        <table className="w-full table-fixed">
-          <thead>
-            <tr className="border-b border-purple-500/20">
-              <th className="w-[20px]"></th>
-              <th className="px-1 py-3 text-center text-xs font-medium text-zinc-300 uppercase tracking-wider w-[14px] text-shadow-sm">
-                #
-              </th>
-              <th className="px-2 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider w-[140px]">
-                <button className="flex items-center focus:outline-none" onClick={() => handleSort("pool")}>
-                  Pool {renderSortIcon("pool")}
-                </button>
-              </th>
-              <th className="px-4 py-3 text-right text-xs font-medium text-zinc-400 uppercase tracking-wider whitespace-nowrap w-[110px]">
-                <button
-                  className="flex items-center justify-end ml-auto focus:outline-none"
-                  onClick={() => handleSort("volume")}
-                >
-                  Volume (24H) {renderSortIcon("volume")}
-                </button>
-              </th>
-              <th className="px-4 py-3 text-right text-xs font-medium text-zinc-400 uppercase tracking-wider w-[110px]">
-                <button
-                  className="flex items-center justify-end ml-auto focus:outline-none"
-                  onClick={() => handleSort("tvl")}
-                >
-                  TVL {renderSortIcon("tvl")}
-                </button>
-              </th>
-              <th className="px-4 py-3 text-right text-xs font-medium text-zinc-400 uppercase tracking-wider w-[110px]">
-                <div className="flex items-center justify-end">
-                  <button
-                    className="flex items-center justify-end ml-auto focus:outline-none"
-                    onClick={() => handleSort("apr")}
-                  >
-                    APR {renderSortIcon("apr")}
-                  </button>
-                  <InfoTooltip
-                    content="Annual Percentage Rate based on 24h trading volume"
-                    position="top"
-                    className="ml-1"
-                  />
-                </div>
-              </th>
-              <th className="px-2 py-3 text-right text-xs font-medium text-zinc-400 uppercase tracking-wider whitespace-nowrap w-[110px]">
-                <button
-                  className="flex items-center justify-end ml-auto focus:outline-none"
-                  onClick={() => handleSort("fees")}
-                >
-                  Fees (24H) {renderSortIcon("fees")}
-                </button>
-              </th>
-              <th className="w-[20px]"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {getCurrentPagePools().map((pool) => (
-              <tr
-                key={pool.id}
-                className="border-b border-purple-500/10 hover:bg-[#170538]/70 transition-all duration-200"
-                onMouseEnter={() => setHoveredRow(pool.id)}
-                onMouseLeave={() => setHoveredRow(null)}
+      <table className="w-full table-fixed">
+        <thead>
+          <tr className="border-b border-purple-500/20">
+            <th className="w-[20px]"></th>
+            <th className="px-1 py-3 text-center text-xs font-medium text-zinc-300 uppercase tracking-wider w-[14px] text-shadow-sm">
+              #
+            </th>
+            <th className="px-2 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider w-[140px]">
+              <button className="flex items-center focus:outline-none" onClick={() => handleSort("pool")}>
+                Pool {renderSortIcon("pool")}
+              </button>
+            </th>
+            <th className="px-4 py-3 text-right text-xs font-medium text-zinc-400 uppercase tracking-wider whitespace-nowrap w-[110px]">
+              <button
+                className="flex items-center justify-end ml-auto focus:outline-none"
+                onClick={() => handleSort("volume")}
               >
-                <td className="w-[25px]"></td>
-                <td className="px-1 py-4 whitespace-nowrap text-sm font-medium text-zinc-200 text-center">{pool.id}</td>
-                <td className="px-2 py-4 whitespace-nowrap overflow-hidden">
-                  <div className="flex items-center w-full">
-                    <div className="flex -space-x-2 mr-2 flex-shrink-0">
-                      <TokenIcon symbol={pool.pair.split("/")[0]} size={18} />
-                      <TokenIcon symbol={pool.pair.split("/")[1]} size={18} />
-                    </div>
-                    <span className="font-bold text-base tracking-tighter font-mono flex-shrink-0">{pool.pair}</span>
-                    <span className="ml-2 text-xs px-1.5 py-0.5 rounded-md bg-white/10 flex-shrink-0">{pool.fee}</span>
+                Volume (24H) {renderSortIcon("volume")}
+              </button>
+            </th>
+            <th className="px-4 py-3 text-right text-xs font-medium text-zinc-400 uppercase tracking-wider w-[110px]">
+              <button
+                className="flex items-center justify-end ml-auto focus:outline-none"
+                onClick={() => handleSort("tvl")}
+              >
+                TVL {renderSortIcon("tvl")}
+              </button>
+            </th>
+            <th className="px-4 py-3 text-right text-xs font-medium text-zinc-400 uppercase tracking-wider w-[110px]">
+              <div className="flex items-center justify-end">
+                <button
+                  className="flex items-center justify-end ml-auto focus:outline-none"
+                  onClick={() => handleSort("apr")}
+                >
+                  APR {renderSortIcon("apr")}
+                </button>
+                <InfoTooltip
+                  content="Annual Percentage Rate based on 24h trading volume"
+                  position="top"
+                  className="ml-1"
+                />
+              </div>
+            </th>
+            <th className="px-2 py-3 text-right text-xs font-medium text-zinc-400 uppercase tracking-wider whitespace-nowrap w-[110px]">
+              <button
+                className="flex items-center justify-end ml-auto focus:outline-none"
+                onClick={() => handleSort("fees")}
+              >
+                Fees (24H) {renderSortIcon("fees")}
+              </button>
+            </th>
+            <th className="w-[20px]"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {getCurrentPagePools().map((pool) => (
+            <tr
+              key={pool.id}
+              className="border-b border-purple-500/10 hover:bg-[#170538]/70 transition-all duration-200"
+              onMouseEnter={() => setHoveredRow(pool.id)}
+              onMouseLeave={() => setHoveredRow(null)}
+            >
+              <td className="w-[25px]"></td>
+              <td className="px-1 py-4 whitespace-nowrap text-sm font-medium text-zinc-200 text-center">{pool.id}</td>
+              <td className="px-2 py-4 whitespace-nowrap overflow-hidden">
+                <div className="flex items-center w-full">
+                  <div className="flex -space-x-2 mr-2 flex-shrink-0">
+                    <TokenIcon symbol={pool.pair.split("/")[0]} size={18} />
+                    <TokenIcon symbol={pool.pair.split("/")[1]} size={18} />
                   </div>
-                </td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-zinc-300 text-right">{pool.volume}</td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-zinc-300 text-right">{pool.tvl}</td>
-                <td className="px-4 py-4 whitespace-nowrap text-right">
-                  <div className="flex items-center justify-end">
-                    <span className="text-sm font-medium bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500 drop-shadow-[0_0_5px_rgba(168,85,247,0.5)] relative">
-                      {pool.apr}
-                      <span className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-pink-500/30 to-transparent"></span>
-                    </span>
+                  <span className="font-bold text-base tracking-tighter font-mono flex-shrink-0">{pool.pair}</span>
+                  <span className="ml-2 text-xs px-1.5 py-0.5 rounded-md bg-white/10 flex-shrink-0">{pool.fee}</span>
+                </div>
+              </td>
+              <td className="px-4 py-4 whitespace-nowrap text-sm text-zinc-300 text-right">{pool.volume}</td>
+              <td className="px-4 py-4 whitespace-nowrap text-sm text-zinc-300 text-right">{pool.tvl}</td>
+              <td className="px-4 py-4 whitespace-nowrap text-right">
+                <div className="flex items-center justify-end">
+                  <span className="text-sm font-medium bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500 drop-shadow-[0_0_5px_rgba(168,85,247,0.5)] relative">
+                    {pool.apr}
+                    <span className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-pink-500/30 to-transparent"></span>
+                  </span>
+                </div>
+              </td>
+              <td className="px-2 py-4 whitespace-nowrap text-sm text-zinc-300 relative text-right">
+                {hoveredRow === pool.id ? (
+                  <div className="absolute inset-0 flex items-center justify-end pr-2 space-x-2">
+                    <Button
+                      size="sm"
+                      className="w-[60px] bg-[#0c0414] text-white rounded-md text-xs font-medium transition-all duration-200 h-7 px-0 relative hover:bg-[#150a28] hover:text-purple-300 hover:scale-105"
+                      style={{
+                        boxShadow: "0 0 10px 2px rgba(93, 63, 211, 0.3)",
+                      }}
+                    >
+                      <div
+                        className="absolute inset-0 rounded-md"
+                        style={{
+                          border: "1px solid rgba(93, 63, 211, 0.8)",
+                          boxShadow: "inset 0 0 4px rgba(93, 63, 211, 0.5)",
+                        }}
+                      ></div>
+                      Swap
+                    </Button>
+                    <Button
+                      size="sm"
+                      className="w-[60px] bg-[#0c0414] text-white rounded-md text-xs font-medium transition-all duration-200 h-7 px-0 relative hover:bg-[#1a0a1e] hover:text-pink-300 hover:scale-105"
+                      style={{
+                        boxShadow: "0 0 10px 2px rgba(236, 72, 153, 0.3)",
+                      }}
+                    >
+                      <div
+                        className="absolute inset-0 rounded-md"
+                        style={{
+                          border: "1px solid rgba(236, 72, 153, 0.8)",
+                          boxShadow: "inset 0 0 4px rgba(236, 72, 153, 0.5)",
+                        }}
+                      ></div>
+                      Add
+                    </Button>
                   </div>
-                </td>
-                <td className="px-2 py-4 whitespace-nowrap text-sm text-zinc-300 relative text-right">
-                  {hoveredRow === pool.id ? (
-                    <div className="absolute inset-0 flex items-center justify-end pr-2 space-x-2">
-                      <Button
-                        size="sm"
-                        className="w-[60px] bg-[#0c0414] text-white rounded-md text-xs font-medium transition-all duration-200 h-7 px-0 relative hover:bg-[#150a28] hover:text-purple-300 hover:scale-105"
-                        style={{
-                          boxShadow: "0 0 10px 2px rgba(93, 63, 211, 0.3)",
-                        }}
-                      >
-                        <div
-                          className="absolute inset-0 rounded-md"
-                          style={{
-                            border: "1px solid rgba(93, 63, 211, 0.8)",
-                            boxShadow: "inset 0 0 4px rgba(93, 63, 211, 0.5)",
-                          }}
-                        ></div>
-                        Swap
-                      </Button>
-                      <Button
-                        size="sm"
-                        className="w-[60px] bg-[#0c0414] text-white rounded-md text-xs font-medium transition-all duration-200 h-7 px-0 relative hover:bg-[#1a0a1e] hover:text-pink-300 hover:scale-105"
-                        style={{
-                          boxShadow: "0 0 10px 2px rgba(236, 72, 153, 0.3)",
-                        }}
-                      >
-                        <div
-                          className="absolute inset-0 rounded-md"
-                          style={{
-                            border: "1px solid rgba(236, 72, 153, 0.8)",
-                            boxShadow: "inset 0 0 4px rgba(236, 72, 153, 0.5)",
-                          }}
-                        ></div>
-                        Add
-                      </Button>
-                    </div>
-                  ) : (
-                    pool.fees
-                  )}
-                </td>
-                <td className="w-[25px]"></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                ) : (
+                  pool.fees
+                )}
+              </td>
+              <td className="w-[25px]"></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
       <div className="relative flex items-center justify-center px-4 py-3 border-t border-purple-500/20">
         <nav className="flex items-center">
@@ -825,6 +755,6 @@ export function LiquidityPoolsTable({
           </Button>
         </nav>
       </div>
-    </div>
+    </GradientBackgroundCard>
   )
 }

@@ -51,7 +51,7 @@ export function WalletButton({ isMobile = false }: WalletButtonProps) {
         isMobile={effectiveIsMobile}
       />
       <Button
-        className={`launch-app-btn bg-transparent border-0 rounded-md px-3 h-[30px] flex items-center justify-center relative overflow-hidden group ${effectiveIsMobile ? "text-xs" : "text-xs"} ${isConnected ? "text-purple-300" : "text-white"} ${effectiveIsMobile ? "w-auto" : "w-auto"}`}
+        className={`launch-app-btn bg-transparent border-0 rounded-md px-3 h-[30px] flex items-center justify-center relative overflow-hidden group ${effectiveIsMobile ? "text-xs" : "text-xs"} ${isConnected ? "text-purple-300" : "text-white"} ${effectiveIsMobile ? "w-auto" : "w-auto"} ${isConnecting ? "opacity-80 cursor-wait" : ""}`}
         onClick={handleClick}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
@@ -63,7 +63,7 @@ export function WalletButton({ isMobile = false }: WalletButtonProps) {
           {isConnecting ? (
             <>
               <Loader2 className={`mr-1 h-3 w-3 animate-spin inline`} />
-              {effectiveIsMobile ? "Connect..." : "Connecting..."}
+              <span className="animate-pulse">Connecting...</span>
             </>
           ) : isConnected ? (
             isHovering ? (
@@ -76,6 +76,7 @@ export function WalletButton({ isMobile = false }: WalletButtonProps) {
           )}
         </span>
         <div className="launch-btn-bg absolute inset-0 -z-0 opacity-90"></div>
+        {isConnecting && <div className="absolute inset-0 bg-purple-500/10 z-0 animate-pulse rounded-md"></div>}
       </Button>
     </div>
   )

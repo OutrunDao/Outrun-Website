@@ -264,7 +264,7 @@ html {
 }
 
 .dropdown-bg {
-  background: linear-gradient(135deg, rgba(15, 3, 38, 0.95), rgba(26, 4, 69, 0.95));
+  background: linear-gradient(135deg, rgba(15, 3, 38, 0.98), rgba(26, 4, 69, 0.98));
   backdrop-filter: blur(12px);
 }
 

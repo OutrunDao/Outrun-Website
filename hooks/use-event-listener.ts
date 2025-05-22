@@ -52,17 +52,18 @@ export function useEventListener<
   }, [handler])
 
   useEffect(() => {
-    // Make sure element supports addEventListener
+    // 捕获当前的targetElement
     const targetElement: T | Window = element?.current || window
 
     if (!(targetElement && targetElement.addEventListener)) return
 
-    // Create event listener that calls handler function stored in ref
+    // 创建事件监听器
     const eventListener: typeof handler = (event) => savedHandler.current(event)
 
+    // 添加事件监听器
     targetElement.addEventListener(eventName, eventListener, options)
 
-    // Cleanup function
+    // 清理函数 - 使用闭包捕获当前的targetElement
     return () => {
       targetElement.removeEventListener(eventName, eventListener, options)
     }

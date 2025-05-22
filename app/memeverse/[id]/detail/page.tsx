@@ -11,6 +11,7 @@ import { DepositSection } from "@/components/memeverse/detail/deposit-section"
 import { RefundSection } from "@/components/memeverse/detail/refund-section"
 import { OverviewTab } from "@/components/memeverse/detail/overview-tab"
 import { MOCK_PROJECTS } from "@/data/memeverse-projects"
+import { GradientBackgroundCard } from "@/components/ui/gradient-background-card"
 
 // 修改Stage颜色映射，使用更加统一的渐变和阴影效果
 const STAGE_COLORS: Record<string, { bg: string; text: string; glow: string; gradient: string }> = {
@@ -207,61 +208,56 @@ export default function VerseDetailPage() {
     <div className="min-h-screen">
       {/* Page content - increased top spacing */}
       <div className="max-w-5xl px-4 md:px-6 mx-auto py-12 pt-28">
-        {/* Back button - Outrun风格美化 */}
+        {/* PC端按钮 - 只在md及以上屏幕显示 */}
         <Button
           onClick={handleBackClick}
           variant="outline"
-          className="mb-6 relative overflow-hidden group"
-          style={{
-            background: "rgba(15, 3, 38, 0.8)",
-            border: "1px solid rgba(236, 72, 153, 0.4)",
-            borderRadius: "9999px",
-            boxShadow: "0 0 10px rgba(236, 72, 153, 0.3), 0 0 20px rgba(168, 85, 247, 0.2)",
-            padding: "8px 16px",
-          }}
+          className="hidden md:flex relative overflow-hidden group w-auto mr-auto md:mr-0 md:absolute md:left-0 md:w-auto md:relative md:overflow-hidden desktop-back-button mb-6"
         >
           {/* 背景渐变效果 */}
-          <span className="absolute inset-0 bg-gradient-to-r from-purple-600/10 via-pink-500/10 to-purple-600/10 group-hover:opacity-100 opacity-0 transition-opacity duration-500"></span>
+          <span className="absolute inset-0 block opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out"></span>
 
           {/* 发光边框效果 */}
           <span
-            className="absolute inset-00 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+            className="absolute inset-0 block rounded-full opacity-80 group-hover:opacity-100 transition-all duration-500 ease-in-out"
             style={{
-              boxShadow: "inset 0 0 8px rgba(236, 72, 153, 0.6), 0 0 12px rgba(168, 85, 247, 0.4)",
+              boxShadow:
+                "0 0 5px rgba(236, 72, 153, 0.6), 0 0 15px rgba(236, 72, 153, 0.4), 0 0 25px rgba(168, 85, 247, 0.2)",
+              border: "1px solid rgba(236, 72, 153, 0.7)",
             }}
           ></span>
 
           {/* 按钮内容 */}
           <div className="flex items-center relative z-10">
-            <ChevronLeft className="mr-1 h-4 w-4 text-pink-300 group-hover:text-pink-200 transition-colors duration-300" />
-            <span className="text-pink-300 group-hover:text-pink-200 transition-colors duration-300 font-medium">
+            <ChevronLeft className="mr-1 h-4 w-4 text-pink-300 group-hover:text-pink-200 transition-colors duration-500" />
+            <span className="text-pink-300 group-hover:text-pink-200 transition-colors duration-500 font-medium">
               Back to Board
             </span>
           </div>
         </Button>
 
-        {/* 调整项目头部信息卡片的背景透明度 */}
-        <div
-          className="relative rounded-xl overflow-hidden p-4 md:p-6 mb-8"
-          style={{
-            boxShadow: "0 0 2px #ec4899, 0 0 15px rgba(236,72,153,0.4), 0 0 30px rgba(168,85,247,0.2)",
-            border: "1px solid rgba(236,72,153,0.3)",
-          }}
+        {/* 移动端按钮 - 只在小于md的屏幕显示 */}
+        <button
+          onClick={handleBackClick}
+          type="button"
+          className="md:hidden flex items-center text-pink-300 mr-auto bg-transparent border-0 p-0 shadow-none outline-none mb-6"
         >
-          {/* 降低背景渐变的不透明度 */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#0f0326]/90 via-[#1a0445]/90 to-[#0f0326]/90 backdrop-blur-sm"></div>
-          {/* 网格背景 */}
-          <div
-            className="absolute inset-0 opacity-10"
-            style={{
-              backgroundImage:
-                "linear-gradient(rgba(168, 85, 247, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(168, 85, 247, 0.1) 1px, transparent 1px)",
-              backgroundSize: "20px 20px",
-              backgroundPosition: "center center",
-            }}
-          ></div>
+          <ChevronLeft className="mr-1 h-4 w-4 text-pink-300" />
+          <span className="font-medium">Back</span>
+        </button>
 
-          <div className="relative flex flex-col lg:flex-row gap-4 md:gap-6 items-start">
+        {/* 调整项目头部信息卡片的背景透明度 */}
+        <GradientBackgroundCard
+          className="mb-8"
+          contentClassName="p-4 md:p-6"
+          rounded="xl"
+          shadow={true}
+          border={true}
+          backdropBlur={true}
+          showGrid={true}
+          gridOpacity={0.1}
+        >
+          <div className="flex flex-col lg:flex-row gap-4 md:gap-6 items-start">
             {/* Use vertical layout on small and medium screens */}
             <div className="w-full lg:hidden flex flex-col gap-4">
               <ProjectDetails project={verse} stageStyle={stageStyle} onBackClick={handleBackClick} />
@@ -302,31 +298,19 @@ export default function VerseDetailPage() {
               )}
             </div>
           </div>
-        </div>
+        </GradientBackgroundCard>
 
         {/* 同样调整标签内容区域的背景透明度 */}
-        <div
-          className="relative rounded-xl overflow-hidden"
-          style={{
-            boxShadow: "0 0 2px #ec4899, 0 0 15px rgba(236,72,153,0.4), 0 0 30px rgba(168,85,247,0.2)",
-            border: "1px solid rgba(236,72,153,0.3)",
-          }}
+        <GradientBackgroundCard
+          rounded="xl"
+          shadow={true}
+          border={true}
+          backdropBlur={true}
+          showGrid={true}
+          gridOpacity={0.1}
         >
-          {/* 降低背景渐变的不透明度并减少模糊效果 */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#0f0326]/90 via-[#1a0445]/90 to-[#0f0326]/90 backdrop-blur-sm"></div>
-          {/* 网格背景 */}
-          <div
-            className="absolute inset-0 opacity-10"
-            style={{
-              backgroundImage:
-                "linear-gradient(rgba(168, 85, 247, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(168, 85, 247, 0.1) 1px, transparent 1px)",
-              backgroundSize: "20px 20px",
-              backgroundPosition: "center center",
-            }}
-          ></div>
-
           {/* 重新设计的标签导航 */}
-          <div className="relative">
+          <div>
             {/* 标签导航 - 使用更加精致的设计 */}
             <div className="flex items-center px-6 pt-4 pb-0 space-x-1">
               {TABS.map((tab) => (
@@ -367,8 +351,25 @@ export default function VerseDetailPage() {
               />
             </div>
           </div>
-        </div>
+        </GradientBackgroundCard>
       </div>
+
+      <style jsx global>{`
+        .desktop-back-button {
+          background: rgba(15, 3, 38, 0.8);
+          border: 1px solid rgba(236, 72, 153, 0.4);
+          border-radius: 9999px;
+          box-shadow: 0 0 10px rgba(236, 72, 153, 0.3), 0 0 20px rgba(168, 85, 247, 0.2);
+          padding: 8px 16px;
+          transition: all 0.5s ease-in-out;
+        }
+
+        .desktop-back-button:hover {
+          background: rgba(25, 10, 45, 0.9);
+          color: #f9a8d4; /* 粉色 */
+          text-shadow: 0 0 5px rgba(249, 168, 212, 0.4);
+        }
+      `}</style>
     </div>
   )
 }

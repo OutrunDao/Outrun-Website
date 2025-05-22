@@ -60,7 +60,7 @@ function useNavbarResponsive() {
 
   useEffect(() => {
     const checkWidth = () => {
-      setIsNavMobile(window.innerWidth < 1024)
+      setIsNavMobile(window.innerWidth < 930)
     }
 
     checkWidth()

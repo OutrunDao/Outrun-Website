@@ -49,6 +49,25 @@ export function RouteModal({ isOpen, onClose, fromToken, toToken, route, antiMEV
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
+      <style jsx global>{`
+        @keyframes flowingDashRight {
+          0% {
+            background-position: 0 0;
+          }
+          100% {
+            background-position: 12px 0;
+          }
+        }
+        
+        .flowing-dash-line-right {
+          background-image: linear-gradient(to right, rgba(236, 72, 153, 0.7) 50%, rgba(0, 0, 0, 0) 0%);
+          background-position: 0 0;
+          background-size: 12px 2px;
+          background-repeat: repeat-x;
+          animation: flowingDashRight 0.8s linear infinite;
+        }
+      `}</style>
+
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -59,7 +78,7 @@ export function RouteModal({ isOpen, onClose, fromToken, toToken, route, antiMEV
             ref={modalRef}
             className="w-full max-w-sm overflow-hidden rounded-lg mx-4" // Add mx-4 for margin on small screens
             style={{
-              background: "linear-gradient(to bottom, rgba(15, 3, 38, 0.95), rgba(10, 2, 25, 0.95))",
+              background: "linear-gradient(to bottom, rgba(15, 3, 38, 0.99), rgba(10, 2, 25, 0.99))",
               boxShadow: "0 0 2px #ec4899, 0 0 15px rgba(236,72,153,0.4), 0 0 30px rgba(168,85,247,0.2)",
               border: "1px solid rgba(236,72,153,0.3)",
             }}
