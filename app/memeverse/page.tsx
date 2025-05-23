@@ -41,7 +41,7 @@ export default function MemeversePage() {
                   </div>
                 </div>
 
-                <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 drop-shadow-[0_0_15px_rgba(168,85,247,0.6)]">
+                <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]">
                   Memeverse
                 </h1>
 
