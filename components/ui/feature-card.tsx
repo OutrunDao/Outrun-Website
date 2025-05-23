@@ -1,10 +1,21 @@
 "use client"
 
+import type React from "react"
 import { useRef } from "react"
-import { cn } from "@/lib/utils"
 import { motion } from "framer-motion"
-import type { FeatureCardProps } from "@/types"
+
+import { cn } from "@/lib/utils"
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer"
+
+interface FeatureCardProps {
+  title: string
+  description: string
+  bulletPoints?: string[]
+  icon: React.ReactNode
+  color?: string
+  className?: string
+  delay?: number
+}
 
 export function FeatureCard({
   title,
@@ -25,8 +36,8 @@ export function FeatureCard({
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
       transition={{ duration: 0.5, delay: isInView ? delay : 0 }}
       className={cn(
-        "bg-black/60 rounded-xl p-6 shadow-lg border border-white/10 backdrop-blur-sm",
-        "hover:bg-black/70 transition-colors duration-300",
+        "bg-black/85 rounded-xl p-6 shadow-lg border border-white/10 backdrop-blur-md",
+        "hover:bg-black/90 transition-colors duration-300",
         className,
       )}
     >
@@ -36,9 +47,9 @@ export function FeatureCard({
         </div>
       )}
 
-      <h3 className="text-xl font-bold mb-3 text-white">{title}</h3>
+      <h3 className="text-xl font-bold mb-3 text-white drop-shadow-sm">{title}</h3>
 
-      <p className="text-zinc-300 mb-4">{description}</p>
+      <p className="text-zinc-200 mb-4">{description}</p>
 
       {bulletPoints && bulletPoints.length > 0 && (
         <ul className="space-y-2">

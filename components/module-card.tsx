@@ -25,10 +25,10 @@ export function ModuleCard({ title, description, icon, href, gradient, learnMore
         whileHover={{ y: -5 }}
         className="relative h-full overflow-hidden rounded-2xl"
       >
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
         <div
-          className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-20 group-hover:opacity-30 transition-opacity duration-300`}
+          className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-45 group-hover:opacity-65 transition-opacity duration-300`}
         />
+        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
         <div className="absolute inset-0 bg-grid-pattern bg-center opacity-10" />
         <div className="relative p-6 md:p-8 h-full flex flex-col">
           <div
@@ -54,7 +54,7 @@ export function ModuleCard({ title, description, icon, href, gradient, learnMore
             <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
           </div>
 
-          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/25 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>
       </motion.div>
     </Link>

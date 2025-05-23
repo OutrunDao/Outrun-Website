@@ -63,7 +63,7 @@ const TABS = [
   // { id: "roadmap", label: "Roadmap" },
 ]
 
-// 确保所有项目都有社交媒体链接
+// 确��所有项目都有社交媒体链接
 const DEFAULT_SOCIAL_LINKS = {
   website: "https://outrun.network",
   x: "https://x.com/outrunnetwork",

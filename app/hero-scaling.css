@@ -1,0 +1,100 @@
+/* Hero Section Scaling Styles */
+.hero-section {
+  height: 100vh;
+  min-height: 600px;
+  max-height: 1080px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 移除背景定义，让全局背景显示 */
+.hero-background {
+  pointer-events: none;
+  transform: none !important;
+  scale: none !important;
+}
+
+.hero-content-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  transform: scale(1);
+  transform-origin: center center;
+  padding-top: 36px; /* 添加顶部内边距，使内容向下移动 */
+}
+
+/* 确保内容不会溢出 */
+.hero-section .container {
+  max-width: 100%;
+  overflow: visible;
+}
+
+/* 移动设备特殊处理 */
+@media (max-width: 768px) {
+  .hero-section {
+    min-height: 500px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section {
+    min-height: 450px;
+  }
+}
+
+/* 确保背景层不被影响 */
+.hero-background::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  z-index: -1;
+}
+
+/* 防止缩放时出现滚动条 */
+.hero-section::-webkit-scrollbar {
+  display: none;
+}
+
+.hero-section {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* 确保动画和交互正常工作 */
+.hero-content-wrapper * {
+  pointer-events: auto;
+}
+
+/* 确保在所有缩放级别下文本都清晰可读 */
+.hero-content-wrapper h1,
+.hero-content-wrapper p,
+.hero-content-wrapper button {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* 防止缩放时布局破坏 */
+.hero-section .space-y-12 > * + * {
+  margin-top: 3rem;
+}
+
+.hero-section .space-y-6 > * + * {
+  margin-top: 1.5rem;
+}
+
+/* 确保按钮和交互元素在缩放后仍然可点击 */
+.hero-content-wrapper button,
+.hero-content-wrapper a {
+  position: relative;
+  z-index: 10;
+}

@@ -298,7 +298,7 @@ export function LiquidityPoolsTable({
     )
   }
 
-  // 移动端池子卡片组件
+  // 移动端池子卡片组��
   const MobilePoolCard = ({ pool }: { pool: (typeof poolsData)[0] }) => {
     return (
       <GradientBackgroundCard
@@ -474,7 +474,7 @@ export function LiquidityPoolsTable({
 
   // 移动端分页控制组件
   const MobilePagination = () => {
-    // 强制设置为5页，用于演示
+    // 强制设置为5页，用于演���
     const totalPages = 5
 
     return (

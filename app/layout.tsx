@@ -1,5 +1,6 @@
 import type React from "react"
 import ClientComponent from "./client"
+import "./hero-scaling.css"
 
 export const metadata = {
   title: "Outrun - Pioneer the Next Generation of DeFi and Web3",
@@ -26,6 +27,3 @@ export default function RootLayout({
 }) {
   return <ClientComponent>{children}</ClientComponent>
 }
-
-
-import './globals.css'
