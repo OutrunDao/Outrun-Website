@@ -1,4 +1,4 @@
-// 格式化日期时间
+// Format date time
 export function formatDateTime(dateTimeStr: string): string {
   const date = new Date(dateTimeStr)
 
@@ -25,7 +25,7 @@ export function formatDateTime(dateTimeStr: string): string {
   return `${year}-${month}-${day} ${hours}:${minutes} ${formattedOffset}`
 }
 
-// 格式化市值
+// Format market cap
 export function formatMarketCap(value: number): string {
   if (value >= 1000000) {
     return `${(value / 1000000).toFixed(2)}M`
@@ -36,7 +36,7 @@ export function formatMarketCap(value: number): string {
   }
 }
 
-// 格式化美元金额
+// Format USD amount
 export function formatUSD(value: number): string {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -45,7 +45,7 @@ export function formatUSD(value: number): string {
   }).format(value)
 }
 
-// 获取阶段对应的边框渐变色
+// Get border gradient color for stage
 export function getBorderGradient(stage: string): string {
   switch (stage) {
     case "Genesis":
@@ -61,7 +61,7 @@ export function getBorderGradient(stage: string): string {
   }
 }
 
-// 获取阶段对应的背景渐变色
+// Get background gradient color for stage
 export function getBackgroundGradient(stage: string): string {
   switch (stage) {
     case "Genesis":
@@ -77,7 +77,7 @@ export function getBackgroundGradient(stage: string): string {
   }
 }
 
-// 获取阶段对应的悬停阴影颜色
+// Get hover shadow color for stage
 export function getHoverShadowColor(stage: string): string {
   switch (stage) {
     case "Genesis":
@@ -93,22 +93,22 @@ export function getHoverShadowColor(stage: string): string {
   }
 }
 
-// 格式化百分比
+// Format percentage
 export function formatPercentage(value: number): string {
   return `${value >= 0 ? "+" : ""}${value.toFixed(2)}%`
 }
 
-// 格式化数字
+// Format number
 export function formatNumber(value: number, decimals = 2): string {
   return value.toFixed(decimals)
 }
 
-// 格式化价格
+// Format price
 export function formatPrice(value: number): string {
   return `$${value.toFixed(4)}`
 }
 
-// 格式化时间差
+// Format time remaining
 export function formatTimeRemaining(endTime: string): string {
   const end = new Date(endTime).getTime()
   const now = new Date().getTime()

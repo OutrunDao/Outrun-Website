@@ -4,7 +4,7 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from "
 import type { MemeProject, ProjectMode, SortDirection, ChainFilter, StageFilter, SortOption } from "@/types/memeverse"
 import { MOCK_PROJECTS } from "@/data/memeverse-projects"
 
-// 定义常量
+// Define constants
 const CHAIN_FILTERS: ChainFilter[] = [
   { id: "all", label: "All Chains" },
   { id: "ethereum", label: "Ethereum", icon: "/networks/ethereum.svg" },
@@ -52,17 +52,17 @@ const SORT_OPTIONS: any = {
   ],
 }
 
-// 每页项目数
+// Projects per page
 const PROJECTS_PER_PAGE = 15
 
-// Context类型定义
+// Context type definition
 interface MemeVerseContextType {
-  // 项目数据
+  // Project data
   projects: MemeProject[]
   filteredProjects: MemeProject[]
   currentProjects: MemeProject[]
 
-  // 过滤和排序状态
+  // Filter and sort state
   activeChainFilter: string
   activeStageFilter: string
   searchQuery: string
@@ -73,18 +73,18 @@ interface MemeVerseContextType {
   currentPage: number
   totalPages: number
 
-  // 下拉菜单状态
+  // Dropdown menu state
   isChainDropdownOpen: boolean
   isStageDropdownOpen: boolean
   isSortDropdownOpen: boolean
   activeDropdown: string | null
 
-  // 常量
+  // Constants
   CHAIN_FILTERS: ChainFilter[]
   STAGE_FILTERS: StageFilter[]
   SORT_OPTIONS: any
 
-  // 方法
+  // Methods
   setActiveChainFilter: (filter: string) => void
   setActiveStageFilter: (filter: string) => void
   setSearchQuery: (query: string) => void
@@ -101,12 +101,12 @@ interface MemeVerseContextType {
   getCurrentSortLabel: () => string
 }
 
-// 创建Context
+// Create Context
 const MemeVerseContext = createContext<MemeVerseContextType | undefined>(undefined)
 
-// Provider组件
+// Provider component
 export function MemeVerseProvider({ children }: { children: ReactNode }) {
-  // 状态
+  // State
   const [projects, setProjects] = useState<MemeProject[]>([])
   const [activeChainFilter, setActiveChainFilter] = useState("all")
   const [activeStageFilter, setActiveStageFilter] = useState("genesis")
@@ -122,16 +122,16 @@ export function MemeVerseProvider({ children }: { children: ReactNode }) {
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
 
-  // 初始化项目数据
+  // Initialize project data
   useEffect(() => {
     setProjects(MOCK_PROJECTS)
   }, [])
 
-  // 过滤项目
+  // Filter projects
   useEffect(() => {
     let result = [...projects]
 
-    // 应用阶段过滤
+    // Apply stage filter
     const stageMap: Record<string, string> = {
       genesis: "Genesis",
       refund: "Refund",
@@ -140,22 +140,22 @@ export function MemeVerseProvider({ children }: { children: ReactNode }) {
     }
     result = result.filter((project) => project.stage === stageMap[activeStageFilter])
 
-    // 应用模式过滤（仅在Genesis阶段）
+    // Apply mode filter (only in Genesis stage)
     if (activeStageFilter === "genesis") {
       result = result.filter((project) => project.mode === selectedMode)
     }
 
-    // 应用OutSwap列表过滤（仅在Genesis阶段）
+    // Apply OutSwap list filter (only in Genesis stage)
     if (activeStageFilter === "genesis" && showListedOnOutSwap) {
       result = result.filter((project) => project.listedOnOutSwap)
     }
 
-    // 应用链过滤
+    // Apply chain filter
     if (activeChainFilter !== "all") {
       result = result.filter((project) => project.chain?.toLowerCase() === activeChainFilter)
     }
 
-    // 应用搜索过滤
+    // Apply search filter
     if (searchQuery) {
       const query = searchQuery.toLowerCase()
       result = result.filter(
@@ -166,13 +166,13 @@ export function MemeVerseProvider({ children }: { children: ReactNode }) {
       )
     }
 
-    // 应用排序
+    // Apply sorting
     if (sortOption) {
       result.sort((a, b) => {
         let valueA = a[sortOption as keyof MemeProject]
         let valueB = b[sortOption as keyof MemeProject]
 
-        // 处理日期字符串
+        // Handle date strings
         if (
           typeof valueA === "string" &&
           (sortOption === "createdAt" || sortOption === "genesisEndTime" || sortOption === "unlockTime")
@@ -190,7 +190,7 @@ export function MemeVerseProvider({ children }: { children: ReactNode }) {
     }
 
     setFilteredProjects(result)
-    // 重置到第一页
+    // Reset to first page
     setCurrentPage(1)
   }, [
     activeChainFilter,
@@ -203,28 +203,28 @@ export function MemeVerseProvider({ children }: { children: ReactNode }) {
     projects,
   ])
 
-  // 计算总页数
+  // Calculate total pages
   const totalPages = Math.ceil(filteredProjects.length / PROJECTS_PER_PAGE)
 
-  // 获取当前页面项目
+  // Get current page projects
   const currentProjects = filteredProjects.slice((currentPage - 1) * PROJECTS_PER_PAGE, currentPage * PROJECTS_PER_PAGE)
 
-  // 处理页码变更
+  // Handle page change
   const handlePageChange = (pageNumber: number) => {
-    // 确保页码在有效范围内
+    // Ensure page number is within valid range
     if (pageNumber >= 1 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber)
-      // 滚动到页面顶部
+      // Scroll to top of page
       window.scrollTo({ top: 0, behavior: "smooth" })
     }
   }
 
-  // 切换排序方向
+  // Toggle sort direction
   const toggleSortDirection = () => {
     setSortDirection(sortDirection === "asc" ? "desc" : "asc")
   }
 
-  // 切换链下拉菜单
+  // Toggle chain dropdown
   const toggleChainDropdown = () => {
     if (activeDropdown === "chain") {
       setActiveDropdown(null)
@@ -237,7 +237,7 @@ export function MemeVerseProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  // 切换阶段下拉菜单
+  // Toggle stage dropdown
   const toggleStageDropdown = () => {
     if (activeDropdown === "stage") {
       setActiveDropdown(null)
@@ -250,7 +250,7 @@ export function MemeVerseProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  // 切换排序下拉菜单
+  // Toggle sort dropdown
   const toggleSortDropdown = () => {
     if (activeDropdown === "sort") {
       setActiveDropdown(null)
@@ -263,7 +263,7 @@ export function MemeVerseProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  // 关闭所有下拉菜单
+  // Close all dropdowns
   const closeAllDropdowns = () => {
     setActiveDropdown(null)
     setIsChainDropdownOpen(false)
@@ -271,7 +271,7 @@ export function MemeVerseProvider({ children }: { children: ReactNode }) {
     setIsSortDropdownOpen(false)
   }
 
-  // 获取适用于当前阶段和模式的排序选项
+  // Get sort options applicable to current stage and mode
   const getSortOptions = () => {
     if (activeStageFilter === "genesis") {
       return SORT_OPTIONS.genesis[selectedMode] || []
@@ -279,14 +279,14 @@ export function MemeVerseProvider({ children }: { children: ReactNode }) {
     return SORT_OPTIONS[activeStageFilter] || []
   }
 
-  // 获取当前排序选项的标签
+  // Get label of current sort option
   const getCurrentSortLabel = () => {
     const options = getSortOptions()
     const option = options.find((opt: SortOption) => opt.id === sortOption)
     return option ? option.label : "Creation Time"
   }
 
-  // 点击外部关闭下拉菜单
+  // Click outside to close dropdowns
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (activeDropdown) {
@@ -303,14 +303,14 @@ export function MemeVerseProvider({ children }: { children: ReactNode }) {
     }
   }, [activeDropdown])
 
-  // Context值
+  // Context value
   const value = {
-    // 项目数据
+    // Project data
     projects,
     filteredProjects,
     currentProjects,
 
-    // 过滤和排序状态
+    // Filter and sort state
     activeChainFilter,
     activeStageFilter,
     searchQuery,
@@ -321,18 +321,18 @@ export function MemeVerseProvider({ children }: { children: ReactNode }) {
     currentPage,
     totalPages,
 
-    // 下拉菜单状态
+    // Dropdown menu state
     isChainDropdownOpen,
     isStageDropdownOpen,
     isSortDropdownOpen,
     activeDropdown,
 
-    // 常量
+    // Constants
     CHAIN_FILTERS,
     STAGE_FILTERS,
     SORT_OPTIONS,
 
-    // 方法
+    // Methods
     setActiveChainFilter,
     setActiveStageFilter,
     setSearchQuery,
@@ -352,7 +352,7 @@ export function MemeVerseProvider({ children }: { children: ReactNode }) {
   return <MemeVerseContext.Provider value={value}>{children}</MemeVerseContext.Provider>
 }
 
-// 自定义Hook
+// Custom Hook
 export function useMemeVerse() {
   const context = useContext(MemeVerseContext)
   if (context === undefined) {

@@ -3,14 +3,28 @@
  */
 export function formatCurrency(value: string): string {
   if (!value) return ""
+
   const num = Number.parseFloat(value)
   if (isNaN(num)) return value
 
-  if (num < 0.000001) return num.toExponential(4)
-  if (num < 0.001) return num.toFixed(6)
-  if (num < 1) return num.toFixed(4)
-  if (num < 10000) return num.toFixed(2)
-  return num.toLocaleString("en-US", { maximumFractionDigits: 2 })
+  // 使用对象映射替代多个if条件
+  const formats = [
+    { threshold: 0.000001, format: (n: number) => n.toExponential(4) },
+    { threshold: 0.001, format: (n: number) => n.toFixed(6) },
+    { threshold: 1, format: (n: number) => n.toFixed(4) },
+    { threshold: 10000, format: (n: number) => n.toFixed(2) },
+    {
+      threshold: Number.POSITIVE_INFINITY,
+      format: (n: number) => n.toLocaleString("en-US", { maximumFractionDigits: 2 }),
+    },
+  ]
+
+  for (const { threshold, format } of formats) {
+    if (num < threshold) return format(num)
+  }
+
+  // 默认情况，不应该到达这里
+  return value
 }
 
 /**
@@ -58,11 +72,7 @@ export function formatDateTime(dateTimeStr: string): string {
  * Format market cap
  */
 export function formatMarketCap(value: number): string {
-  if (value >= 1000000) {
-    return `${(value / 1000000).toFixed(2)}M`
-  } else if (value >= 1000) {
-    return `${(value / 1000).toFixed(2)}K`
-  } else {
-    return `${value}`
-  }
+  if (value >= 1000000) return `${(value / 1000000).toFixed(2)}M`
+  if (value >= 1000) return `${(value / 1000).toFixed(2)}K`
+  return `${value}`
 }

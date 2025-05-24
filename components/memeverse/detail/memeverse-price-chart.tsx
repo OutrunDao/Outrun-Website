@@ -10,7 +10,7 @@ interface MemeversePriceChartProps {
   project: any
 }
 
-// 自定义提示组件，确保它能够超出容器边界
+// Custom tooltip component that can overflow container boundaries
 const CustomTooltip = React.memo(({ trigger, content }: { trigger: React.ReactNode; content: React.ReactNode }) => {
   return (
     <div className="relative group">
@@ -32,16 +32,16 @@ export const MemeversePriceChart = React.memo(({ project }: MemeversePriceChartP
   const [priceChange, setPriceChange] = useState<{ value: number; percentage: number }>({ value: 0, percentage: 0 })
   const [isPositive, setIsPositive] = useState(true)
 
-  // 生成模拟价格数据
+  // Generate mock price data
   useEffect(() => {
     const generateChartData = () => {
       const now = new Date()
       const data: any[] = []
 
-      // 基础价格 - 使用市值除以总供应量的估计值
+      // Base price - estimated using market cap divided by total supply
       const basePrice = project.marketCap / 1000000000
 
-      // 根据时间范围确定数据点数量和时间间隔
+      // Determine number of data points and time intervals based on timeframe
       let points = 0
       let interval = 0
 
@@ -64,16 +64,16 @@ export const MemeversePriceChart = React.memo(({ project }: MemeversePriceChartP
           break
       }
 
-      // 生成随机波动的价格数据
+      // Generate randomly fluctuating price data
       for (let i = points; i >= 0; i--) {
         const time = new Date(now.getTime() - i * interval)
 
-        // 添加一些随机波动，但保持整体趋势
+        // Add some random fluctuation while maintaining overall trend
         const volatility = 0.05 // 5%的波动率
-        const trend = timeframe === "all" ? 0.001 : 0.0005 // 长期上升趋势
+        const trend = timeframe === "all" ? 0.001 : 0.0005 // Long-term upward trend
         const randomFactor = (Math.random() - 0.5) * 2 * volatility
 
-        // 根据时间计算价格，越近期的数据越接近当前价格
+        // Calculate price based on time, more recent data closer to current price
         const priceFactor = 1 + randomFactor + trend * i
         const price = basePrice * priceFactor
 
@@ -83,7 +83,7 @@ export const MemeversePriceChart = React.memo(({ project }: MemeversePriceChartP
         })
       }
 
-      // 计算价格变化
+      // Calculate price change
       const firstPrice = data[0].price
       const lastPrice = data[data.length - 1].price
       const change = lastPrice - firstPrice
@@ -101,7 +101,7 @@ export const MemeversePriceChart = React.memo(({ project }: MemeversePriceChartP
     generateChartData()
   }, [timeframe, project.marketCap])
 
-  // 找到价格范围以便绘制图表
+  // Find price range for chart drawing
   const { minPrice, maxPrice, priceRange } = useMemo(() => {
     if (chartData.length === 0) return { minPrice: 0, maxPrice: 0, priceRange: 1 }
     const min = Math.min(...chartData.map((d) => d.price))
@@ -109,7 +109,7 @@ export const MemeversePriceChart = React.memo(({ project }: MemeversePriceChartP
     return { minPrice: min, maxPrice: max, priceRange: max - min }
   }, [chartData])
 
-  // 格式化价格
+  // Format price
   const formatPrice = useCallback((price: number) => {
     if (price < 0.000001) {
       return price.toExponential(2)
@@ -117,7 +117,7 @@ export const MemeversePriceChart = React.memo(({ project }: MemeversePriceChartP
     return price.toFixed(price < 0.01 ? 6 : price < 1 ? 4 : 2)
   }, [])
 
-  // 格式化大数字，如市值和总供应量
+  // Format large numbers like market cap and total supply
   const formatLargeNumber = useCallback((num: number) => {
     if (num >= 1e9) {
       return (num / 1e9).toFixed(2) + "B"
@@ -129,26 +129,26 @@ export const MemeversePriceChart = React.memo(({ project }: MemeversePriceChartP
     return num.toString()
   }, [])
 
-  // 计算随机的交易量（Volume）- 通常是市值的一小部分
+  // Calculate random volume - usually a small fraction of market cap
   const volume = project.marketCap ? project.marketCap * (0.05 + Math.random() * 0.15) : 1000000
 
-  // 计算或使用代币总供应量
+  // Calculate or use token total supply
   const totalSupply = project.totalSupply || 1000000000
 
-  // 使用固定的Mock数据作为流动性价值
+  // Use fixed mock data as liquidity value
   const liquidity = 2500000 // 固定值：250万
 
   return (
     <div className="bg-black/60 backdrop-blur-sm rounded-xl border border-white/10 overflow-visible h-full">
       <div className="p-6 flex flex-col h-full">
         <div className="mb-6">
-          {/* 渐变的代币Symbol标题 */}
+          {/* Gradient token symbol title */}
           <div className="flex items-center gap-4 mb-2">
             <h3 className="text-xl font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-purple-400 text-transparent bg-clip-text">
               {project.symbol || "TOKEN"}
             </h3>
 
-            {/* 添加更多项目信息 - 使用flex布局和固定宽度 */}
+            {/* Add more project info - use flex layout with fixed width */}
             <div className="flex flex-wrap gap-2 text-xs">
               <CustomTooltip
                 trigger={
@@ -202,7 +202,7 @@ export const MemeversePriceChart = React.memo(({ project }: MemeversePriceChartP
             </div>
           </div>
 
-          {/* 将价格和周期选择分成两行，避免相互影响 */}
+          {/* Separate price and period selection into two rows to avoid interference */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex items-center">
               <span className="text-2xl font-bold text-white mr-2">
@@ -235,11 +235,11 @@ export const MemeversePriceChart = React.memo(({ project }: MemeversePriceChartP
           </div>
         </div>
 
-        {/* 价格图表 - 使用flex-1确保它占据剩余空间 */}
+        {/* Price chart - use flex-1 to ensure it takes remaining space */}
         <div className="flex-1 relative min-h-[200px]">
           <div className="absolute inset-0 flex items-end">
             {chartData.map((point, index) => {
-              // 计算高度百分比
+              // Calculate height percentage
               const heightPercent = priceRange === 0 ? 50 : ((point.price - minPrice) / priceRange) * 100
 
               return (
@@ -263,7 +263,7 @@ export const MemeversePriceChart = React.memo(({ project }: MemeversePriceChartP
             })}
           </div>
 
-          {/* 价格线 */}
+          {/* Price line */}
           <svg className="absolute inset-0 w-full h-full overflow-visible">
             <defs>
               <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -291,7 +291,7 @@ export const MemeversePriceChart = React.memo(({ project }: MemeversePriceChartP
             />
           </svg>
 
-          {/* Y轴标签 */}
+          {/* Y-axis labels */}
           <div className="absolute top-0 right-0 h-full flex flex-col justify-between text-xs text-zinc-500 py-2">
             <div>${formatPrice(maxPrice)}</div>
             <div>${formatPrice(minPrice + priceRange / 2)}</div>
@@ -299,7 +299,7 @@ export const MemeversePriceChart = React.memo(({ project }: MemeversePriceChartP
           </div>
         </div>
 
-        {/* 时间轴标签 */}
+        {/* Time axis labels */}
         <div className="flex justify-between mt-2 text-xs text-zinc-500">
           {timeframe === "24h" && (
             <>

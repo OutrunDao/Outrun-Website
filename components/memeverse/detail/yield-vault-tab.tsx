@@ -14,14 +14,14 @@ export function YieldVaultTab({ project }: YieldVaultTabProps) {
   const [stakeAmount, setStakeAmount] = useState("")
   const [unstakeAmount, setUnstakeAmount] = useState("")
 
-  // 模拟收益库数据
+  // Mock yield vault data
   const vaultData = {
     totalStaked: 25000000,
     yourStaked: 50000,
     apr: 42.5,
     rewards: 1250,
     lockPeriod: 7, // 天
-    contractAddress: "0x9a67f1940164d0318612b497e8e6038f902a00a4", // 添加Yield Vault合约地址
+    contractAddress: "0x9a67f1940164d0318612b497e8e6038f902a00a4", // Add Yield Vault contract address
   }
 
   return (
@@ -70,7 +70,7 @@ export function YieldVaultTab({ project }: YieldVaultTabProps) {
         </div>
       </div>
 
-      {/* 您的质押 */}
+      {/* Your Staking */}
       <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-purple-500/40 shadow-[0_4px_20px_-4px_rgba(168,85,247,0.2)]">
         <h3 className="text-lg font-semibold text-pink-300 mb-4">Your Staking</h3>
 
@@ -94,7 +94,7 @@ export function YieldVaultTab({ project }: YieldVaultTabProps) {
         </div>
       </div>
 
-      {/* 质押/解质押界面 */}
+      {/* Stake/Unstake interface */}
       <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-purple-500/40 shadow-[0_4px_20px_-4px_rgba(168,85,247,0.2)]">
         <div className="flex border-b border-purple-500/20 mb-4">
           <button

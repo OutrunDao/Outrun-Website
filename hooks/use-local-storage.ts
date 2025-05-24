@@ -3,13 +3,12 @@
 import { useState, useEffect, useCallback } from "react"
 
 /**
- * Hook for storing and retrieving data from localStorage
- * @param key localStorage key
- * @param initialValue Initial value
- * @returns [storedValue, setValue]
+ * Hook for localStorage state management
+ * @param key Storage key
+ * @param initialValue Default value
+ * @returns [value, setValue] tuple
  */
 export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T | ((val: T) => T)) => void] {
-  // Get initial value
   const readValue = useCallback((): T => {
     if (typeof window === "undefined") {
       return initialValue
@@ -24,7 +23,6 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T 
     }
   }, [initialValue, key])
 
-  // State to store actual value
   const [storedValue, setStoredValue] = useState<T>(initialValue)
 
   // Read value from localStorage when component mounts

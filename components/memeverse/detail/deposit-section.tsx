@@ -29,7 +29,7 @@ export function DepositSection({ availableTokens, providers, myGenesisFunds, onD
   // Define the tokens we want to show
   const requiredTokens = ["ETH", "weETH", "stETH", "UETH"]
 
-  // Ensure we have all required tokens, or create placeholders if missing
+  // Ensure we have all required tokens, create placeholders if missing
   const filteredTokens = requiredTokens.map((symbol) => {
     const found = availableTokens.find((t) => t.symbol === symbol)
     if (found) return found
@@ -105,14 +105,14 @@ export function DepositSection({ availableTokens, providers, myGenesisFunds, onD
   const handleTokenSelect = (token: Token) => {
     setSelectedToken(token)
     setShowTokenList(false)
-    setShowProviderList(false) // 确保关闭 Provider 下拉框
+    setShowProviderList(false) // Ensure Provider dropdown is closed
   }
 
   // Handle provider selection
   const handleProviderSelect = (provider: Provider) => {
     setSelectedProvider(provider)
     setShowProviderList(false)
-    setShowTokenList(false) // 确保关闭代币下拉框
+    setShowTokenList(false) // Ensure token dropdown is closed
   }
 
   // Handle max button click
@@ -145,7 +145,7 @@ export function DepositSection({ availableTokens, providers, myGenesisFunds, onD
   const handleProviderClick = () => {
     if (!isProviderSelectionDisabled) {
       setShowProviderList(!showProviderList)
-      if (!showProviderList) setShowTokenList(false) // 如果要打开 Provider 列表，确保关闭代币列表
+      if (!showProviderList) setShowTokenList(false) // If opening Provider list, ensure token list is closed
     }
   }
 
@@ -225,7 +225,7 @@ export function DepositSection({ availableTokens, providers, myGenesisFunds, onD
 
   useEffect(() => {
     if (showProviderList) {
-      // 确保所有父容器都不会限制下拉菜单的显示
+      // Ensure all parent containers don't restrict dropdown display
       const parentElements = []
       let parent = providerButtonRef.current?.parentElement
       while (parent && parent !== document.body) {
@@ -233,7 +233,7 @@ export function DepositSection({ availableTokens, providers, myGenesisFunds, onD
         parent = parent.parentElement
       }
 
-      // 保存原始样式
+      // Save original styles
       const originalStyles = parentElements.map((el) => ({
         element: el,
         overflow: el.style.overflow,
@@ -241,7 +241,7 @@ export function DepositSection({ availableTokens, providers, myGenesisFunds, onD
         position: el.style.position,
       }))
 
-      // 应用新样式
+      // Apply new styles
       parentElements.forEach((el) => {
         el.style.overflow = "visible"
         if (!el.style.position || el.style.position === "static") {
@@ -252,7 +252,7 @@ export function DepositSection({ availableTokens, providers, myGenesisFunds, onD
         }
       })
 
-      // 清理函数
+      // Cleanup function
       return () => {
         originalStyles.forEach((item) => {
           item.element.style.overflow = item.overflow
@@ -263,7 +263,7 @@ export function DepositSection({ availableTokens, providers, myGenesisFunds, onD
     }
   }, [showProviderList])
 
-  // 更精细的响应式布局控制
+  // More refined responsive layout control
   const [deviceType, setDeviceType] = useState<"mobile" | "tablet" | "desktop">("desktop")
 
   useEffect(() => {
@@ -292,24 +292,24 @@ export function DepositSection({ availableTokens, providers, myGenesisFunds, onD
 
   return (
     <div className="w-full lg:w-1/4 flex-shrink-0 deposit-section-container" style={{ overflow: "visible" }}>
-      {/* 主容器 - 创建一个新的堆叠上下文 */}
+      {/* Main container - create a new stacking context */}
       <div
         className="bg-[#0f0326]/90 rounded-lg border border-purple-500/40 flex flex-col shadow-[0_4px_20px_-4px_rgba(168,85,247,0.25)]"
         style={{
           aspectRatio: !isDesktop ? "auto" : "1/1",
           height: "auto",
-          position: "relative", // 创建新的堆叠上下文
-          overflow: "visible", // 确保溢出内容可见
+          position: "relative", // Create new stacking context
+          overflow: "visible", // Ensure overflow content is visible
         }}
       >
-        {/* 内容容器 */}
+        {/* Content container */}
         <div className={`p-3 flex flex-col h-full ${isDesktop ? "justify-between" : ""}`}>
-          {/* 所有内容区域，包括按钮 */}
+          {/* All content areas, including buttons */}
           <div className="flex flex-col space-y-3">
             {/* Token selection and amount input */}
             <div className="w-full bg-[#1a0f3d]/90 rounded-lg border border-purple-500/40 p-2">
               <div className="flex justify-between mb-1">
-                {/* 代币选择容器 - 设置更高的z-index */}
+                {/* Token selection container - set higher z-index */}
                 <div className="relative" style={{ zIndex: 6 }}>
                   <button
                     ref={tokenButtonRef}
@@ -331,7 +331,7 @@ export function DepositSection({ availableTokens, providers, myGenesisFunds, onD
                     <ChevronDown className="w-4.5 h-4.5 text-pink-400" />
                   </button>
 
-                  {/* 代币下拉菜单 */}
+                  {/* Token dropdown menu */}
                   {showTokenList && (
                     <div
                       ref={tokenDropdownRef}
@@ -424,7 +424,7 @@ export function DepositSection({ availableTokens, providers, myGenesisFunds, onD
                     style={{
                       maxHeight: "144px",
                       overflowY: "auto",
-                      zIndex: 50, // 提高z-index确保显示在其他元素之上
+                      zIndex: 50, // Increase z-index to ensure display above other elements
                       overflow: "visible",
                       boxShadow:
                         "0 8px 30px rgba(0, 0, 0, 0.2), 0 0 10px rgba(168, 85, 247, 0.2), 0 0 20px rgba(236, 72, 153, 0.1)",
@@ -453,7 +453,7 @@ export function DepositSection({ availableTokens, providers, myGenesisFunds, onD
               </div>
             </div>
 
-            {/* 移动端和平板端的Deposit按钮 */}
+            {/* Mobile and tablet Deposit button */}
             {(isMobile || isTablet) && (
               <div className="mt-3">
                 <button
@@ -470,7 +470,7 @@ export function DepositSection({ availableTokens, providers, myGenesisFunds, onD
             )}
           </div>
 
-          {/* 仅桌面端的Deposit按钮 */}
+          {/* Desktop-only Deposit button */}
           {isDesktop && (
             <div className="mt-3 mb-3">
               <button

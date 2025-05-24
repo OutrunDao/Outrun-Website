@@ -11,7 +11,7 @@ interface LiquidityTabProps {
 export function LiquidityTab({ project }: LiquidityTabProps) {
   const [activeTab, setActiveTab] = useState("token")
 
-  // 模拟不同类型的流动性池数据
+  // Mock different types of liquidity pool data
   const tokenPools = [
     {
       id: "eth",
@@ -91,7 +91,7 @@ export function LiquidityTab({ project }: LiquidityTabProps) {
     },
   ]
 
-  // 根据当前选中的标签获取对应的流动性池
+  // Get corresponding liquidity pools based on currently selected tab
   const getActivePools = () => {
     switch (activeTab) {
       case "pol":
@@ -105,14 +105,14 @@ export function LiquidityTab({ project }: LiquidityTabProps) {
 
   const liquidityPools = getActivePools()
 
-  // 计算总体流动性增长率
+  // Calculate overall liquidity growth rate
   const totalTVL = liquidityPools.reduce((sum, pool) => sum + pool.tvl, 0)
   const totalTVLPrevWeek = liquidityPools.reduce((sum, pool) => sum + pool.tvlPrevWeek, 0)
   const overallGrowthRate = ((totalTVL - totalTVLPrevWeek) / totalTVLPrevWeek) * 100
 
   return (
     <div className="space-y-6">
-      {/* 流动性概览 */}
+      {/* Liquidity overview */}
       <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-purple-500/40 shadow-[0_4px_20px_-4px_rgba(168,85,247,0.2)]">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold text-pink-300">Liquidity Overview</h3>
@@ -171,7 +171,7 @@ export function LiquidityTab({ project }: LiquidityTabProps) {
         </div>
       </div>
 
-      {/* 流动性池列表 */}
+      {/* Liquidity pools list */}
       <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-purple-500/40 shadow-[0_4px_20px_-4px_rgba(168,85,247,0.2)]">
         <div className="mb-4">
           <h3 className="text-lg font-semibold text-pink-300">Liquidity Pools</h3>

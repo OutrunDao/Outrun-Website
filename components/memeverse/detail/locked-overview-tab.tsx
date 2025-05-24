@@ -25,9 +25,9 @@ export function LockedOverviewTab({
 }: LockedOverviewTabProps) {
   return (
     <div className="block m-0 p-0" style={{ margin: 0, padding: 0 }}>
-      {/* 使用两列布局，减小间距 */}
+      {/* Use two-column layout with reduced spacing */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
-        {/* 左侧：项目图片 - 占据1/4宽度 */}
+        {/* Left side: project image - takes 1/4 width */}
         <div className="md:col-span-1 flex items-start" style={{ width: "220px", height: "220px", overflow: "hidden" }}>
           <img
             src={image || "/placeholder.svg"}
@@ -37,7 +37,7 @@ export function LockedOverviewTab({
           />
         </div>
 
-        {/* 右侧卡片：项目信息和社交链接 - 占据3/4宽度，向左延伸 */}
+        {/* Right card: project info and social links - takes 3/4 width, extends left */}
         <div
           className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-purple-500/40 shadow-[0_4px_20px_-4px_rgba(168,85,247,0.2)] flex flex-col md:col-span-3 -ml-6"
           style={{ height: "220px" }}
@@ -141,7 +141,7 @@ export function LockedOverviewTab({
                 )}
               </div>
 
-              {/* Available on 链信息 - 从omnichain数组动态获取 */}
+              {/* Available on chain info - dynamically get from omnichain array */}
               {omnichain && omnichain.length > 0 && (
                 <div className="flex items-center">
                   <span className="text-pink-300 text-sm mr-2">Available on</span>

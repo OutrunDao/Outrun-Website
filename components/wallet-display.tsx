@@ -8,7 +8,6 @@ export function WalletDisplay() {
   const { isConnected, address } = useWallet()
   const [copied, setCopied] = useState(false)
 
-  // Format address for display
   const formatAddress = (address: string) => {
     return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`
   }
@@ -20,7 +19,6 @@ export function WalletDisplay() {
     }
   }
 
-  // Reset copied state after 2 seconds
   useEffect(() => {
     if (copied) {
       const timeout = setTimeout(() => {

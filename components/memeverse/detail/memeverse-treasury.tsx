@@ -12,10 +12,10 @@ interface MemeverseTreasuryProps {
 export function MemeverseTreasury({ project }: MemeverseTreasuryProps) {
   const [activeTab, setActiveTab] = useState<"overview" | "allocations" | "proposals">("overview")
 
-  // 计算财政部资金 - 如果项目没有treasuryFund属性，则基于市值估算
+  // Calculate treasury fund - estimate based on market cap if project doesn't have treasuryFund property
   const treasuryFund = project.treasuryFund || project.marketCap * 0.1
 
-  // 模拟资金分配
+  // Mock fund allocation
   const allocations = [
     { category: "Development", percentage: 40, amount: treasuryFund * 0.4 },
     { category: "Marketing", percentage: 25, amount: treasuryFund * 0.25 },
@@ -24,7 +24,7 @@ export function MemeverseTreasury({ project }: MemeverseTreasuryProps) {
     { category: "Reserve", percentage: 5, amount: treasuryFund * 0.05 },
   ]
 
-  // 模拟提案
+  // Mock proposals
   const proposals = [
     {
       id: 1,
@@ -57,7 +57,7 @@ export function MemeverseTreasury({ project }: MemeverseTreasuryProps) {
 
   return (
     <div className="space-y-6">
-      {/* 标签页导航 */}
+      {/* Tab navigation */}
       <div className="bg-black/60 backdrop-blur-sm rounded-xl border border-white/10 p-1">
         <div className="flex">
           <button
@@ -93,15 +93,15 @@ export function MemeverseTreasury({ project }: MemeverseTreasuryProps) {
         </div>
       </div>
 
-      {/* 概览标签页 */}
+      {/* Overview tab */}
       {activeTab === "overview" && (
         <div className="space-y-6">
-          {/* 财政部概览 */}
+          {/* Treasury overview */}
           <div className="bg-black/60 backdrop-blur-sm rounded-xl border border-white/10 p-6">
             <h3 className="text-xl font-semibold text-white mb-6">Treasury Overview</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* 总资金 */}
+              {/* Total funds */}
               <div className="bg-black/40 rounded-lg p-4 border border-white/5">
                 <div className="flex items-center gap-2 mb-2">
                   <Wallet className="h-5 w-5 text-pink-400" />
@@ -111,7 +111,7 @@ export function MemeverseTreasury({ project }: MemeverseTreasuryProps) {
                 <div className="text-xs text-zinc-400 mt-1">Last updated: Today</div>
               </div>
 
-              {/* 月收入 */}
+              {/* Monthly income */}
               <div className="bg-black/40 rounded-lg p-4 border border-white/5">
                 <div className="flex items-center gap-2 mb-2">
                   <Coins className="h-5 w-5 text-pink-400" />
@@ -121,7 +121,7 @@ export function MemeverseTreasury({ project }: MemeverseTreasuryProps) {
                 <div className="text-xs text-zinc-400 mt-1">From trading fees & staking rewards</div>
               </div>
 
-              {/* 月支出 */}
+              {/* Monthly expenses */}
               <div className="bg-black/40 rounded-lg p-4 border border-white/5">
                 <div className="flex items-center gap-2 mb-2">
                   <ArrowRight className="h-5 w-5 text-pink-400" />
@@ -132,7 +132,7 @@ export function MemeverseTreasury({ project }: MemeverseTreasuryProps) {
               </div>
             </div>
 
-            {/* 资金增长图表 */}
+            {/* Fund growth chart */}
             <div className="mt-8">
               <h4 className="text-lg font-medium text-white mb-4">Treasury Growth</h4>
               <div className="h-64 bg-black/40 rounded-lg border border-white/5 p-4 flex items-end">
@@ -164,7 +164,7 @@ export function MemeverseTreasury({ project }: MemeverseTreasuryProps) {
             </div>
           </div>
 
-          {/* 最近交易 */}
+          {/* Recent transactions */}
           <div className="bg-black/60 backdrop-blur-sm rounded-xl border border-white/10 p-6">
             <h3 className="text-xl font-semibold text-white mb-6">Recent Transactions</h3>
 
@@ -226,14 +226,14 @@ export function MemeverseTreasury({ project }: MemeverseTreasuryProps) {
         </div>
       )}
 
-      {/* 资金分配标签页 */}
+      {/* Fund allocation tab */}
       {activeTab === "allocations" && (
         <div className="space-y-6">
           <div className="bg-black/60 backdrop-blur-sm rounded-xl border border-white/10 p-6">
             <h3 className="text-xl font-semibold text-white mb-6">Treasury Allocations</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* 饼图 */}
+              {/* Pie chart */}
               <div className="flex items-center justify-center">
                 <div className="relative w-64 h-64">
                   <PieChart className="w-full h-full text-zinc-700" />
@@ -246,7 +246,7 @@ export function MemeverseTreasury({ project }: MemeverseTreasuryProps) {
                 </div>
               </div>
 
-              {/* 分配列表 */}
+              {/* Allocation list */}
               <div>
                 <div className="space-y-4">
                   {allocations.map((allocation, index) => (
@@ -269,7 +269,7 @@ export function MemeverseTreasury({ project }: MemeverseTreasuryProps) {
             </div>
           </div>
 
-          {/* 资金使用详情 */}
+          {/* Fund usage details */}
           <div className="bg-black/60 backdrop-blur-sm rounded-xl border border-white/10 p-6">
             <h3 className="text-xl font-semibold text-white mb-6">Allocation Details</h3>
 
@@ -316,7 +316,7 @@ export function MemeverseTreasury({ project }: MemeverseTreasuryProps) {
         </div>
       )}
 
-      {/* 提案标签页 */}
+      {/* Proposals tab */}
       {activeTab === "proposals" && (
         <div className="space-y-6">
           <div className="bg-black/60 backdrop-blur-sm rounded-xl border border-white/10 p-6">
@@ -352,7 +352,7 @@ export function MemeverseTreasury({ project }: MemeverseTreasuryProps) {
                     {proposal.status === "Active" && <div>Ends: {new Date(proposal.endTime).toLocaleDateString()}</div>}
                   </div>
 
-                  {/* 投票进度条 */}
+                  {/* Voting progress bar */}
                   <div className="mb-2">
                     <div className="flex justify-between text-xs mb-1">
                       <span className="text-green-400">For: {proposal.votes.for}%</span>
@@ -366,7 +366,7 @@ export function MemeverseTreasury({ project }: MemeverseTreasuryProps) {
                     </div>
                   </div>
 
-                  {/* 投票按钮 - 仅对活跃提案显示 */}
+                  {/* Voting buttons - only show for active proposals */}
                   {proposal.status === "Active" && (
                     <div className="flex gap-3 mt-4">
                       <button className="flex-1 bg-green-500/20 hover:bg-green-500/30 text-green-400 text-sm py-2 rounded-lg transition-colors">
@@ -382,7 +382,7 @@ export function MemeverseTreasury({ project }: MemeverseTreasuryProps) {
             </div>
           </div>
 
-          {/* 投票权重 */}
+          {/* Voting weight */}
           <div className="bg-black/60 backdrop-blur-sm rounded-xl border border-white/10 p-6">
             <h3 className="text-xl font-semibold text-white mb-4">Your Voting Power</h3>
 

@@ -40,7 +40,6 @@ export default function LiquidityPage() {
 
   return (
     <div ref={containerRef} className="relative flex flex-col min-h-screen">
-
       {/* Hero Section - simplified display on mobile */}
       <section className={`relative ${isMobile ? "pt-24 pb-4" : "pt-24 pb-6"} overflow-hidden`}>
         {/* Hero overlay */}

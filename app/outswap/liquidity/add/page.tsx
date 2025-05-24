@@ -29,10 +29,10 @@ export default function AddLiquidityPage() {
   const [showSettings, setShowSettings] = useState(false)
   const [slippage, setSlippage] = useState("0.5")
   const [swapDeadline, setSwapDeadline] = useState("10")
-  const [isNewPool, setIsNewPool] = useState(true) // 是否是新池子
-  const [startingPrice, setStartingPrice] = useState<string>("") // 起始价格
-  const [isPriceReversed, setIsPriceReversed] = useState(false) // 价格是否反转
-  const isMobile = useMobile() // 检测是否为移动设备
+  const [isNewPool, setIsNewPool] = useState(true) // Whether it's a new pool
+  const [startingPrice, setStartingPrice] = useState<string>("") // Starting price
+  const [isPriceReversed, setIsPriceReversed] = useState(false) // Whether price is reversed
+  const isMobile = useMobile() // Detect if mobile device
 
   // Mock price data
   const mockPrices = {
@@ -75,7 +75,7 @@ export default function AddLiquidityPage() {
       Number(token1Amount) > 0 &&
       Number(token2Amount) > 0
     ) {
-      // 修正计算逻辑：token2Amount / token1Amount
+      // Fix calculation logic: token2Amount / token1Amount
       const ratio = Number(token2Amount) / Number(token1Amount)
       setStartingPrice(ratio.toFixed(6))
     } else {
@@ -106,59 +106,59 @@ export default function AddLiquidityPage() {
     }
   }, [showFeeTierDropdown, showSettings])
 
-  // 增强的输入验证和净化函数
+  // Enhanced input validation and sanitization function
   const sanitizeAndValidateNumberInput = useCallback(
     (value: string, maxDecimals = 6, maxLength = 20): string | null => {
-      // 1. 长度检查 - 防止过长的输入
+      // 1. Length check - prevent overly long input
       if (value.length > maxLength) {
         return null
       }
 
-      // 2. 允许空字符串
+      // 2. Allow empty string
       if (value === "") {
         return value
       }
 
-      // 3. 基本格式检查 - 只允许数字和小数点
+      // 3. Basic format check - only allow numbers and decimal point
       if (!/^[\d.]+$/.test(value)) {
         return null
       }
 
-      // 4. 检查是否有多个小数点
+      // 4. Check for multiple decimal points
       const decimalPoints = (value.match(/\./g) || []).length
       if (decimalPoints > 1) {
         return null
       }
 
-      // 5. 检查小数位数
+      // 5. Check decimal places
       const parts = value.split(".")
       if (parts.length === 2 && parts[1].length > maxDecimals) {
-        // 如果小数位数过多，截断而不是拒绝
+        // If decimal places are too many, truncate instead of rejecting
         return `${parts[0]}.${parts[1].substring(0, maxDecimals)}`
       }
 
-      // 6. 检查是否是有效数字
+      // 6. Check if it's a valid number
       const num = Number(value)
       if (isNaN(num)) {
         return null
       }
 
-      // 7. 检查是否是非负数
+      // 7. Check if it's non-negative
       if (num < 0) {
         return null
       }
 
-      // 8. 检查是否是有限数
+      // 8. Check if it's finite
       if (!isFinite(num)) {
         return null
       }
 
-      // 9. 移除前导零
+      // 9. Remove leading zeros
       if (parts.length === 1 && parts[0].length > 1 && parts[0][0] === "0") {
         return parts[0].replace(/^0+/, "") || "0"
       }
 
-      // 10. 如果是小数，确保整数部分不以多个0开头
+      // 10. If decimal, ensure integer part doesn't start with multiple zeros
       if (parts.length === 2 && parts[0].length > 1 && parts[0][0] === "0") {
         return `${parts[0].replace(/^0+/, "") || "0"}.${parts[1]}`
       }
@@ -168,7 +168,7 @@ export default function AddLiquidityPage() {
     [],
   )
 
-  // 处理输入变化的函数
+  // Functions to handle input changes
   const handleToken1Change = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const rawValue = e.target.value
@@ -193,7 +193,7 @@ export default function AddLiquidityPage() {
     [sanitizeAndValidateNumberInput],
   )
 
-  // 处理滑点输入
+  // Handle slippage input
   const handleSlippageChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const rawValue = e.target.value
@@ -206,7 +206,7 @@ export default function AddLiquidityPage() {
     [sanitizeAndValidateNumberInput],
   )
 
-  // 处理交易截止时间输入
+  // Handle swap deadline input
   const handleDeadlineChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value
     // 对于截止时间，我们只允许整数
@@ -218,7 +218,7 @@ export default function AddLiquidityPage() {
     }
   }, [])
 
-  // 安全地解析数字
+  // Safely parse numbers
   const safeParseFloat = useCallback((value: string): number => {
     try {
       const num = Number.parseFloat(value)
@@ -232,7 +232,7 @@ export default function AddLiquidityPage() {
   const setMaxToken1 = useCallback(() => {
     if (!token1.balance) return
 
-    // 安全地清理余额字符串
+    // Safely clean balance string
     const cleanBalance = token1.balance.replace(/[^\d.]/g, "")
     const sanitizedValue = sanitizeAndValidateNumberInput(cleanBalance)
 
@@ -244,7 +244,7 @@ export default function AddLiquidityPage() {
   const setMaxToken2 = useCallback(() => {
     if (!token2.balance) return
 
-    // 安全地清理余额字符串
+    // Safely clean balance string
     const cleanBalance = token2.balance.replace(/[^\d.]/g, "")
     const sanitizedValue = sanitizeAndValidateNumberInput(cleanBalance)
 
@@ -263,7 +263,7 @@ export default function AddLiquidityPage() {
     if (!startingPrice || startingPrice === "0") return "--"
 
     if (isPriceReversed) {
-      // 反转价格: 1/startingPrice
+      // Reversed price: 1/startingPrice
       const reversedPrice = 1 / safeParseFloat(startingPrice)
       return (
         <>
@@ -275,7 +275,7 @@ export default function AddLiquidityPage() {
         </>
       )
     } else {
-      // 正常价格
+      // Normal price
       return (
         <>
           <span>1 {token1.symbol}</span>
@@ -288,7 +288,7 @@ export default function AddLiquidityPage() {
     }
   }
 
-  // 安全地检查是否可以添加流动性
+  // Safely check if liquidity can be added
   const canAddLiquidity = useMemo(() => {
     const amount1 = safeParseFloat(token1Amount)
     const amount2 = safeParseFloat(token2Amount)
@@ -333,21 +333,21 @@ export default function AddLiquidityPage() {
     )
   }
 
-  // 处理添加流动性的函数
+  // Function to handle adding liquidity
   const handleAddLiquidity = useCallback(() => {
     if (!canAddLiquidity) return
 
-    // 在这里，我们会进行最终的数据验证和净化，然后再发送到API
+    // Here, we perform final data validation and sanitization before sending to API
     const sanitizedToken1Amount = sanitizeAndValidateNumberInput(token1Amount)
     const sanitizedToken2Amount = sanitizeAndValidateNumberInput(token2Amount)
 
-    // 如果任何一个值无效，则不继续
+    // If any value is invalid, don't continue
     if (sanitizedToken1Amount === null || sanitizedToken2Amount === null) {
       console.error("Invalid input values detected")
       return
     }
 
-    // 将字符串转换为数字，进行最终验证
+    // Convert strings to numbers for final validation
     const amount1 = safeParseFloat(sanitizedToken1Amount)
     const amount2 = safeParseFloat(sanitizedToken2Amount)
 
@@ -356,7 +356,7 @@ export default function AddLiquidityPage() {
       return
     }
 
-    // 在这里，我们可以安全地使用这些值进行API调用
+    // Here, we can safely use these values for API calls
     console.log("Adding liquidity with validated inputs:", {
       token1: token1.symbol,
       token2: token2.symbol,
@@ -367,7 +367,7 @@ export default function AddLiquidityPage() {
       deadline: Number.parseInt(swapDeadline, 10),
     })
 
-    // 实际的API调用会在这里进行
+    // Actual API call would be made here
     // ...
   }, [
     canAddLiquidity,
@@ -384,7 +384,7 @@ export default function AddLiquidityPage() {
 
   return (
     <div className="relative flex flex-col min-h-screen">
-      {/* 主要内容 */}
+      {/* Main content */}
       <div className="flex-1 flex flex-col items-center justify-center px-4 py-16 relative">
         <div className="w-full max-w-sm relative" ref={cardRef}>
           {/* Back button for desktop */}

@@ -1,7 +1,7 @@
 "use client"
 
 import { useRef } from "react"
-import { motion, useScroll, useTransform } from "framer-motion"
+import { motion, useScroll } from "framer-motion"
 import { ArrowRight } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -12,7 +12,12 @@ export default function Home() {
   const { scrollYProgress } = useScroll()
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const gridOpacity = useTransform(scrollYProgress, [0, 0.2], [0.5, 0])
+  // 移除这一行，因为它没有被使用
+  // const gridOpacity = useTransform(scrollYProgress, [0, 0.2], [0.5, 0])
+
+  // 创建一个通用的按钮样式类名
+  const primaryButtonClass =
+    "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 rounded-full px-8 h-12 text-base shadow-[0_0_15px_rgba(168,85,247,0.5)]"
 
   return (
     <div ref={containerRef} className="relative">
@@ -53,10 +58,7 @@ export default function Home() {
                 transition={{ duration: 0.5, delay: 0.3 }}
                 className="flex flex-col sm:flex-row gap-4"
               >
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 rounded-full px-8 h-12 text-base shadow-[0_0_15px_rgba(168,85,247,0.5)]"
-                >
+                <Button size="lg" className={primaryButtonClass}>
                   Explore Ecosystem
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -217,7 +219,7 @@ export default function Home() {
                     <div className="flex justify-center">
                       <Button
                         size="lg"
-                        className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 rounded-full px-8 h-12 text-base shadow-[0_0_15px_rgba(168,85,247,0.5)]"
+                        className={primaryButtonClass}
                         onClick={() => window.open("https://discord.gg/sEXfH7Am44", "_blank")}
                       >
                         Join Community

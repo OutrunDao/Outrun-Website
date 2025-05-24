@@ -1,82 +1,42 @@
 "use client"
 
-import { useState, useEffect, useRef, useCallback } from "react"
+import { useCallback, useRef } from "react"
 
 /**
- * Throttle function that limits execution frequency
- * @param value Value to throttle
- * @param limit Throttle time interval in milliseconds
- * @returns Throttled value
+ * 创建一个节流函数
+ * @param fn 要节流的函数
+ * @param delay 延迟时间（毫秒）
+ * @returns 节流后的函数
  */
-export function useThrottle<T>(value: T, limit = 200): T {
-  const [throttledValue, setThrottledValue] = useState<T>(value)
-  const lastRan = useRef<number>(Date.now())
-
-  useEffect(() => {
-    const handler = setTimeout(
-      () => {
-        const now = Date.now()
-        if (now - lastRan.current >= limit) {
-          setThrottledValue(value)
-          lastRan.current = now
-        }
-      },
-      limit - (Date.now() - lastRan.current),
-    )
-
-    return () => {
-      clearTimeout(handler)
-    }
-  }, [value, limit])
-
-  return throttledValue
-}
-
-/**
- * Throttle function that limits execution frequency
- * @param fn Function to throttle
- * @param limit Throttle time interval in milliseconds
- * @returns Throttled function
- */
-export function useThrottleFn<T extends (...args: any[]) => any>(fn: T, limit = 200): T {
-  const lastRan = useRef<number>(Date.now())
-  const lastArgs = useRef<any[]>([])
+export function useThrottleFn<T extends (...args: any[]) => any>(
+  fn: T,
+  delay: number,
+): (...args: Parameters<T>) => void {
+  const lastExecTime = useRef<number>(0)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
-  const throttledFn = useCallback(
+  return useCallback(
     (...args: Parameters<T>) => {
-      lastArgs.current = args
-
       const now = Date.now()
-      if (now - lastRan.current >= limit) {
+      const elapsed = now - lastExecTime.current
+
+      if (elapsed >= delay) {
+        lastExecTime.current = now
         fn(...args)
-        lastRan.current = now
       } else {
+        // 清除之前的定时器
         if (timeoutRef.current) {
           clearTimeout(timeoutRef.current)
         }
 
-        timeoutRef.current = setTimeout(
-          () => {
-            lastRan.current = Date.now()
-            fn(...lastArgs.current)
-            timeoutRef.current = null
-          },
-          limit - (now - lastRan.current),
-        )
+        // 设置新的定时器
+        timeoutRef.current = setTimeout(() => {
+          lastExecTime.current = Date.now()
+          fn(...args)
+          timeoutRef.current = null
+        }, delay - elapsed)
       }
     },
-    [fn, limit],
-  ) as T
-
-  // Cleanup function
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
-      }
-    }
-  }, [])
-
-  return throttledFn
+    [fn, delay],
+  )
 }

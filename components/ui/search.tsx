@@ -19,7 +19,7 @@ export function Search({ placeholder = "Search...", value, onChange, onClear, cl
   const inputRef = useRef<HTMLInputElement>(null)
   const isMobile = useMobile()
 
-  // 当点击清除按钮时，聚焦输入框
+  // Focus input when clear button is clicked
   const handleClear = () => {
     onClear()
     inputRef.current?.focus()

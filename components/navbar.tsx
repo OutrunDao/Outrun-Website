@@ -10,7 +10,6 @@ import { Menu, X, ChevronDown, ChevronRight, ChevronUp } from "lucide-react"
 import { usePathname } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
-import { useMobile } from "@/hooks/use-mobile"
 import { WalletButton } from "@/components/wallet-button"
 
 // 导入 useThrottleFn
@@ -73,8 +72,10 @@ function useNavbarResponsive() {
 
 export function Navbar() {
   const router = useRouter()
-  const isMobile = useMobile() // 保留这个，用于其他可能的用途
-  const isNavMobile = useNavbarResponsive() // 新增这个，专门用于导航栏
+  // 移除这一行
+  // const isMobile = useMobile() // 保留这个，用于其他可能的用途
+  // 只保留这一行
+  const isNavMobile = useNavbarResponsive() // 专门用于导航栏
   const pathname = usePathname() // Get the current path
   const isHomePage = pathname === "/" // Check if we're on the home page
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -193,12 +194,7 @@ export function Navbar() {
 
   // 1. 修改toggleMobileSubmenu函数，确保它能正确切换子菜单状态
   const toggleMobileSubmenu = (title: string, e?: React.MouseEvent) => {
-    // 如果提供了事件对象，阻止冒泡
-    if (e) {
-      e.stopPropagation()
-    }
-
-    // 切换子菜单状态
+    if (e) e.stopPropagation()
     setExpandedMobileSubmenu((prev) => (prev === title ? null : title))
   }
 
@@ -332,9 +328,7 @@ export function Navbar() {
             )}
           </div>
 
-          {!isNavMobile ? (
-            <WalletButton />
-          ) : (
+          {isNavMobile ? (
             <div className="flex items-center gap-2">
               <div className="mobile-wallet-buttons">
                 <WalletButton isMobile={true} />
@@ -352,6 +346,8 @@ export function Navbar() {
                 <div className="mobile-menu-btn-bg absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-0"></div>
               </Button>
             </div>
+          ) : (
+            <WalletButton />
           )}
         </div>
       </div>

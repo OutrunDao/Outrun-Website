@@ -203,7 +203,7 @@ export default function OutStakePage() {
               viewport={{ once: true }}
               className="relative mb-8"
             >
-              <div className="relative bg-black/60 backdrop-blur-sm rounded-xl border border-purple-500/20 overflow-hidden">
+              <div className="relative bg-black/70 backdrop-blur-sm rounded-xl border border-purple-500/20 overflow-hidden">
                 <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-purple-600 to-pink-600"></div>
                 <div className="p-6 md:p-8">
                   <div className="flex items-center mb-4">
@@ -284,7 +284,7 @@ export default function OutStakePage() {
               viewport={{ once: true }}
               className="relative mb-8"
             >
-              <div className="relative bg-black/60 backdrop-blur-sm rounded-xl border border-blue-500/20 overflow-hidden">
+              <div className="relative bg-black/70 backdrop-blur-sm rounded-xl border border-blue-500/20 overflow-hidden">
                 <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-600 to-cyan-600"></div>
                 <div className="p-6 md:p-8">
                   <div className="flex items-center mb-4">
@@ -357,7 +357,7 @@ export default function OutStakePage() {
               viewport={{ once: true }}
               className="relative mb-8"
             >
-              <div className="relative bg-black/60 backdrop-blur-sm rounded-xl border border-pink-500/20 overflow-hidden">
+              <div className="relative bg-black/70 backdrop-blur-sm rounded-xl border border-pink-500/20 overflow-hidden">
                 <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-pink-600 to-purple-600"></div>
                 <div className="p-6 md:p-8">
                   <div className="flex items-center mb-4">
@@ -472,7 +472,7 @@ export default function OutStakePage() {
               viewport={{ once: true }}
               className="relative mb-8"
             >
-              <div className="relative bg-black/60 backdrop-blur-sm rounded-xl border border-green-500/20 overflow-hidden">
+              <div className="relative bg-black/70 backdrop-blur-sm rounded-xl border border-green-500/20 overflow-hidden">
                 <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-green-600 to-cyan-600"></div>
                 <div className="p-6 md:p-8">
                   <div className="flex items-center mb-4">
@@ -541,7 +541,7 @@ export default function OutStakePage() {
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="relative bg-black/60 backdrop-blur-sm rounded-xl border border-purple-500/20 overflow-hidden">
+              <div className="relative bg-black/70 backdrop-blur-sm rounded-xl border border-purple-500/20 overflow-hidden">
                 <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-purple-600 to-blue-600"></div>
                 <div className="p-6 md:p-8">
                   <div className="flex items-center mb-4">
@@ -664,7 +664,7 @@ export default function OutStakePage() {
               >
                 <div className="relative h-full">
                   <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-purple-600/30 to-purple-600/10 opacity-70 group-hover:opacity-100 blur-sm transition duration-300"></div>
-                  <div className="relative h-full bg-black/60 backdrop-blur-sm rounded-xl border border-purple-500/20 p-6 overflow-hidden group-hover:border-purple-500/40 transition duration-300">
+                  <div className="relative h-full bg-black/70 backdrop-blur-sm rounded-xl border border-purple-500/20 p-6 overflow-hidden group-hover:border-purple-500/40 transition duration-300">
                     <div className="absolute -right-8 -top-8 w-24 h-24 rounded-full bg-purple-600/10"></div>
                     <div className="flex items-center mb-4">
                       <div className="w-10 h-10 rounded-full bg-purple-600/20 flex items-center justify-center mr-3">
@@ -703,7 +703,7 @@ export default function OutStakePage() {
               >
                 <div className="relative h-full">
                   <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-pink-600/30 to-pink-600/10 opacity-70 group-hover:opacity-100 blur-sm transition duration-300"></div>
-                  <div className="relative h-full bg-black/60 backdrop-blur-sm rounded-xl border border-pink-500/20 p-6 overflow-hidden group-hover:border-pink-500/40 transition duration-300">
+                  <div className="relative h-full bg-black/70 backdrop-blur-sm rounded-xl border border-pink-500/20 p-6 overflow-hidden group-hover:border-pink-500/40 transition duration-300">
                     <div className="absolute -right-8 -top-8 w-24 h-24 rounded-full bg-pink-600/10"></div>
                     <div className="flex items-center mb-4">
                       <div className="w-10 h-10 rounded-full bg-pink-600/20 flex items-center justify-center mr-3">
@@ -740,7 +740,7 @@ export default function OutStakePage() {
               >
                 <div className="relative h-full">
                   <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-green-600/30 to-green-600/10 opacity-70 group-hover:opacity-100 blur-sm transition duration-300"></div>
-                  <div className="relative h-full bg-black/60 backdrop-blur-sm rounded-xl border border-green-500/20 p-6 overflow-hidden group-hover:border-green-500/40 transition duration-300">
+                  <div className="relative h-full bg-black/70 backdrop-blur-sm rounded-xl border border-green-500/20 p-6 overflow-hidden group-hover:border-green-500/40 transition duration-300">
                     <div className="absolute -right-8 -top-8 w-24 h-24 rounded-full bg-green-600/10"></div>
                     <div className="flex items-center mb-4">
                       <div className="w-10 h-10 rounded-full bg-green-600/20 flex items-center justify-center mr-3">

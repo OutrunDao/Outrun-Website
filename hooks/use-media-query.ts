@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect } from "react"
 
 /**
  * Uses media query to detect screen size
@@ -8,45 +8,42 @@ import { useState, useEffect, useCallback } from "react"
  * @returns Whether the media query matches
  */
 export function useMediaQuery(query: string): boolean {
-  const getMatches = useCallback((query: string): boolean => {
-    // Always return false during server-side rendering
-    if (typeof window !== "undefined") {
-      return window.matchMedia(query).matches
-    }
-    return false
-  }, [])
-
-  const [matches, setMatches] = useState<boolean>(getMatches(query))
+  const [matches, setMatches] = useState<boolean>(false)
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia(query)
-
-    // Define callback function
-    const handleChange = () => {
-      setMatches(getMatches(query))
+    // 初始化匹配状态
+    const updateMatches = () => {
+      if (typeof window !== "undefined") {
+        setMatches(window.matchMedia(query).matches)
+      }
     }
 
-    // Initial check
-    handleChange()
+    // 初始检查
+    updateMatches()
 
-    // Add event listener
+    // 创建媒体查询
+    const mediaQuery = window.matchMedia(query)
+
+    // 添加事件监听器
+    const handleChange = () => updateMatches()
+
     if (mediaQuery.addEventListener) {
       mediaQuery.addEventListener("change", handleChange)
     } else {
-      // Compatible with older browsers
+      // 兼容旧浏览器
       mediaQuery.addListener(handleChange)
     }
 
-    // Cleanup function
+    // 清理函数
     return () => {
       if (mediaQuery.removeEventListener) {
         mediaQuery.removeEventListener("change", handleChange)
       } else {
-        // Compatible with older browsers
+        // 兼容旧浏览器
         mediaQuery.removeListener(handleChange)
       }
     }
-  }, [getMatches, query])
+  }, [query])
 
   return matches
 }

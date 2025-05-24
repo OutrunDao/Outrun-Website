@@ -120,10 +120,7 @@ export function InfoTooltip({
   }, [])
 
   const handleMouseLeave = useCallback(() => {
-    // Add a delay before hiding the tooltip
-    hideTimeoutRef.current = setTimeout(() => {
-      setIsVisible(false)
-    }, 300) // 300ms delay
+    hideTimeoutRef.current = setTimeout(() => setIsVisible(false), 300)
   }, [])
 
   // Process content to add styling to "Learn more" links
@@ -167,9 +164,14 @@ export function InfoTooltip({
 
   // Arrow styles based on position
   const arrowStyles = useMemo(() => {
+    const baseStyles = {
+      filter: "drop-shadow(0 0 1px rgba(236,72,153,0.2))",
+    }
+
     switch (position) {
       case "top":
         return {
+          ...baseStyles,
           bottom: "-8px",
           left: "50%",
           transform: "translateX(-50%)",
@@ -180,6 +182,7 @@ export function InfoTooltip({
         }
       case "bottom":
         return {
+          ...baseStyles,
           top: "-8px",
           left: "50%",
           transform: "translateX(-50%)",
@@ -190,6 +193,7 @@ export function InfoTooltip({
         }
       case "left":
         return {
+          ...baseStyles,
           right: "-8px",
           top: "50%",
           transform: "translateY(-50%)",
@@ -200,6 +204,7 @@ export function InfoTooltip({
         }
       case "right":
         return {
+          ...baseStyles,
           left: "-8px",
           top: "50%",
           transform: "translateY(-50%)",

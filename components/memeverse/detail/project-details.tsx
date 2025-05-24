@@ -80,7 +80,7 @@ export const ProjectDetails = React.memo(({ project, stageStyle, onBackClick }: 
       <div className="w-full lg:w-[46%] flex-shrink-0 flex flex-col p-0 overflow-hidden" style={{ height: "100%" }}>
         {/* Title area - adjust to top alignment */}
         <div className="h-[38px] flex p-0 m-0 overflow-visible">
-          {/* Use top-aligned span to directly display text - increase font size */}
+          {/* Use top-aligned span to display text directly - increase font size */}
           <div className="flex p-0 m-0 overflow-visible">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400 text-xl font-bold leading-none mt-[-2px]">
               {project.symbol}
@@ -100,7 +100,7 @@ export const ProjectDetails = React.memo(({ project, stageStyle, onBackClick }: 
             marginTop: "-3px",
           }}
         >
-          {/* 网格背景 */}
+          {/* Grid background */}
           <div
             className="absolute inset-0 opacity-10 rounded-lg"
             style={{

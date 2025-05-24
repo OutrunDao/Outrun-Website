@@ -18,7 +18,7 @@ import { GradientBackgroundCard } from "@/components/ui/gradient-background-card
 const tokens = COMMON_TOKENS
 
 export function EnhancedSwapInterface() {
-  // 使用我们的自定义hook进行token交换逻辑
+  // Use our custom hook for token swap logic
   const {
     fromToken,
     toToken,
@@ -49,7 +49,7 @@ export function EnhancedSwapInterface() {
   const [antiMEV, setAntiMEV] = useState(false)
   const [showRouteModal, setShowRouteModal] = useState(false)
 
-  // 使用 useWallet hook
+  // Use useWallet hook
   const { isConnected, isConnecting, connectWallet } = useWallet()
 
   // Mock route data
@@ -73,26 +73,26 @@ export function EnhancedSwapInterface() {
 
   const settingsPanelRef = useRef<HTMLDivElement>(null)
 
-  // 添加点击外部关闭设置面板的功能
+  // Add functionality to close settings panel when clicking outside
   useEffect(() => {
     if (!showSettings) return
 
     const handleClickOutside = (event: MouseEvent) => {
-      // 检查点击是否在设置面板外部
+      // Check if click is outside the settings panel
       if (
         settingsPanelRef.current &&
         !settingsPanelRef.current.contains(event.target as Node) &&
-        // 确保不是点击设置按钮本身
+        // Make sure it's not clicking the settings button itself
         !(event.target as Element).closest('[title="Settings"]')
       ) {
         setShowSettings(false)
       }
     }
 
-    // 添加全局点击事件监听器
+    // Add global click event listener
     document.addEventListener("mousedown", handleClickOutside)
 
-    // 清理函数
+    // Cleanup function
     return () => {
       document.removeEventListener("mousedown", handleClickOutside)
     }
@@ -215,7 +215,7 @@ export function EnhancedSwapInterface() {
                   ref={settingsPanelRef}
                 >
                   <div className="bg-gradient-to-br from-[#0f0326]/95 via-[#1a0445]/95 to-[#0f0326]/95 backdrop-blur-xl p-4 rounded-xl relative">
-                    {/* 网格背景 */}
+                    {/* Grid background */}
                     <div
                       className="absolute inset-0 opacity-10 rounded-xl pointer-events-none"
                       style={{
@@ -243,7 +243,7 @@ export function EnhancedSwapInterface() {
                           <button
                             className={`px-2 py-1 rounded-lg text-xs ${slippage === "0.1" ? "bg-purple-600/30 text-purple-300" : "bg-black/30 text-zinc-400 hover:bg-white/10 hover:text-white"}`}
                             onClick={(e) => {
-                              e.stopPropagation() // 防止点击事件冒泡
+                              e.stopPropagation() // Prevent event bubbling
                               setSlippage("0.1")
                             }}
                           >
@@ -252,7 +252,7 @@ export function EnhancedSwapInterface() {
                           <button
                             className={`px-2 py-1 rounded-lg text-xs ${slippage === "0.5" ? "bg-purple-600/30 text-purple-300" : "bg-black/30 text-zinc-400 hover:bg-white/10 hover:text-white"}`}
                             onClick={(e) => {
-                              e.stopPropagation() // 防止点击事件冒泡
+                              e.stopPropagation() // Prevent event bubbling
                               setSlippage("0.5")
                             }}
                           >
@@ -261,7 +261,7 @@ export function EnhancedSwapInterface() {
                           <button
                             className={`px-2 py-1 rounded-lg text-xs ${slippage === "1.0" ? "bg-purple-600/30 text-purple-300" : "bg-black/30 text-zinc-400 hover:bg-white/10 hover:text-white"}`}
                             onClick={(e) => {
-                              e.stopPropagation() // 防止点击事件冒泡
+                              e.stopPropagation() // Prevent event bubbling
                               setSlippage("1.0")
                             }}
                           >
@@ -274,7 +274,7 @@ export function EnhancedSwapInterface() {
                               name="slippage"
                               value={slippage}
                               onChange={(e) => setSlippage(e.target.value.replace(/[^0-9.]/g, ""))}
-                              onClick={(e) => e.stopPropagation()} // 防止点击事件冒泡
+                              onClick={(e) => e.stopPropagation()} // Prevent event bubbling
                               className="w-full px-2 py-1 rounded-lg text-xs bg-black/40 text-white border border-pink-500/20 focus:outline-none focus:ring-1 focus:ring-purple-500"
                             />
                             <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-zinc-400">%</span>
@@ -299,7 +299,7 @@ export function EnhancedSwapInterface() {
                           <button
                             className={`px-2 py-1 rounded-lg text-xs ${swapDeadline === "10" ? "bg-purple-600/30 text-purple-300" : "bg-black/30 text-zinc-400 hover:bg-white/10 hover:text-white"}`}
                             onClick={(e) => {
-                              e.stopPropagation() // 防止点击事件冒泡
+                              e.stopPropagation() // Prevent event bubbling
                               setSwapDeadline("10")
                             }}
                           >
@@ -308,7 +308,7 @@ export function EnhancedSwapInterface() {
                           <button
                             className={`px-2 py-1 rounded-lg text-xs ${swapDeadline === "20" ? "bg-purple-600/30 text-purple-300" : "bg-black/30 text-zinc-400 hover:bg-white/10 hover:text-white"}`}
                             onClick={(e) => {
-                              e.stopPropagation() // 防止点击事件冒泡
+                              e.stopPropagation() // Prevent event bubbling
                               setSwapDeadline("20")
                             }}
                           >
@@ -317,7 +317,7 @@ export function EnhancedSwapInterface() {
                           <button
                             className={`px-2 py-1 rounded-lg text-xs ${swapDeadline === "30" ? "bg-purple-600/30 text-purple-300" : "bg-black/30 text-zinc-400 hover:bg-white/10 hover:text-white"}`}
                             onClick={(e) => {
-                              e.stopPropagation() // 防止点击事件冒泡
+                              e.stopPropagation() // Prevent event bubbling
                               setSwapDeadline("30")
                             }}
                           >
@@ -330,7 +330,7 @@ export function EnhancedSwapInterface() {
                               name="deadline"
                               value={swapDeadline}
                               onChange={(e) => setSwapDeadline(e.target.value.replace(/[^0-9]/g, ""))}
-                              onClick={(e) => e.stopPropagation()} // 防止点击事件冒泡
+                              onClick={(e) => e.stopPropagation()} // Prevent event bubbling
                               className="w-full px-2 py-1 rounded-lg text-xs bg-black/40 text-white border border-pink-500/20 focus:outline-none focus:ring-1 focus:ring-purple-500"
                             />
                             <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-zinc-400">min</span>
@@ -355,7 +355,7 @@ export function EnhancedSwapInterface() {
                     style={{
                       background: "linear-gradient(to right, rgba(15, 3, 38, 0.8), rgba(26, 4, 69, 0.8))",
                       boxShadow: "0 0 10px rgba(236, 72, 153, 0.15), inset 0 0 8px rgba(168, 85, 247, 0.1)",
-                      width: "fit-content", // 添加这一行确保按钮宽度适应内容
+                      width: "fit-content", // Make sure button width fits content
                     }}
                     onClick={() => setShowFromTokenModal(true)}
                   >
@@ -413,7 +413,7 @@ export function EnhancedSwapInterface() {
                     style={{
                       background: "linear-gradient(to right, rgba(15, 3, 38, 0.8), rgba(26, 4, 69, 0.8))",
                       boxShadow: "0 0 10px rgba(236, 72, 153, 0.15), inset 0 0 8px rgba(168, 85, 247, 0.1)",
-                      width: "fit-content", // 添加这一行确保按钮宽度适应内容
+                      width: "fit-content", // Make sure button width fits content
                     }}
                     onClick={() => setShowToTokenModal(true)}
                   >

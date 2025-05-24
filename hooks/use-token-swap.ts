@@ -41,7 +41,7 @@ export function useTokenSwap(
   const [priceImpact, setPriceImpact] = useState("0.2")
   const [isRateReversed, setIsRateReversed] = useState(false)
 
-  // Use useMemo to calculate exchange rate to avoid unnecessary recalculations
+  // Use useMemo to calculate the exchange rate to avoid unnecessary recalculations
   const exchangeRate = useMemo(() => {
     if (fromToken.price && toToken.price) {
       return fromToken.price / toToken.price
@@ -49,7 +49,7 @@ export function useTokenSwap(
     return 0
   }, [fromToken.price, toToken.price])
 
-  // Update state when calculated exchange rate changes
+  // Update state when the calculated exchange rate changes
   // useEffect(() => {
   //   setExchangeRate(calculatedExchangeRate)
   // }, [calculatedExchangeRate])
@@ -115,7 +115,7 @@ export function useTokenSwap(
     setIsRateReversed((prev) => !prev)
   }, [])
 
-  // Add function to calculate swap
+  // Add a function to calculate the swap
   const calculateSwap = useCallback((fromToken: Token, toToken: Token, amount: number): number => {
     if (!fromToken.price || !toToken.price) return 0
     const rate = fromToken.price / toToken.price

@@ -13,7 +13,6 @@ export default function ReferralPage() {
   const isMobile = useMobile()
   const [activeTab, setActiveTab] = useState("overview")
 
-  // 模拟数据 - 实际应用中应从API获取
   // Mock data - In real applications, it should be obtained from the API
   const referralData = {
     totalEarned: "1,245.32",

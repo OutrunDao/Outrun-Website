@@ -11,11 +11,11 @@ interface DAOTabProps {
 export function DAOTab({ project }: DAOTabProps) {
   const [activeSection, setActiveSection] = useState("proposals")
 
-  // 模拟DAO数据
+  // Mock DAO data
   const daoData = {
     totalVotingPower: 25000000,
     yourVotingPower: 50000,
-    contractAddress: "0x3d9d22ce8e205de5f3d0e9e0b258accde1d33a0b", // 添加DAO Governor合约地址
+    contractAddress: "0x3d9d22ce8e205de5f3d0e9e0b258accde1d33a0b", // Add DAO Governor contract address
     proposals: [
       {
         id: 1,
@@ -45,7 +45,7 @@ export function DAOTab({ project }: DAOTabProps) {
     ],
   }
 
-  // 格式化日期
+  // Format date
   const formatDate = (date: Date) => {
     return date.toLocaleDateString("en-US", {
       year: "numeric",
@@ -54,7 +54,7 @@ export function DAOTab({ project }: DAOTabProps) {
     })
   }
 
-  // 计算投票百分比
+  // Calculate voting percentages
   const calculatePercentage = (votes: any) => {
     const total = votes.for + votes.against + votes.abstain
     return {
@@ -100,7 +100,7 @@ export function DAOTab({ project }: DAOTabProps) {
               className="ml-2 p-1.5 bg-purple-500/20 hover:bg-purple-500/30 rounded-md transition-colors"
               onClick={() => {
                 navigator.clipboard.writeText(daoData.contractAddress)
-                // 可以添加一个复制成功的提示
+                // Can add a copy success notification
               }}
               title="Copy to clipboard"
             >
@@ -110,7 +110,7 @@ export function DAOTab({ project }: DAOTabProps) {
         </div>
       </div>
 
-      {/* DAO内容选择器 */}
+      {/* DAO content selector */}
       <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-purple-500/40 shadow-[0_4px_20px_-4px_rgba(168,85,247,0.2)]">
         <div className="flex border-b border-purple-500/20 mb-4">
           <button
@@ -170,7 +170,7 @@ export function DAOTab({ project }: DAOTabProps) {
                       </span>
                     </div>
 
-                    {/* 投票进度条 */}
+                    {/* Voting progress bar */}
                     <div className="h-4 bg-black/60 rounded-full overflow-hidden">
                       <div className="flex h-full">
                         <div className="bg-green-600 h-full" style={{ width: `${percentages.for}%` }}></div>

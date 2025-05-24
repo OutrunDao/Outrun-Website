@@ -28,13 +28,13 @@ export function OverviewTab({
   symbol,
   genesisFund = 0,
 }: OverviewTabProps) {
-  // 判断是否为Genesis阶段
+  // Check if it's Genesis stage
   const isGenesis = stage === "Genesis"
 
-  // 使用更友好的高亮样式 - 使用青色形成对比
+  // Use friendly highlight style - use cyan for contrast
   const highlightClass = "font-semibold text-cyan-300"
 
-  // 计算进度条宽度
+  // Calculate progress bar width
   const calculateProgressWidth = () => {
     if (genesisFund >= 10) {
       return "100%"
@@ -43,13 +43,14 @@ export function OverviewTab({
     }
   }
 
-  // 计算10 UETH标记线的位置
+  // Calculate position of 10 UETH marker line
   const calculateMarkerPosition = () => {
     if (genesisFund <= 10) {
-      return "100%" // 如果小于10 UETH，标记线在最右边
+      // If less than 10 UETH, marker line is at the rightmost position
+      return "100%"
     } else {
-      // 如果大于10 UETH，标记线位置根据当前数量计算
-      // 最左不超过1/5处，最右不超过4/5处
+      // If greater than 10 UETH, marker line position is calculated based on current amount
+      // Leftmost no more than 1/5, rightmost no more than 4/5
       const position = Math.max(20, Math.min(80, (10 / genesisFund) * 100))
       return `${position}%`
     }
@@ -57,9 +58,9 @@ export function OverviewTab({
 
   return (
     <div className="block m-0 p-0" style={{ margin: 0, padding: 0 }}>
-      {/* 使用两列布局 */}
+      {/* Use two-column layout */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* 左侧卡片：项目信息和社交链接 */}
+        {/* Left card: project info and social links */}
         <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-purple-500/40 shadow-[0_4px_20px_-4px_rgba(168,85,247,0.2)] flex flex-col h-full">
           <h2 className="text-xl font-bold mb-4 flex items-center">
             <span className="bg-gradient-to-r from-purple-400 via-pink-500 to-purple-400 text-transparent bg-clip-text">
@@ -161,7 +162,7 @@ export function OverviewTab({
           )}
         </div>
 
-        {/* 右侧卡片：Genesis Progress - 修改这里，确保在Refund阶段也显示 */}
+        {/* Right card: Genesis Progress - modified to show in Refund stage as well */}
         {(isGenesis || stage === "Refund") && (
           <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-purple-500/40 shadow-[0_4px_20px_-4px_rgba(168,85,247,0.2)]">
             <div className="flex justify-between items-center mb-4">
@@ -180,15 +181,15 @@ export function OverviewTab({
               )}
             </div>
 
-            {/* 新的进度条设计 */}
+            {/* New progress bar design */}
             <div className="bg-black/60 rounded-full h-4 overflow-hidden mb-2 relative">
-              {/* 进度条填充部分 */}
+              {/* Progress bar fill section */}
               <div
                 className="bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 h-full transition-all duration-500"
                 style={{ width: calculateProgressWidth() }}
               ></div>
 
-              {/* 10 UETH 标记线 - 仅在Genesis Fund > 10时显示 */}
+              {/* 10 UETH marker line - only show when Genesis Fund > 10 */}
               {genesisFund > 10 && (
                 <div
                   className="absolute top-0 bottom-0 w-0.5 bg-cyan-300 z-10"
@@ -200,7 +201,7 @@ export function OverviewTab({
               )}
             </div>
 
-            {/* 进度条下方的标签 */}
+            {/* Labels below progress bar */}
             <div className="flex justify-between text-sm text-pink-300/70 mb-4">
               {genesisFund > 10 && (
                 <span
@@ -213,7 +214,7 @@ export function OverviewTab({
               <span className="ml-auto">{genesisFund > 10 ? `${genesisFund.toFixed(2)} UETH` : "10 UETH"}</span>
             </div>
 
-            {/* 添加说明文本，使用青色高亮形成对比 */}
+            {/* Add description text with cyan highlights for contrast */}
             <p className="text-xs text-pink-200/80 mt-4 leading-tight">
               {stage === "Refund" ? (
                 <>

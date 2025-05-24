@@ -3,9 +3,9 @@
 import { useState, useEffect, useRef, useCallback } from "react"
 
 /**
- * Creates a debounced state that only updates after a specified delay when values change rapidly
+ * Hook for debounced state updates
  * @param initialValue Initial value
- * @param delay Delay time in milliseconds
+ * @param delay Debounce delay in ms (default: 300)
  * @returns [debouncedValue, setValue, immediateValue]
  */
 export function useDebouncedState<T>(initialValue: T, delay = 300): [T, (value: T) => void, T] {
@@ -13,7 +13,6 @@ export function useDebouncedState<T>(initialValue: T, delay = 300): [T, (value: 
   const [debouncedValue, setDebouncedValue] = useState<T>(initialValue)
   const timerRef = useRef<NodeJS.Timeout | null>(null)
 
-  // Clean up timer
   useEffect(() => {
     return () => {
       if (timerRef.current) {
@@ -22,7 +21,6 @@ export function useDebouncedState<T>(initialValue: T, delay = 300): [T, (value: 
     }
   }, [])
 
-  // Function to set value
   const setValue = useCallback(
     (value: T) => {
       setImmediateValue(value)

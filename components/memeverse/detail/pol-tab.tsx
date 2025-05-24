@@ -8,7 +8,7 @@ interface POLTabProps {
 }
 
 export function POLTab({ project }: POLTabProps) {
-  // 模拟POL数据
+  // Mock POL data
   const polData = {
     totalPOL: 1000000,
     yourPOL: 5000,
@@ -16,7 +16,7 @@ export function POLTab({ project }: POLTabProps) {
     polMarketCap: 120000,
     polCirculatingSupply: 1000000,
     polTotalSupply: 10000000,
-    contractAddress: "0x7c3275529694a91eeea2cb8176c2a7e9e6961d24", // 添加POL合约地址
+    contractAddress: "0x7c3275529694a91eeea2cb8176c2a7e9e6961d24", // Add POL contract address
     polDistribution: [
       { name: "Genesis Users", percentage: 30 },
       { name: "Treasury", percentage: 40 },
@@ -68,7 +68,7 @@ export function POLTab({ project }: POLTabProps) {
         </div>
       </div>
 
-      {/* 您的POL */}
+      {/* Your POL */}
       <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-purple-500/40 shadow-[0_4px_20px_-4px_rgba(168,85,247,0.2)]">
         <h3 className="text-lg font-semibold text-pink-300 mb-4">Your POL</h3>
 

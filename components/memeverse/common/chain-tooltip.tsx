@@ -17,11 +17,11 @@ export function ChainTooltip({ chainName, chainIcon, className = "" }: ChainTool
   const iconRef = useRef<HTMLDivElement>(null)
   const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(null)
 
-  // 处理客户端渲染
+  // Handle client-side rendering
   useEffect(() => {
     setMounted(true)
 
-    // 创建一个专门的容器用于渲染气泡，确保它在DOM树的最顶层
+    // Create a dedicated container for rendering tooltip at the top of DOM tree
     const tooltipContainer = document.createElement("div")
     tooltipContainer.id = "chain-tooltip-container"
     tooltipContainer.style.position = "fixed"
@@ -42,21 +42,21 @@ export function ChainTooltip({ chainName, chainIcon, className = "" }: ChainTool
     }
   }, [])
 
-  // 渲染气泡
+  // Render tooltip
   const renderTooltip = () => {
     if (!iconRef.current || !mounted || !showTooltip) return null
 
     const rect = iconRef.current.getBoundingClientRect()
 
-    // 计算气泡位置 - 确保在图标上方并更贴近图标
+    // Calculate tooltip position - ensure it's above the icon and closer to it
     const tooltipStyle: React.CSSProperties = {
       position: "fixed",
       left: `${rect.left + rect.width / 2}px`,
       top: `${rect.top - 5}px`, // 减小距离，使气泡更贴近图标
-      transform: "translate(-50%, -100%)", // 水平居中并向上偏移
+      transform: "translate(-50%, -100%)", // Center horizontally and offset upward
       zIndex: 9999,
       pointerEvents: "none",
-      // 最简单的淡入动画
+      // Simple fade-in animation
       opacity: 1,
       transition: "opacity 100ms linear",
     }
@@ -67,7 +67,7 @@ export function ChainTooltip({ chainName, chainIcon, className = "" }: ChainTool
           <div className="bg-gradient-to-r from-purple-900/90 to-pink-900/90 backdrop-blur-sm text-[10px] text-pink-200 px-1.5 py-0.5 rounded shadow-[0_0_8px_rgba(168,85,247,0.3)] border border-pink-500/20 whitespace-nowrap">
             {chainName}
           </div>
-          {/* 删除小三角形箭头 */}
+          {/* Remove small triangle arrow */}
         </div>
       </div>,
       portalContainer || document.body,

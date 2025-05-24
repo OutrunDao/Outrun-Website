@@ -10,10 +10,10 @@ interface UseIntersectionObserverProps {
 }
 
 /**
- * Uses Intersection Observer API to detect if an element is in the viewport
- * @param elementRef Reference to the element to observe
- * @param options Configuration options
- * @returns Whether the element is in the viewport
+ * Hook to detect if element is in viewport using Intersection Observer
+ * @param elementRef Element reference to observe
+ * @param options Observer configuration
+ * @returns Whether element is intersecting
  */
 export function useIntersectionObserver(
   elementRef: RefObject<Element>,

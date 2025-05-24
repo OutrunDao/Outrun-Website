@@ -22,12 +22,10 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   public static getDerivedStateFromError(error: Error): State {
-    // Update state so fallback UI will be displayed on next render
     return { hasError: true, error, errorInfo: null }
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // Can report error logs to a service
     console.error("Error caught by ErrorBoundary:", error, errorInfo)
     this.setState({ errorInfo })
   }
@@ -38,12 +36,10 @@ export class ErrorBoundary extends Component<Props, State> {
 
   public render() {
     if (this.state.hasError) {
-      // Use custom fallback UI if provided
       if (this.props.fallback) {
         return this.props.fallback
       }
 
-      // Otherwise use default fallback UI
       return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#0f0326] via-[#1a0445] to-[#0f0326]">
           <div className="max-w-md w-full p-8 rounded-xl bg-black/60 backdrop-blur-lg border border-white/10">

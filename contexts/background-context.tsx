@@ -16,7 +16,7 @@ export function BackgroundProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setIsVisible(true)
-    }, 50) // 短暂延迟以确保平滑过渡
+    }, 50) // Short delay to ensure smooth transition
 
     return () => clearTimeout(timeoutId)
   }, [])
