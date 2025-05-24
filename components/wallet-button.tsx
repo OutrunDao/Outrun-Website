@@ -51,7 +51,7 @@ export function WalletButton({ isMobile = false }: WalletButtonProps) {
         isMobile={effectiveIsMobile}
       />
       <Button
-        className={`launch-app-btn bg-transparent border-0 rounded-md px-3 h-[30px] flex items-center justify-center relative overflow-hidden group ${effectiveIsMobile ? "text-xs" : "text-xs"} ${isConnected ? "text-purple-300" : "text-white"} ${effectiveIsMobile ? "w-auto" : "w-auto"} ${isConnecting ? "opacity-80 cursor-wait" : ""}`}
+        className={`launch-app-btn bg-transparent border-0 rounded-md px-3 h-[30px] flex items-center justify-center relative overflow-hidden group ${effectiveIsMobile ? "text-xs" : "text-xs"} ${isConnected ? "text-purple-300" : "text-white"} w-[100px] ${isConnecting ? "opacity-80 cursor-wait" : ""}`}
         onClick={handleClick}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
