@@ -58,7 +58,16 @@ export default function Home() {
                 transition={{ duration: 0.5, delay: 0.3 }}
                 className="flex flex-col sm:flex-row gap-4"
               >
-                <Button size="lg" className={primaryButtonClass}>
+                <Button
+                  size="lg"
+                  className={primaryButtonClass}
+                  onClick={() => {
+                    const ecosystemSection = document.querySelector("#ecosystem-section")
+                    if (ecosystemSection) {
+                      ecosystemSection.scrollIntoView({ behavior: "smooth" })
+                    }
+                  }}
+                >
                   Explore Ecosystem
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -85,7 +94,7 @@ export default function Home() {
       </section>
 
       {/* Ecosystem Overview */}
-      <section className="py-12 md:py-16 relative">
+      <section id="ecosystem-section" className="py-12 md:py-16 relative">
         <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-10" />
         <div className="container px-4 md:px-6 mx-auto">
           <div className="max-w-3xl mx-auto text-center mb-16 md:mb-20">
